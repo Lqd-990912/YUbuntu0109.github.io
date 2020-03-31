@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Shiro之自定义realm及其加密 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java,Shiro">
+    <meta name="description" content="学习笔记 :  Shiro之自定义realm及其加密自定义RealmRealm : 域,Shiro从Realm获取安全数据(如用户、角色、权限),就是说SecurityManager要验证用户身份,那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法. 也需要从Realm得到用户相应的角色 / 权限进行验证用户是否能进行操作,可以把Realm看成 DataSource,即安全数据源.">
+<meta name="keywords" content="Java,Shiro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shiro之自定义realm及其加密">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 :  Shiro之自定义realm及其加密自定义RealmRealm : 域,Shiro从Realm获取安全数据(如用户、角色、权限),就是说SecurityManager要验证用户身份,那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法. 也需要从Realm得到用户相应的角色 / 权限进行验证用户是否能进行操作,可以把Realm看成 DataSource,即安全数据源.">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.553Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Shiro之自定义realm及其加密">
+<meta name="twitter:description" content="学习笔记 :  Shiro之自定义realm及其加密自定义RealmRealm : 域,Shiro从Realm获取安全数据(如用户、角色、权限),就是说SecurityManager要验证用户身份,那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法. 也需要从Realm得到用户相应的角色 / 权限进行验证用户是否能进行操作,可以把Realm看成 DataSource,即安全数据源.">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Shiro之自定义realm及其加密</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Shiro之自定义realm及其加密</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-01T18:49:46.000Z" itemprop="datePublished" class="page-time">
+  2019-08-01
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-Shiro之自定义realm及其加密"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 :  Shiro之自定义realm及其加密</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#自定义Realm"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">自定义Realm</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#加密Realm"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">加密Realm</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#散列算法"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">散列算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#加密自定义Realm"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">加密自定义Realm</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Shiro之自定义realm及其加密"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Shiro之自定义realm及其加密</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-01 18:49:46" datetime="2019-08-01T18:49:46.000Z"  itemprop="datePublished">2019-08-01</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-Shiro之自定义realm及其加密"><a href="#学习笔记-Shiro之自定义realm及其加密" class="headerlink" title="学习笔记 :  Shiro之自定义realm及其加密"></a>学习笔记 :  Shiro之自定义realm及其加密</h2><h3 id="自定义Realm"><a href="#自定义Realm" class="headerlink" title="自定义Realm"></a>自定义Realm</h3><p><em><code>Realm</code> : 域,Shiro从Realm获取安全数据(如用户、角色、权限),就是说SecurityManager要验证用户身份,那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法. 也需要从Realm得到用户相应的角色 / 权限进行验证用户是否能进行操作,可以把Realm看成 DataSource,即安全数据源. 如我们之前的ini配置方式使用的是<code>org.apache.shiro.realm.text.IniRealm</code>接口</em></p>
+<p><em>org.apache.shiro.realm.Realm接口如下所示 :</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回一个唯一的Realm名字</span></span><br><span class="line"><span class="function">String <span class="title">getName</span><span class="params">()</span></span>; </span><br><span class="line"><span class="comment">//判断此Realm是否支持此Token</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(AuthenticationToken token)</span></span>; </span><br><span class="line"><span class="comment">//根据Token获取认证信息</span></span><br><span class="line"><span class="function">AuthenticationInfo <span class="title">getAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException</span>;</span><br></pre></td></tr></table></figure></p>
+<p><em>下面通过自定义Realm来实现一个简单的用户身份验证程序~</em></p>
+<ol>
+<li><p><em>pom.xml : Maven依赖</em></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Shiro核心包 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- slf4j的接口实现 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- java.lang.NoClassDefFoundError: org/apache/commons/logging/LogFactory --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>my-shiro.ini : 存储用户身份信息(账户=密码)</em></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#自定义realm</span></span><br><span class="line"><span class="attr">myRealm</span> = pers.huangyuhui.realm.MyRealm</span><br><span class="line"><span class="comment">#指定SecurityManager的realms实现</span></span><br><span class="line"><span class="attr">securityManager.realm</span> = <span class="variable">$myRealm</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>MyRealm.java : 自定义Realm,模拟从数据库中获取用户信息</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.realm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationToken;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.SimpleAuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.AuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.realm.AuthorizingRealm;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.PrincipalCollection;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: shiro-learning</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 自定义Realm</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 8/1/2019-5:59 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"myRealm"</span>; <span class="comment">//区分不同的Realm</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="comment">//授权操作</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="comment">//认证操作:其token存储着传入的用户登录信息(usernamePasswordToken)</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取并验证用户账号信息</span></span><br><span class="line">        String username = (String) token.getPrincipal();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="string">"root"</span>.equals(username)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//假设用户密码信息</span></span><br><span class="line">        String password = <span class="string">"yubuntu0109"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//SimpleAuthenticationInfo(Object principal, Object credentials, String realmName)</span></span><br><span class="line">        SimpleAuthenticationInfo info = <span class="keyword">new</span> SimpleAuthenticationInfo(username, password, getName());</span><br><span class="line">        <span class="keyword">return</span> info;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>LoginByMyRealm.java : 验证用户登录信息</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.realm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.SecurityUtils;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.IncorrectCredentialsException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.UnknownAccountException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.UsernamePasswordToken;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.config.IniSecurityManagerFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.mgt.SecurityManager;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.Subject;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.Factory;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Shiro认证测试:验证用户登录信息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">loginByMyRealm</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1:加载配置文件,创建SecurityManager工厂对象</span></span><br><span class="line">        Factory&lt;SecurityManager&gt; factory = <span class="keyword">new</span> IniSecurityManagerFactory(<span class="string">"classpath:my-shiro.ini"</span>);</span><br><span class="line">        <span class="comment">//2:获得securityManager实例对象</span></span><br><span class="line">        SecurityManager securityManager = factory.getInstance();</span><br><span class="line">        <span class="comment">//3:将securityManger实例绑定到当前运行环境中,便于访问</span></span><br><span class="line">        SecurityUtils.setSecurityManager(securityManager);</span><br><span class="line">        <span class="comment">//4:创建当前登录的主体</span></span><br><span class="line">        Subject currentUser = SecurityUtils.getSubject();</span><br><span class="line">        <span class="comment">//5:绑定主体登录的身份/凭证,既账户及密码</span></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"root"</span>, <span class="string">"yubuntu0109"</span>);</span><br><span class="line">        <span class="comment">//6:主体登录</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            currentUser.login(token);</span><br><span class="line">            System.out.println(<span class="string">"用户身份是否验证成功 :"</span> + currentUser.isAuthenticated());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnknownAccountException e) &#123;</span><br><span class="line">            System.err.println(<span class="string">"用户账户错误 !"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IncorrectCredentialsException e) &#123;</span><br><span class="line">            System.err.println(<span class="string">"用户密码错误 !"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (AuthenticationException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//8:注销登录</span></span><br><span class="line">        currentUser.logout();</span><br><span class="line">        System.out.println(<span class="string">"身份身份是否注销成功 :"</span> + !currentUser.isAuthenticated());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下所示 :</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ······</span></span><br><span class="line">用户身份是否验证成功 :<span class="keyword">true</span></span><br><span class="line"><span class="comment">// ······</span></span><br><span class="line">身份身份是否注销成功 :<span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="加密Realm"><a href="#加密Realm" class="headerlink" title="加密Realm"></a>加密Realm</h3><p><em>Shiro提供了base64和16进制字符串编码 / 解码的API支持,方便一些编码解码操作. Shiro内部的一些数据的存储及表示都使用了 base64和16进制字符串</em></p>
+<h4 id="散列算法"><a href="#散列算法" class="headerlink" title="散列算法"></a>散列算法</h4><p><em>散列算法一般用于生成数据的摘要信息,是一种不可逆的算法,一般适合存储密码之类的数据,常见的散列算法如<code>MD5</code>、<code>SHA</code>等. 一般进行散列时最好提供一个salt(盐),比密码”admin”加密后产生的散列值是”21232f297a57a5a743894a0e4a801fc3”,其可以到一些MD5解密网站很容易的通过散列值得到密码”admin”,即如果直接对密码进行散列相对来说破解更容易,此时我们可以加一些只有系统知道的干扰数据,如在密码中混入用户ID及用户名(加盐操作),既而这样生成的散列值相对来说更难破解哟!</em></p>
+<h4 id="加密自定义Realm"><a href="#加密自定义Realm" class="headerlink" title="加密自定义Realm"></a>加密自定义Realm</h4><p><em>接下来通过使用MD5加密自定义Realm,来完成一个简单的用户身份验证程序~</em></p>
+<ol>
+<li><p><em>pom.xml : Maven依赖(同上)</em></p>
+</li>
+<li><p><em>en-shiro.ini : 存储用户身份及加密配置信息</em></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[main]</span></span><br><span class="line"><span class="comment">#定义凭证匹配器</span></span><br><span class="line"><span class="attr">credentialsMatcher</span> = org.apache.shiro.authc.credential.HashedCredentialsMatcher</span><br><span class="line"><span class="comment">#散列算法</span></span><br><span class="line"><span class="attr">credentialsMatcher.hashAlgorithmName</span> = md5</span><br><span class="line"><span class="comment">#散列次数</span></span><br><span class="line"><span class="attr">credentialsMatcher.hashIterations</span> = <span class="number">10</span></span><br><span class="line"><span class="comment">#将凭证匹配器设置到realm</span></span><br><span class="line"><span class="attr">myRealm</span> = pers.huangyuhui.encryption.EncryRealm</span><br><span class="line"><span class="attr">myRealm.credentialsMatcher</span> = <span class="variable">$credentialsMatcher</span></span><br><span class="line"><span class="attr">securityManager.realms</span> = <span class="variable">$myRealm</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>EncryRealm.java : 自定义Realm,模拟从数据库中获取用户信息</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.encryption;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationToken;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.SimpleAuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.AuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.realm.AuthorizingRealm;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.PrincipalCollection;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.ByteSource;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: shiro-learning</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 加密Realm</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 8/1/2019-7:58 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EncryRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"pwdRealm"</span>; <span class="comment">//区分不同的Realm</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="comment">//授权操作</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="comment">//认证操作</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取用户账户信息</span></span><br><span class="line">        String username = token.getPrincipal().toString();</span><br><span class="line">        <span class="keyword">if</span> (!<span class="string">"root"</span>.equals(username)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//MD5加密后的用户密码信息</span></span><br><span class="line">        String password = <span class="string">"f3005f7acf36cec973498845460b0c33"</span>;<span class="comment">//password + username + 10</span></span><br><span class="line">        <span class="comment">//指定盐值:ByteSource.Util.bytes(username)</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SimpleAuthenticationInfo(username, password, ByteSource.Util.bytes(username), getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>LoginByMyRealm.java : 验证用户登录信息</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.encryption;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.SecurityUtils;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.IncorrectCredentialsException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.UnknownAccountException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.UsernamePasswordToken;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.config.IniSecurityManagerFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.mgt.SecurityManager;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.Subject;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.Factory;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Shiro认证测试:验证用户登录信息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">loginByMyRealm</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1:加载配置文件,创建SecurityManager工厂对象</span></span><br><span class="line">        Factory&lt;SecurityManager&gt; factory = <span class="keyword">new</span> IniSecurityManagerFactory(<span class="string">"classpath:en-shiro.ini"</span>);</span><br><span class="line">        <span class="comment">//2:获得securityManager实例对象</span></span><br><span class="line">        SecurityManager securityManager = factory.getInstance();</span><br><span class="line">        <span class="comment">//3:将securityManger实例绑定到当前运行环境中,便于访问</span></span><br><span class="line">        SecurityUtils.setSecurityManager(securityManager);</span><br><span class="line">        <span class="comment">//4:创建当前登录的主体</span></span><br><span class="line">        Subject currentUser = SecurityUtils.getSubject();</span><br><span class="line">        <span class="comment">//5:绑定主体登录的身份/凭证,既账户及密码</span></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"root"</span>, <span class="string">"yubuntu0109"</span>);</span><br><span class="line">        <span class="comment">//6:主体登录</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            currentUser.login(token);</span><br><span class="line">            System.out.println(<span class="string">"用户身份是否验证成功 :"</span> + currentUser.isAuthenticated());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnknownAccountException e) &#123;</span><br><span class="line">            System.err.println(<span class="string">"用户账户错误 !"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IncorrectCredentialsException e) &#123;</span><br><span class="line">            System.err.println(<span class="string">"用户密码错误 !"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (AuthenticationException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//8:注销登录</span></span><br><span class="line">        currentUser.logout();</span><br><span class="line">        System.out.println(<span class="string">"身份身份是否注销成功 :"</span> + !currentUser.isAuthenticated());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下所示 :</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ······</span></span><br><span class="line">用户身份是否验证成功 :<span class="keyword">true</span></span><br><span class="line"><span class="comment">// ······</span></span><br><span class="line">身份身份是否注销成功 :<span class="keyword">true</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.553Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shiro/">Shiro</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/&title=《Shiro之自定义realm及其加密》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/&title=《Shiro之自定义realm及其加密》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Shiro之自定义realm及其加密》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/08/02/Shiro之用户授权/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Shiro之用户授权</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/08/01/详解Shiro登录登出的操作流程/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">详解Shiro登录登出的操作流程</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/&title=《Shiro之自定义realm及其加密》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/&title=《Shiro之自定义realm及其加密》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Shiro之自定义realm及其加密》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/08/01/Shiro之自定义realm及其加密/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

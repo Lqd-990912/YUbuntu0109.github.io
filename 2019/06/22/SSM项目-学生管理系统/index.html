@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>SSM项目:学生管理系统 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="JSP,MySQL,jQuery,Ajax,EasyUI,SSM">
+    <meta name="description" content="a simple student management system , created by SSM framework ~ 我的第二个SSM小项目 （づ￣3￣）づ╭❤～ 赶紧来学习吧 ! 期待你的issues哟(っ•̀ω•́)っ✎⁾⁾~ 该项目地址 : https://github.com/YUbuntu0109/SSM-SMS  项目概述一个基于SSM的学生管理系统 : 代码注释详细,逻辑结">
+<meta name="keywords" content="JSP,MySQL,jQuery,Ajax,EasyUI,SSM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSM项目:学生管理系统">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="a simple student management system , created by SSM framework ~ 我的第二个SSM小项目 （づ￣3￣）づ╭❤～ 赶紧来学习吧 ! 期待你的issues哟(っ•̀ω•́)っ✎⁾⁾~ 该项目地址 : https://github.com/YUbuntu0109/SSM-SMS  项目概述一个基于SSM的学生管理系统 : 代码注释详细,逻辑结">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Login-view.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SSM-Main-view.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SSM-AdminInfo-view.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-StudentInfo-view.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-TeacherInfo-view.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-GradeInfo-view.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-ClassInfo-view.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-ModifyPwd-view.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Teacher-permission.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Student-permission.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Database-ER.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Jar-dependency.png">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.553Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSM项目:学生管理系统">
+<meta name="twitter:description" content="a simple student management system , created by SSM framework ~ 我的第二个SSM小项目 （づ￣3￣）づ╭❤～ 赶紧来学习吧 ! 期待你的issues哟(っ•̀ω•́)っ✎⁾⁾~ 该项目地址 : https://github.com/YUbuntu0109/SSM-SMS  项目概述一个基于SSM的学生管理系统 : 代码注释详细,逻辑结">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Login-view.PNG">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">SSM项目:学生管理系统</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">SSM项目:学生管理系统</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-06-22T21:48:14.000Z" itemprop="datePublished" class="page-time">
+  2019-06-22
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#a-simple-student-management-system-created-by-SSM-framework"><span class="post-toc-number">1.</span> <span class="post-toc-text">a simple student management system , created by SSM framework ~</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#项目概述"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">项目概述</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#用户权限介绍"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">用户权限介绍</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#项目截图-管理员身份登录"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">项目截图 (管理员身份登录)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#项目截图-教师身份登录"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">项目截图 (教师身份登录)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#项目截图-学生身份登录"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">项目截图 (学生身份登录)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#项目结构"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">项目结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#项目文件说明-数据库文件"><span class="post-toc-number">1.6.1.</span> <span class="post-toc-text">项目文件说明-数据库文件</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#项目文件说明-数据库配置信息"><span class="post-toc-number">1.6.2.</span> <span class="post-toc-text">项目文件说明-数据库配置信息</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#项目文件说明-H-ui-前端框架"><span class="post-toc-number">1.6.3.</span> <span class="post-toc-text">项目文件说明-H-ui 前端框架</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#项目文件说明-EasyUI-前端框架"><span class="post-toc-number">1.6.4.</span> <span class="post-toc-text">项目文件说明-EasyUI 前端框架</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#项目文件说明-Spring-核心配置文件"><span class="post-toc-number">1.6.5.</span> <span class="post-toc-text">项目文件说明-Spring 核心配置文件</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#项目文件说明-Spring-MVC-核心配置文件"><span class="post-toc-number">1.6.6.</span> <span class="post-toc-text">项目文件说明-Spring MVC 核心配置文件</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#项目文件说明-MyBatis-核心配置文件"><span class="post-toc-number">1.6.7.</span> <span class="post-toc-text">项目文件说明-MyBatis 核心配置文件</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#项目文件说明-Mapper-接口映射文件"><span class="post-toc-number">1.6.8.</span> <span class="post-toc-text">项目文件说明-Mapper 接口映射文件</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#项目文件说明-用户默认头像"><span class="post-toc-number">1.6.9.</span> <span class="post-toc-text">项目文件说明-用户默认头像</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#数据库ER图"><span class="post-toc-number">1.6.10.</span> <span class="post-toc-text">数据库ER图</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Jar包依赖关系图"><span class="post-toc-number">1.6.11.</span> <span class="post-toc-text">Jar包依赖关系图</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-SSM项目-学生管理系统"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">SSM项目:学生管理系统</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-06-22 21:48:14" datetime="2019-06-22T21:48:14.000Z"  itemprop="datePublished">2019-06-22</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="a-simple-student-management-system-created-by-SSM-framework"><a href="#a-simple-student-management-system-created-by-SSM-framework" class="headerlink" title="a simple student management system , created by SSM framework ~"></a>a simple student management system , created by SSM framework ~</h2><ul>
+<li><em>我的第二个<code>SSM</code>小项目 （づ￣3￣）づ╭❤～</em></li>
+<li><em>赶紧来学习吧 ! 期待你的<code>issues</code>哟(っ•̀ω•́)っ✎⁾⁾~ 该项目地址 : <a href="https://github.com/YUbuntu0109/SSM-SMS" target="_blank" rel="noopener">https://github.com/YUbuntu0109/SSM-SMS</a></em></li>
+</ul>
+<h3 id="项目概述"><a href="#项目概述" class="headerlink" title="项目概述"></a>项目概述</h3><p><em>一个基于SSM的学生管理系统 : 代码注释详细,逻辑结构清晰,非常具有参考,学习价值哟 !数据库中默认的管理员身份信息 : 账户名 : <code>黄宇辉</code> , 密码 <code>demo0109</code></em></p>
+<h3 id="用户权限介绍"><a href="#用户权限介绍" class="headerlink" title="用户权限介绍"></a>用户权限介绍</h3><ul>
+<li><em>管理员 : 具有所有管理模块的操控权限</em></li>
+<li><em>教师 : 仅具有学生信息管理模块的所有权限,且在教师信息管理模块中只具有查询及添加信息的权限</em></li>
+<li><em>学生 : 仅具有学生信息管理模块的查询及添加信息的权限</em></li>
+</ul>
+<h3 id="项目截图-管理员身份登录"><a href="#项目截图-管理员身份登录" class="headerlink" title="项目截图 (管理员身份登录)"></a>项目截图 (<code>管理员身份登录</code>)</h3><ul>
+<li><em>用户登录页面</em></li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Login-view.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><em>系统主页面</em></li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SSM-Main-view.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><em>管理员信息管理页面</em></li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SSM-AdminInfo-view.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><em>学生信息管理页面</em></li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-StudentInfo-view.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><em>教师信息管理页面</em></li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-TeacherInfo-view.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><em>年级信息管理页面</em></li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-GradeInfo-view.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><em>班级信息管理页面</em></li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-ClassInfo-view.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><em>个人信息管理页面</em></li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-ModifyPwd-view.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h3 id="项目截图-教师身份登录"><a href="#项目截图-教师身份登录" class="headerlink" title="项目截图 (教师身份登录)"></a>项目截图 (<code>教师身份登录</code>)</h3><ul>
+<li><em>教师仅具有学生信息管理模块的所有权限,且在教师信息管理模块中只具有查询及添加信息的权限</em><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Teacher-permission.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+</li>
+</ul>
+<h3 id="项目截图-学生身份登录"><a href="#项目截图-学生身份登录" class="headerlink" title="项目截图 (学生身份登录)"></a>项目截图 (<code>学生身份登录</code>)</h3><ul>
+<li><em>学生仅具有学生信息管理模块的查询及添加信息的权限</em><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Student-permission.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+</li>
+</ul>
+<h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br></pre></td><td class="code"><pre><span class="line">│  .gitattributes</span><br><span class="line">│  LICENSE</span><br><span class="line">│  README.md</span><br><span class="line">│</span><br><span class="line">├─database file</span><br><span class="line">│      ssm_sms.sql</span><br><span class="line">│</span><br><span class="line">├─demonstration_picture</span><br><span class="line">│      SMS-ClassInfo-view.PNG</span><br><span class="line">│      SMS-GradeInfo-view.PNG</span><br><span class="line">│      SMS-Login-view.PNG</span><br><span class="line">│      SMS-ModifyPwd-view.PNG</span><br><span class="line">│      SMS-Student-permission.PNG</span><br><span class="line">│      SMS-StudentInfo-view.PNG</span><br><span class="line">│      SMS-Teacher-permission.PNG</span><br><span class="line">│      SMS-TeacherInfo-view.PNG</span><br><span class="line">│      SSM-AdminInfo-view.PNG</span><br><span class="line">│      SSM-Main-view.PNG</span><br><span class="line">│</span><br><span class="line">└─sms</span><br><span class="line">    │  pom.xml</span><br><span class="line">    │</span><br><span class="line">    ├─.idea</span><br><span class="line">    │  │(略..)</span><br><span class="line">    │  </span><br><span class="line">    │</span><br><span class="line">    └─src</span><br><span class="line">        └─main</span><br><span class="line">            ├─java</span><br><span class="line">            │  └─pers</span><br><span class="line">            │      └─huangyuhui</span><br><span class="line">            │          └─sms</span><br><span class="line">            │              ├─bean</span><br><span class="line">            │              │      Admin.java</span><br><span class="line">            │              │      Clazz.java</span><br><span class="line">            │              │      Grade.java</span><br><span class="line">            │              │      LoginForm.java</span><br><span class="line">            │              │      Student.java</span><br><span class="line">            │              │      Teacher.java</span><br><span class="line">            │              │</span><br><span class="line">            │              ├─controller</span><br><span class="line">            │              │      AdminController.java</span><br><span class="line">            │              │      ClazzController.java</span><br><span class="line">            │              │      CommonController.java</span><br><span class="line">            │              │      GradeController.java</span><br><span class="line">            │              │      StudentController.java</span><br><span class="line">            │              │      SystemController.java</span><br><span class="line">            │              │      TeacherController.java</span><br><span class="line">            │              │</span><br><span class="line">            │              ├─dao</span><br><span class="line">            │              │      AdminMapper.java</span><br><span class="line">            │              │      ClazzMapper.java</span><br><span class="line">            │              │      GradeMapper.java</span><br><span class="line">            │              │      StudentMapper.java</span><br><span class="line">            │              │      TeacherMapper.java</span><br><span class="line">            │              │</span><br><span class="line">            │              ├─interceptor</span><br><span class="line">            │              │      LoginInterceptor.java</span><br><span class="line">            │              │</span><br><span class="line">            │              ├─service</span><br><span class="line">            │              │  │  AdminService.java</span><br><span class="line">            │              │  │  ClazzService.java</span><br><span class="line">            │              │  │  GradeService.java</span><br><span class="line">            │              │  │  StudentService.java</span><br><span class="line">            │              │  │  TeacherService.java</span><br><span class="line">            │              │  │</span><br><span class="line">            │              │  └─impl</span><br><span class="line">            │              │          AdminServiceImpl.java</span><br><span class="line">            │              │          ClazzServiceImpl.java</span><br><span class="line">            │              │          GradeServiceImpl.java</span><br><span class="line">            │              │          StudentServiceImpl.java</span><br><span class="line">            │              │          TeacherServiceImpl.java</span><br><span class="line">            │              │</span><br><span class="line">            │              └─util</span><br><span class="line">            │                      CreateVerifiCodeImage.java</span><br><span class="line">            │                      UploadFile.java</span><br><span class="line">            │</span><br><span class="line">            ├─resource</span><br><span class="line">            │  ├─database-conf</span><br><span class="line">            │  │      c3p0.properties</span><br><span class="line">            │  │</span><br><span class="line">            │  ├─mapper</span><br><span class="line">            │  │      AdminMapper.xml</span><br><span class="line">            │  │      ClazzMapper.xml</span><br><span class="line">            │  │      GradeMapper.xml</span><br><span class="line">            │  │      StudentMapper.xml</span><br><span class="line">            │  │      TeacherMapper.xml</span><br><span class="line">            │  │</span><br><span class="line">            │  ├─mybatis-conf</span><br><span class="line">            │  │      mybatis-config.xml</span><br><span class="line">            │  │</span><br><span class="line">            │  └─spring-conf</span><br><span class="line">            │          applicationContext.xml</span><br><span class="line">            │          springmvc-config.xml</span><br><span class="line">            │</span><br><span class="line">            └─webapp</span><br><span class="line">                │  index.jsp</span><br><span class="line">                │</span><br><span class="line">                ├─image</span><br><span class="line">                │  └─portrait</span><br><span class="line">                │          default_admin_portrait.png</span><br><span class="line">                │          default_student_portrait.png</span><br><span class="line">                │          default_teacher_portrait.png</span><br><span class="line">                │</span><br><span class="line">                ├─static</span><br><span class="line">                │  ├─easyui</span><br><span class="line">                │  │  │  </span><br><span class="line">                │  │  ├─css     </span><br><span class="line">                │  │  │</span><br><span class="line">                │  │  ├─js    </span><br><span class="line">                │  │  │</span><br><span class="line">                │  │  └─themes</span><br><span class="line">                │  │     </span><br><span class="line">                │  │</span><br><span class="line">                │  └─h-ui</span><br><span class="line">                │      │(略..)</span><br><span class="line">                │        </span><br><span class="line">                │            </span><br><span class="line">                │</span><br><span class="line">                └─WEB-INF</span><br><span class="line">                    │  web.xml</span><br><span class="line">                    │</span><br><span class="line">                    └─view</span><br><span class="line">                        ├─admin</span><br><span class="line">                        │      adminList.jsp</span><br><span class="line">                        │</span><br><span class="line">                        ├─clazz</span><br><span class="line">                        │      clazzList.jsp</span><br><span class="line">                        │</span><br><span class="line">                        ├─common</span><br><span class="line">                        │      settings.jsp</span><br><span class="line">                        │</span><br><span class="line">                        ├─error</span><br><span class="line">                        │      404.jsp</span><br><span class="line">                        │      500.jsp</span><br><span class="line">                        │</span><br><span class="line">                        ├─grade</span><br><span class="line">                        │      gradeList.jsp</span><br><span class="line">                        │</span><br><span class="line">                        ├─student</span><br><span class="line">                        │      studentList.jsp</span><br><span class="line">                        │</span><br><span class="line">                        ├─system</span><br><span class="line">                        │      intro.jsp</span><br><span class="line">                        │      login.jsp</span><br><span class="line">                        │      main.jsp</span><br><span class="line">                        │</span><br><span class="line">                        └─teacher</span><br><span class="line">                                teacherList.jsp</span><br></pre></td></tr></table></figure>
+<h4 id="项目文件说明-数据库文件"><a href="#项目文件说明-数据库文件" class="headerlink" title="项目文件说明-数据库文件"></a>项目文件说明-<code>数据库文件</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssm_sms.sql</span><br></pre></td></tr></table></figure>
+<h4 id="项目文件说明-数据库配置信息"><a href="#项目文件说明-数据库配置信息" class="headerlink" title="项目文件说明-数据库配置信息"></a>项目文件说明-<code>数据库配置信息</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c3p0.properties</span><br></pre></td></tr></table></figure>
+<h4 id="项目文件说明-H-ui-前端框架"><a href="#项目文件说明-H-ui-前端框架" class="headerlink" title="项目文件说明-H-ui 前端框架"></a>项目文件说明-<code>H-ui 前端框架</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">h-ui/</span><br></pre></td></tr></table></figure>
+<h4 id="项目文件说明-EasyUI-前端框架"><a href="#项目文件说明-EasyUI-前端框架" class="headerlink" title="项目文件说明-EasyUI 前端框架"></a>项目文件说明-<code>EasyUI 前端框架</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">easyui/</span><br></pre></td></tr></table></figure>
+<h4 id="项目文件说明-Spring-核心配置文件"><a href="#项目文件说明-Spring-核心配置文件" class="headerlink" title="项目文件说明-Spring 核心配置文件"></a>项目文件说明-<code>Spring 核心配置文件</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">applicationContext.xml</span><br></pre></td></tr></table></figure>
+<h4 id="项目文件说明-Spring-MVC-核心配置文件"><a href="#项目文件说明-Spring-MVC-核心配置文件" class="headerlink" title="项目文件说明-Spring MVC 核心配置文件"></a>项目文件说明-<code>Spring MVC 核心配置文件</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">springmvc-config.xml</span><br></pre></td></tr></table></figure>
+<h4 id="项目文件说明-MyBatis-核心配置文件"><a href="#项目文件说明-MyBatis-核心配置文件" class="headerlink" title="项目文件说明-MyBatis 核心配置文件"></a>项目文件说明-<code>MyBatis 核心配置文件</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mybatis-config.xml</span><br></pre></td></tr></table></figure>
+<h4 id="项目文件说明-Mapper-接口映射文件"><a href="#项目文件说明-Mapper-接口映射文件" class="headerlink" title="项目文件说明-Mapper 接口映射文件"></a>项目文件说明-<code>Mapper 接口映射文件</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mapper/</span><br></pre></td></tr></table></figure>
+<h4 id="项目文件说明-用户默认头像"><a href="#项目文件说明-用户默认头像" class="headerlink" title="项目文件说明-用户默认头像"></a>项目文件说明-<code>用户默认头像</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">portrait/</span><br></pre></td></tr></table></figure>
+<h4 id="数据库ER图"><a href="#数据库ER图" class="headerlink" title="数据库ER图"></a>数据库ER图</h4><p>:sweat_smile: <em>数据库设计待优化 : 数据表之间的并没有设置约束关系哟,好尴尬呢···</em><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Database-ER.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<h4 id="Jar包依赖关系图"><a href="#Jar包依赖关系图" class="headerlink" title="Jar包依赖关系图"></a>Jar包依赖关系图</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/SSM-SMS/master/demonstration_picture/SMS-Jar-dependency.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.553Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ajax/">Ajax</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/EasyUI/">EasyUI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSP/">JSP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSM/">SSM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/&title=《SSM项目:学生管理系统》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/&title=《SSM项目:学生管理系统》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSM项目:学生管理系统》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/06/23/How-to-support-full-Unicode-in-MySQL-databases/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">How to support full Unicode in MySQL databases</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/06/12/SSM整合项目-简易同学录/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">SSM整合项目:简易同学录</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/&title=《SSM项目:学生管理系统》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/&title=《SSM项目:学生管理系统》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《SSM项目:学生管理系统》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/06/22/SSM项目-学生管理系统/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

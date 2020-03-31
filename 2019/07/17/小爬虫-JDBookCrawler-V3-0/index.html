@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>小爬虫:JDBookCrawler-V3.0 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java,MyBatis,MySQL,WebMagic,Crawler">
+    <meta name="description" content="爬虫项目笔记 : JDBookCrawler-V3.0简介 : JDBookCrawler 3.0的爬虫功能基于JDBookCrawler 2.0,前端设计参考项目springboot-beginner,简单点说v3.0就等于v2.0 + springboot,😅不尴尬嘿嘿嘿~ 开发环境   工具 版本或描述     OS Windows 10   JDK 1.8   IDE IntelliJ">
+<meta name="keywords" content="Java,MyBatis,MySQL,WebMagic,Crawler">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小爬虫:JDBookCrawler-V3.0">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="爬虫项目笔记 : JDBookCrawler-V3.0简介 : JDBookCrawler 3.0的爬虫功能基于JDBookCrawler 2.0,前端设计参考项目springboot-beginner,简单点说v3.0就等于v2.0 + springboot,😅不尴尬嘿嘿嘿~ 开发环境   工具 版本或描述     OS Windows 10   JDK 1.8   IDE IntelliJ">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/Crawler-learning/master/BookCrawler-v3.0/demonstration-images/BookCrawler-V3.0-Intro.PNG">
+<meta property="og:image" content="https://raw.githubusercontent.com/YUbuntu0109/Crawler-learning/master/BookCrawler-v3.0/demonstration-images/BookCrawler-V3.0-bookList.PNG">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.669Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小爬虫:JDBookCrawler-V3.0">
+<meta name="twitter:description" content="爬虫项目笔记 : JDBookCrawler-V3.0简介 : JDBookCrawler 3.0的爬虫功能基于JDBookCrawler 2.0,前端设计参考项目springboot-beginner,简单点说v3.0就等于v2.0 + springboot,😅不尴尬嘿嘿嘿~ 开发环境   工具 版本或描述     OS Windows 10   JDK 1.8   IDE IntelliJ">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/YUbuntu0109/Crawler-learning/master/BookCrawler-v3.0/demonstration-images/BookCrawler-V3.0-Intro.PNG">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">小爬虫:JDBookCrawler-V3.0</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">小爬虫:JDBookCrawler-V3.0</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-07-17T20:34:24.000Z" itemprop="datePublished" class="page-time">
+  2019-07-17
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#爬虫项目笔记-JDBookCrawler-V3-0"><span class="post-toc-number">1.</span> <span class="post-toc-text">爬虫项目笔记 : JDBookCrawler-V3.0</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#开发环境"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">开发环境</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#项目结构图"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">项目结构图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#运行指南"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">运行指南</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-小爬虫-JDBookCrawler-V3-0"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">小爬虫:JDBookCrawler-V3.0</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-07-17 20:34:24" datetime="2019-07-17T20:34:24.000Z"  itemprop="datePublished">2019-07-17</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="爬虫项目笔记-JDBookCrawler-V3-0"><a href="#爬虫项目笔记-JDBookCrawler-V3-0" class="headerlink" title="爬虫项目笔记 : JDBookCrawler-V3.0"></a>爬虫项目笔记 : JDBookCrawler-V3.0</h2><p><em>简介 : <code>JDBookCrawler 3.0</code>的爬虫功能基于<code>JDBookCrawler 2.0</code>,前端设计参考项目<a href="https://github.com/YUbuntu0109/springboot-beginner" target="_blank" rel="noopener"><code>springboot-beginner</code></a>,简单点说<code>v3.0</code>就等于<code>v2.0</code> + <code>springboot</code>,😅不尴尬嘿嘿嘿~</em></p>
+<h3 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>版本或描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OS</code></td>
+<td>Windows 10</td>
+</tr>
+<tr>
+<td><code>JDK</code></td>
+<td>1.8</td>
+</tr>
+<tr>
+<td><code>IDE</code></td>
+<td>IntelliJ IDEA 2019.1</td>
+</tr>
+<tr>
+<td><code>Maven</code></td>
+<td>3.6.0</td>
+</tr>
+<tr>
+<td><code>MySQL</code></td>
+<td>8.0.11</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>本项目的数据库版本为<code>8.0.11</code>，请广大版本为<code>5.0.0+</code>的同学注意咯：可通过逐个复制表结构来创建该数据库哟 ~</p>
+</blockquote>
+<h3 id="项目结构图"><a href="#项目结构图" class="headerlink" title="项目结构图"></a>项目结构图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">├─bookcrawler-v3.0</span><br><span class="line">│  │  crawler.sql</span><br><span class="line">│  │  pom.xml</span><br><span class="line">│  │</span><br><span class="line">│  │</span><br><span class="line">│  └─src</span><br><span class="line">│      └─main</span><br><span class="line">│          ├─java</span><br><span class="line">│          │  └─pers</span><br><span class="line">│          │      └─huangyuhui</span><br><span class="line">│          │          └─bookcrawler</span><br><span class="line">│          │              │  BookcrawlerApplication.java</span><br><span class="line">│          │              │</span><br><span class="line">│          │              ├─controller</span><br><span class="line">│          │              │      BookController.java</span><br><span class="line">│          │              │</span><br><span class="line">│          │              ├─crawler</span><br><span class="line">│          │              │  │  BookCrawlerTest.java</span><br><span class="line">│          │              │  │</span><br><span class="line">│          │              │  ├─dao</span><br><span class="line">│          │              │  │      BookDao.java</span><br><span class="line">│          │              │  │</span><br><span class="line">│          │              │  ├─mapper</span><br><span class="line">│          │              │  │      BookMapper.xml</span><br><span class="line">│          │              │  │</span><br><span class="line">│          │              │  ├─pojo</span><br><span class="line">│          │              │  │      Book.java</span><br><span class="line">│          │              │  │</span><br><span class="line">│          │              │  ├─resources</span><br><span class="line">│          │              │  │      db.properties</span><br><span class="line">│          │              │  │      log4j.properties</span><br><span class="line">│          │              │  │      mybatis-config.xml</span><br><span class="line">│          │              │  │</span><br><span class="line">│          │              │  ├─task</span><br><span class="line">│          │              │  │      BookProcessor.java</span><br><span class="line">│          │              │  │</span><br><span class="line">│          │              │  └─util</span><br><span class="line">│          │              │          FileUtils.java</span><br><span class="line">│          │              │          HttpUtils.java</span><br><span class="line">│          │              │          MyBatisUtils.java</span><br><span class="line">│          │              │</span><br><span class="line">│          │              ├─dao</span><br><span class="line">│          │              │      BookMapper.java</span><br><span class="line">│          │              │      BookMapper.xml</span><br><span class="line">│          │              │</span><br><span class="line">│          │              ├─pojo</span><br><span class="line">│          │              │      Book.java</span><br><span class="line">│          │              │</span><br><span class="line">│          │              └─service</span><br><span class="line">│          │                  │  BookService.java</span><br><span class="line">│          │                  │</span><br><span class="line">│          │                  └─impl</span><br><span class="line">│          │                          BookServiceImpl.java</span><br><span class="line">│          │</span><br><span class="line">│          └─resources</span><br><span class="line">│              │  application.properties</span><br><span class="line">│              │</span><br><span class="line">│              ├─static</span><br><span class="line">│              │  │  exist.txt</span><br><span class="line">│              │  │</span><br><span class="line">│              │  └─easyui</span><br><span class="line">│              │      │  jquery.easyui.min.js</span><br><span class="line">│              │      │  jquery.min.js</span><br><span class="line">│              │      │</span><br><span class="line">│              │      ├─css</span><br><span class="line">│              │      │      default.css</span><br><span class="line">│              │      │      demo.css</span><br><span class="line">│              │      │</span><br><span class="line">│              │      ├─js</span><br><span class="line">│              │      │      outlook2.js</span><br><span class="line">│              │      │      validateExtends.js</span><br><span class="line">│              │      │</span><br><span class="line">│              │      └─themes</span><br><span class="line">|              |         |</span><br><span class="line">│              │         |(略..)</span><br><span class="line">│              │</span><br><span class="line">|              |        </span><br><span class="line">│              └─templates</span><br><span class="line">│                      bookList.html</span><br><span class="line">│                      intro.html</span><br><span class="line">│                      main.html</span><br><span class="line">│</span><br><span class="line">└─demonstration-images</span><br><span class="line">        BookCrawler-V3.0-bookList.PNG</span><br><span class="line">        BookCrawler-V3.0-Intro.PNG</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>crawler</code>包存放的是<code>JDBookCrawler-v2.0</code>，既<code>3.0</code>使用了<code>2.0</code>的爬虫功能，其本身仅加入了页面可视化功能</p>
+</blockquote>
+<h3 id="运行指南"><a href="#运行指南" class="headerlink" title="运行指南"></a>运行指南</h3><ol>
+<li><p><em>crawler.sql : 数据库文件</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BookCrawler-v3.0/bookcrawler-v3.0/crawler.sql</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>BookCrawlerTest.java : 爬虫启动程序</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.bookcrawler.crawler;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pers.huangyuhui.bookcrawler.crawler.task.BookProcessor;</span><br><span class="line"><span class="keyword">import</span> pers.huangyuhui.bookcrawler.crawler.util.FileUtils;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: bookcrawler</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 爬虫测试程序</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 7/11/2019-9:12 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 2.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookCrawlerTest</span> </span>&#123;</span><br><span class="line">    <span class="comment">//指定图书关键字</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String KEY_WORD = <span class="string">"网络爬虫"</span>;</span><br><span class="line">    <span class="comment">//指定页码数,每页可爬取三十条数据( 注:下一页的页码数为前一页的页码数加二 )</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> END_PAGE_NUM = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> CURRENT_PAGE_NUM = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//指定项目下存储书籍图片的文件夹路径</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String IMAGE_PATH = FileUtils.getDirPath(<span class="string">"/static/download/bookImage/"</span>);</span><br><span class="line">    <span class="comment">//指定JD商城书籍列表页面的链接</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String URL = <span class="string">"https://search.jd.com/Search?keyword="</span> + KEY_WORD + <span class="string">"&amp;enc=utf-8&amp;page="</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@description</span>: 启动爬虫程序</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span>: 2019-07-15 4:09 PM</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> BookProcessor(URL, IMAGE_PATH, CURRENT_PAGE_NUM, END_PAGE_NUM).run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>启动爬虫后其控制台输出的日志信息请参考 : <a href="https://yubuntu0109.github.io/2019/07/15/%E5%B0%8F%E7%88%AC%E8%99%AB-JDBookCrawler-V2-0/"><code>JDBookCrawler v2.0</code></a></p>
+</blockquote>
+<ol start="3">
+<li><p><em>BookcrawlerApplication.java : 项目启动类( 爬虫程序成功运行完成后，就可以启动该<code>springboot</code>项目啦，这操作不尴尬哈哈哈 ~ )</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.bookcrawler;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.annotation.MapperScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: bookcrawler</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: springboot项目启动类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 7/11/2019-9:16 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 3.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@MapperScan</span>(<span class="string">"pers.huangyuhui.bookcrawler.dao"</span>) <span class="comment">//扫描Mapper接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookcrawlerApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123; SpringApplication.run(BookcrawlerApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>项目成功启动后，其项目主页，图书数据管理页如下图所示 :</em></p>
+</li>
+</ol>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/Crawler-learning/master/BookCrawler-v3.0/demonstration-images/BookCrawler-V3.0-Intro.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://raw.githubusercontent.com/YUbuntu0109/Crawler-learning/master/BookCrawler-v3.0/demonstration-images/BookCrawler-V3.0-bookList.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.669Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Crawler/">Crawler</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MyBatis/">MyBatis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebMagic/">WebMagic</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/&title=《小爬虫:JDBookCrawler-V3.0》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/&title=《小爬虫:JDBookCrawler-V3.0》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《小爬虫:JDBookCrawler-V3.0》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/07/19/Hi-Vue/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Hi Vue ~</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/07/16/Understanding-the-GitHub-flow/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Understanding the GitHub flow</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/&title=《小爬虫:JDBookCrawler-V3.0》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/&title=《小爬虫:JDBookCrawler-V3.0》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《小爬虫:JDBookCrawler-V3.0》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/07/17/小爬虫-JDBookCrawler-V3-0/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

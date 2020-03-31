@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Hi Shiro ~ | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java,Shiro">
+    <meta name="description" content="学习笔记 : 初识Shiro ~简介 : Apache Shiro是一个强大易用的Java安全框架,提供了认证、授权、加密和会话管理等功能，对于任何一个应用程序,Shiro都可以提供全面的安全管理服务 权限管理包括用户身份认证和授权两个部分,简称认证授权  身份认证 : 为判断用户是否为合法用户的过程,最常用的身份认证方式就是系统通过核对用户输入的用户名和口令,将其与系统中存储的该用户信息相对比,">
+<meta name="keywords" content="Java,Shiro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hi Shiro ~">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : 初识Shiro ~简介 : Apache Shiro是一个强大易用的Java安全框架,提供了认证、授权、加密和会话管理等功能，对于任何一个应用程序,Shiro都可以提供全面的安全管理服务 权限管理包括用户身份认证和授权两个部分,简称认证授权  身份认证 : 为判断用户是否为合法用户的过程,最常用的身份认证方式就是系统通过核对用户输入的用户名和口令,将其与系统中存储的该用户信息相对比,">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/shiro-framework-api.png">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/Shiro-外部架构图.png">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/Shiro-内部结构图.png">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.525Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hi Shiro ~">
+<meta name="twitter:description" content="学习笔记 : 初识Shiro ~简介 : Apache Shiro是一个强大易用的Java安全框架,提供了认证、授权、加密和会话管理等功能，对于任何一个应用程序,Shiro都可以提供全面的安全管理服务 权限管理包括用户身份认证和授权两个部分,简称认证授权  身份认证 : 为判断用户是否为合法用户的过程,最常用的身份认证方式就是系统通过核对用户输入的用户名和口令,将其与系统中存储的该用户信息相对比,">
+<meta name="twitter:image" content="https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/shiro-framework-api.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Hi Shiro ~</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Hi Shiro ~</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-07-31T14:23:55.000Z" itemprop="datePublished" class="page-time">
+  2019-07-31
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-初识Shiro"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : 初识Shiro ~</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#架构解析"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">架构解析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#外部结构"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">外部结构</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#内部结构"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">内部结构</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#案例"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">案例</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#第一个Shiro程序"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">第一个Shiro程序</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#官方入门案例"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">官方入门案例</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Hi-Shiro"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Hi Shiro ~</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-07-31 14:23:55" datetime="2019-07-31T14:23:55.000Z"  itemprop="datePublished">2019-07-31</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-初识Shiro"><a href="#学习笔记-初识Shiro" class="headerlink" title="学习笔记 : 初识Shiro ~"></a>学习笔记 : 初识Shiro ~</h2><p><em>简介 : <code>Apache Shiro</code>是一个强大易用的Java安全框架,提供了认证、授权、加密和会话管理等功能，对于任何一个应用程序,Shiro都可以提供全面的安全管理服务</em></p>
+<p><em>权限管理包括用户<code>身份认证</code>和<code>授权</code>两个部分,简称认证授权</em></p>
+<ol>
+<li><em>身份认证 : 为判断用户是否为合法用户的过程,最常用的身份认证方式就是系统通过核对用户输入的用户名和口令,将其与系统中存储的该用户信息相对比,继而来判断用户身份是否正确</em></li>
+<li><em>授权 : 既访问权限,控制用户访问资源的权限. 主体(<code>subject</code>)进行身份认证后需要分配权限方可访问系统的资源</em></li>
+</ol>
+<h3 id="架构解析"><a href="#架构解析" class="headerlink" title="架构解析"></a>架构解析</h3><p><em>Shiro可以非常容易的开发出足够好的应用,其不仅可以用在JavaSE环境,也可以用在JavaEE环境. Shiro可以帮助我们完成 : 认证、授权、加密、会话管理、与Web集成、缓存等. 其基本功能点及其解析如下所示 :</em></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/07/31/Hi-Shiro/shiro-framework-api.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><code>Authentication</code> : 身份认证 / 登录,验证用户是不是拥有相应的身份</li>
+<li><code>Authorization</code> : 授权,即权限验证,验证某个已认证的用户是否拥有某个权限. 即判断用户是否能做事情,常见的如 : 验证某个用户是否拥有某个角色,或者细粒度的验证某个用户对某个资源是否具有某个权限</li>
+<li><code>Session Manager</code> : 会话管理,即用户登录后就是一次会话,在没有退出之前,它的所有信息都在会话中. 会话可以是普通JavaSE环境的,也可以是如Web环境的</li>
+<li><code>Cryptography</code> : 加密,保护数据的安全性,如密码加密存储到数据库,而不是明文存储</li>
+<li><code>Web Support</code> : Web支持,可以非常容易的集成到Web环境中</li>
+<li><code>Caching</code> : 缓存,比如用户登录后,其用户信息、拥有的角色 / 权限不必每次去查,这样可以提高效率</li>
+<li><code>Concurrency</code> : shiro支持多线程应用的并发验证,即如在一个线程中开启另一个线程,能把权限自动传播过去</li>
+<li><code>Testing</code> : 提供测试支持</li>
+<li><code>Run As</code> : 允许一个用户假装为另一个用户(在他们允许的情况下)的身份进行访问</li>
+<li><code>Remember Me</code> : 记住我,这个是非常常见的功能,即一次登录后,下次不用重复登录了</li>
+</ul>
+<h4 id="外部结构"><a href="#外部结构" class="headerlink" title="外部结构"></a>外部结构</h4><p><em>外部架构图,即从应用程序角度的来观察如何使用Shiro完成工作 :</em></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/07/31/Hi-Shiro/Shiro-外部架构图.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<p><em>可以看到,应用代码直接交互的对象是<code>Subject</code>,也就是说Shiro的对外API核心就是Subject. 其每个API的含义如下所示 :</em></p>
+<ul>
+<li><code>Subject</code> : 主体,代表了当前”用户”,这个用户不一定是一个具体的人,与当前应用交互的任何东西都是Subject,如网络爬虫,机器人等,即为一个抽象概念. 所有Subject都绑定到SecurityManager,与Subject的所有交互都会委托给SecurityManager. 可以把Subject认为是一个门面,SecurityManager才是实际的执行者</li>
+<li><code>SecurityManager</code> : 安全管理器,即所有与安全有关的操作都会与SecurityManager交互,且它管理着所有Subject. 可以看出它是Shiro的核心,它负责与后边介绍的其他组件进行交互,如果学习过SpringMVC,你可以把它看成<code>DispatcherServlet</code>前端控制器</li>
+<li><code>Realm</code> : 域,Shiro从Realm获取安全数据(如用户、角色、权限),就是说SecurityManager要验证用户身份,那么它需要从Realm获取相应的用户进行比较以确定用户身份是否合法,也需要从Realm得到用户相应的角色 / 权限进行验证用户是否能进行操作. 可以把Realm看成 DataSource,即安全数据源</li>
+</ul>
+<p><em>也就是说,最简单的一个Shiro应用可以基本分为以下两个步骤 :</em></p>
+<ol>
+<li><em>应用代码通过Subject来进行认证和授权,而Subject又将所有的互交都委托给了SecurityManager</em></li>
+<li><em>我们需要给Shiro的SecurityManager注入Realm,从而让SecurityManager能得到合法的用户及其权限进行判断</em></li>
+</ol>
+<p><em>从以上也可以看出,Shiro不提供维护用户 / 权限,而是通过Realm让开发人员自己注入</em></p>
+<h4 id="内部结构"><a href="#内部结构" class="headerlink" title="内部结构"></a>内部结构</h4><p><em>接下来我们来从Shiro内部来看下Shiro的架构,如下图所示 :</em></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/07/31/Hi-Shiro/Shiro-内部结构图.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<ul>
+<li><code>Subject</code> : 主体,可以看到主体可以是任何可以与应用交互的”用户”</li>
+<li><code>SecurityManager</code> : 相当于SpringMVC中的<code>DispatcherServlet</code>或Struts2中的FilterDispatcher; 是Shiro的心脏. 所有具体的交互都通过SecurityManager进行控制,它管理着所有Subject、且负责进行认证和授权、及会话、缓存的管理</li>
+<li><code>Authenticator</code> : 认证器,负责主体认证的,这是一个扩展点,如果用户觉得Shiro默认的不好,可以自定义实现. 其需要认证策略(Authentication Strategy),即什么情况下算用户认证通过了</li>
+<li><code>Authrizer</code> : 授权器,或者访问控制器,用来决定主体是否有权限进行相应的操作,即控制着用户能访问应用中的哪些功能</li>
+<li><code>Realm</code> : 可以有1个或多个Realm,可以认为是安全实体数据源,即用于获取安全实体. 可以是JDBC实现,也可以是LDAP实现,或者内存实现等,由用户提供. 注意 : Shiro不知道你的用户 / 权限存储在哪及以何种格式存储,所以我们一般在应用中都需要实现自己的Realm</li>
+<li><code>SessionManager</code> : 如果写过Servlet就应该知道Session的概念,Session需要有人去管理它的生命周期,这个组件就是SessionManager,而Shiro并不仅仅可以用在Web环境,也可以用在如普通的JavaSE环境、EJB等环境. 所以Shiro就抽象了一个自己的Session来管理主体与应用之间交互的数据. 这样的话,比如我们在Web环境用,刚开始是一台Web服务器,接着又上了台EJB服务器,这时想把两台服务器的会话数据放到一个地方,这个时候就可以实现自己的分布式会话(如把数据放到Memcached服务器)</li>
+<li><code>SessionDAO</code> : DAO大家都用过,数据访问对象,用于会话的CRUD,比如我们想把Session保存到数据库,那么可以实现自己的 SessionDAO,通过如JDBC写到数据库. 比如想把Session放到Memcached中,可以实现自己的Memcached SessionDAO. 另外SessionDAO中可以使用Cache进行缓存,以提高性能</li>
+<li><code>CacheManager</code> : 缓存控制器,来管理如用户、角色、权限等的缓存的. 因为这些数据基本上很少去改变,放到缓存中后可以提高访问的性能</li>
+<li><code>Cryptography</code> : 密码模块,Shiro提高了一些常见的加密组件用于如密码加密 / 解密</li>
+</ul>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><h4 id="第一个Shiro程序"><a href="#第一个Shiro程序" class="headerlink" title="第一个Shiro程序"></a>第一个Shiro程序</h4><p><em>接下来通过一个简单的用户身份验证程序,来感受一下Shiro的魅力吧 !</em></p>
+<ol>
+<li><p><em>pom.xml : Maven依赖</em></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- Shiro核心包 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shiro<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shiro-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- slf4j的接口实现 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>log4j.properties : 日志配置信息</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">log4j.rootLogger=INFO, stdout</span><br><span class="line">log4j.appender.stdout=org.apache.log4j.ConsoleAppender</span><br><span class="line">log4j.appender.stdout.layout=org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.stdout.layout.ConversionPattern=%d %p [%c] - %m %n</span><br><span class="line"># General Apache libraries</span><br><span class="line">log4j.logger.org.apache=WARN</span><br><span class="line"># Spring</span><br><span class="line">log4j.logger.org.springframework=WARN</span><br><span class="line"># Default Shiro logging</span><br><span class="line">log4j.logger.org.apache.shiro=TRACE</span><br><span class="line"># Disable verbose logging</span><br><span class="line">log4j.logger.org.apache.shiro.util.ThreadContext=WARN</span><br><span class="line">log4j.logger.org.apache.shiro.cache.ehcache.EhCache=WARN</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>shiro.ini : 存储用户身份信息(账户=密码)</em></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[users]</span></span><br><span class="line"><span class="attr">root</span>=yubuntu0109</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>ShiroTest.java : 验证用户登录信息</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.SecurityUtils;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.IncorrectCredentialsException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.UnknownAccountException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.UsernamePasswordToken;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.config.IniSecurityManagerFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.mgt.SecurityManager;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.Subject;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.Factory;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Shiro认证测试:验证用户登录信息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShiroTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testLogin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1:加载配置文件,创建SecurityManager工厂对象</span></span><br><span class="line">        Factory&lt;SecurityManager&gt; factory = <span class="keyword">new</span> IniSecurityManagerFactory(<span class="string">"classpath:shiro.ini"</span>);</span><br><span class="line">        <span class="comment">//2:获得securityManager实例对象</span></span><br><span class="line">        SecurityManager securityManager = factory.getInstance();</span><br><span class="line">        <span class="comment">//3:将securityManger实例绑定到当前运行环境中,便于访问</span></span><br><span class="line">        SecurityUtils.setSecurityManager(securityManager);</span><br><span class="line">        <span class="comment">//4:创建当前登录的主体</span></span><br><span class="line">        Subject currentUser = SecurityUtils.getSubject();</span><br><span class="line">        <span class="comment">//5:绑定主体登录的身份/凭证,既账户及密码</span></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"root"</span>, <span class="string">"yubuntu0109"</span>);</span><br><span class="line">        <span class="comment">//6:主体登录</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            currentUser.login(token);</span><br><span class="line">            System.out.println(<span class="string">"用户身份是否验证成功 :"</span> + currentUser.isAuthenticated());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnknownAccountException e) &#123;</span><br><span class="line">            System.err.println(<span class="string">"账户信息错误 !"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IncorrectCredentialsException e) &#123;</span><br><span class="line">            System.err.println(<span class="string">"密码信息错误 !"</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (AuthenticationException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//8:注销登录</span></span><br><span class="line">        currentUser.logout();</span><br><span class="line">        System.out.println(<span class="string">"身份身份是否注销成功 :"</span> + !currentUser.isAuthenticated());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下所示 :</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ·····</span></span><br><span class="line">用户身份是否验证成功 :<span class="keyword">true</span></span><br><span class="line"><span class="comment">// ·····</span></span><br><span class="line">身份身份是否注销成功 :<span class="keyword">true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="官方入门案例"><a href="#官方入门案例" class="headerlink" title="官方入门案例"></a>官方入门案例</h4><ol>
+<li><p><em>pom.xml : Maven依赖(同上)</em></p>
+</li>
+<li><p><em>log4.properties : 日志配置信息(同上)</em></p>
+</li>
+<li><p><em>shiro.ini : 存储具有指定权限的,不同身份的用户信息</em></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># =============================================================================</span></span><br><span class="line"><span class="comment"># Quickstart INI Realm configuration</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For those that might not understand the references in this file, the</span></span><br><span class="line"><span class="comment"># definitions are all based on the classic Mel Brooks' film "Spaceballs". ;)</span></span><br><span class="line"><span class="comment"># =============================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Users and their assigned roles</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Each line conforms to the format defined in the</span></span><br><span class="line"><span class="comment"># org.apache.shiro.realm.text.TextConfigurationRealm#setUserDefinitions JavaDoc</span></span><br><span class="line"><span class="comment"># -----------------------------------------------------------------------------</span></span><br><span class="line"><span class="section">[users]</span></span><br><span class="line"><span class="comment"># user 'root' with password 'secret' and the 'admin' role</span></span><br><span class="line"><span class="attr">root</span> = secret, admin</span><br><span class="line"><span class="comment"># user 'guest' with the password 'guest' and the 'guest' role</span></span><br><span class="line"><span class="attr">guest</span> = guest, guest</span><br><span class="line"><span class="comment"># user 'presidentskroob' with password '12345' ("That's the same combination on</span></span><br><span class="line"><span class="comment"># my luggage!!!" ;)), and role 'president'</span></span><br><span class="line"><span class="attr">presidentskroob</span> = <span class="number">12345</span>, president</span><br><span class="line"><span class="comment"># user 'darkhelmet' with password 'ludicrousspeed' and roles 'darklord' and 'schwartz'</span></span><br><span class="line"><span class="attr">darkhelmet</span> = ludicrousspeed, darklord, schwartz</span><br><span class="line"><span class="comment"># user 'lonestarr' with password 'vespa' and roles 'goodguy' and 'schwartz'</span></span><br><span class="line"><span class="attr">lonestarr</span> = vespa, goodguy, schwartz</span><br><span class="line"></span><br><span class="line"><span class="comment"># -----------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Roles with assigned permissions</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># Each line conforms to the format defined in the</span></span><br><span class="line"><span class="comment"># org.apache.shiro.realm.text.TextConfigurationRealm#setRoleDefinitions JavaDoc</span></span><br><span class="line"><span class="comment"># -----------------------------------------------------------------------------</span></span><br><span class="line"><span class="section">[roles]</span></span><br><span class="line"><span class="comment"># 'admin' role has all permissions, indicated by the wildcard '*'</span></span><br><span class="line"><span class="attr">admin</span> = *</span><br><span class="line"><span class="comment"># The 'schwartz' role can do anything (*) with any lightsaber:</span></span><br><span class="line"><span class="attr">schwartz</span> = lightsaber:*</span><br><span class="line"><span class="comment"># The 'goodguy' role is allowed to 'drive' (action) the winnebago (type) with</span></span><br><span class="line"><span class="comment"># license plate 'eagle5' (instance specific id)</span></span><br><span class="line"><span class="attr">goodguy</span> = winnebago:drive:eagle5</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Quickstart.java : 一个简单的入门级程序,教你如何使用Shiro的API</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.SecurityUtils;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.config.IniSecurityManagerFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.mgt.SecurityManager;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.session.Session;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.Subject;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.Factory;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Simple Quickstart application showing how to use Shiro's API.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 0.9 RC2</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Quickstart</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">transient</span> Logger log = LoggerFactory.getLogger(Quickstart<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The easiest way to create a Shiro SecurityManager with configured</span></span><br><span class="line">        <span class="comment">// realms, users, roles and permissions is to use the simple INI config.</span></span><br><span class="line">        <span class="comment">// We'll do that by using a factory that can ingest a .ini file and</span></span><br><span class="line">        <span class="comment">// return a SecurityManager instance:</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Use the shiro.ini file at the root of the classpath</span></span><br><span class="line">        <span class="comment">// (file: and url: prefixes load from files and urls respectively):</span></span><br><span class="line">        Factory&lt;SecurityManager&gt; factory = <span class="keyword">new</span> IniSecurityManagerFactory(<span class="string">"classpath:shiro.ini"</span>);</span><br><span class="line">        SecurityManager securityManager = factory.getInstance();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// for this simple example quickstart, make the SecurityManager</span></span><br><span class="line">        <span class="comment">// accessible as a JVM singleton.  Most applications wouldn't do this</span></span><br><span class="line">        <span class="comment">// and instead rely on their container configuration or web.xml for</span></span><br><span class="line">        <span class="comment">// webapps.  That is outside the scope of this simple quickstart, so</span></span><br><span class="line">        <span class="comment">// we'll just do the bare minimum so you can continue to get a feel</span></span><br><span class="line">        <span class="comment">// for things.</span></span><br><span class="line">        SecurityUtils.setSecurityManager(securityManager);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Now that a simple Shiro environment is set up, let's see what you can do:</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// get the currently executing user:</span></span><br><span class="line">        Subject currentUser = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Do some stuff with a Session (no need for a web or EJB container!!!)</span></span><br><span class="line">        Session session = currentUser.getSession();</span><br><span class="line">        session.setAttribute(<span class="string">"someKey"</span>, <span class="string">"aValue"</span>);</span><br><span class="line">        String value = (String) session.getAttribute(<span class="string">"someKey"</span>);</span><br><span class="line">        <span class="keyword">if</span> (value.equals(<span class="string">"aValue"</span>)) &#123;</span><br><span class="line">            log.info(<span class="string">"Retrieved the correct value! ["</span> + value + <span class="string">"]"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// let's login the current user so we can check against roles and permissions:</span></span><br><span class="line">        <span class="keyword">if</span> (!currentUser.isAuthenticated()) &#123;</span><br><span class="line">            UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"lonestarr"</span>, <span class="string">"vespa"</span>);</span><br><span class="line">            token.setRememberMe(<span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                currentUser.login(token);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (UnknownAccountException uae) &#123;</span><br><span class="line">                log.info(<span class="string">"There is no user with username of "</span> + token.getPrincipal());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IncorrectCredentialsException ice) &#123;</span><br><span class="line">                log.info(<span class="string">"Password for account "</span> + token.getPrincipal() + <span class="string">" was incorrect!"</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (LockedAccountException lae) &#123;</span><br><span class="line">                log.info(<span class="string">"The account for username "</span> + token.getPrincipal() + <span class="string">" is locked.  "</span> +</span><br><span class="line">                        <span class="string">"Please contact your administrator to unlock it."</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// ... catch more exceptions here (maybe custom ones specific to your application?</span></span><br><span class="line">            <span class="keyword">catch</span> (AuthenticationException ae) &#123;</span><br><span class="line">                <span class="comment">//unexpected condition?  error?</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//say who they are:</span></span><br><span class="line">        <span class="comment">//print their identifying principal (in this case, a username):</span></span><br><span class="line">        log.info(<span class="string">"User ["</span> + currentUser.getPrincipal() + <span class="string">"] logged in successfully."</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//test a role:</span></span><br><span class="line">        <span class="keyword">if</span> (currentUser.hasRole(<span class="string">"schwartz"</span>)) &#123;</span><br><span class="line">            log.info(<span class="string">"May the Schwartz be with you!"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.info(<span class="string">"Hello, mere mortal."</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//test a typed permission (not instance-level)</span></span><br><span class="line">        <span class="keyword">if</span> (currentUser.isPermitted(<span class="string">"lightsaber:wield"</span>)) &#123;</span><br><span class="line">            log.info(<span class="string">"You may use a lightsaber ring.  Use it wisely."</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.info(<span class="string">"Sorry, lightsaber rings are for schwartz masters only."</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//a (very powerful) Instance Level permission:</span></span><br><span class="line">        <span class="keyword">if</span> (currentUser.isPermitted(<span class="string">"winnebago:drive:eagle5"</span>)) &#123;</span><br><span class="line">            log.info(<span class="string">"You are permitted to 'drive' the winnebago with license plate (id) 'eagle5'.  "</span> +</span><br><span class="line">                    <span class="string">"Here are the keys - have fun!"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.info(<span class="string">"Sorry, you aren't allowed to drive the 'eagle5' winnebago!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//all done - log out!</span></span><br><span class="line">        currentUser.logout();</span><br><span class="line"></span><br><span class="line">        System.exit(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.525Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shiro/">Shiro</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/&title=《Hi Shiro ~》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/&title=《Hi Shiro ~》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Hi Shiro ~》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/08/01/详解Shiro登录登出的操作流程/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">详解Shiro登录登出的操作流程</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/07/29/How-to-create-a-pull-request-from-a-fork/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">How to create a pull request from a fork</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/&title=《Hi Shiro ~》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/&title=《Hi Shiro ~》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Hi Shiro ~》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/07/31/Hi-Shiro/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

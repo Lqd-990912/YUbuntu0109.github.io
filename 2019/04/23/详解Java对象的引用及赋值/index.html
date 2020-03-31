@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>详解Java对象的引用及赋值 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java">
+    <meta name="description" content="细节 : 详解Java中对象的引用及赋值问题引入 前言  前些天学习数据结构与算法时特意写了一篇名为详解Linked-list的实现方式及其应用的文章,其中循环链表的代码中就淋漓尽致地体现了Java中对象的引用与赋值  循环链表的实现 1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="详解Java对象的引用及赋值">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="细节 : 详解Java中对象的引用及赋值问题引入 前言  前些天学习数据结构与算法时特意写了一篇名为详解Linked-list的实现方式及其应用的文章,其中循环链表的代码中就淋漓尽致地体现了Java中对象的引用与赋值  循环链表的实现 1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.685Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="详解Java对象的引用及赋值">
+<meta name="twitter:description" content="细节 : 详解Java中对象的引用及赋值问题引入 前言  前些天学习数据结构与算法时特意写了一篇名为详解Linked-list的实现方式及其应用的文章,其中循环链表的代码中就淋漓尽致地体现了Java中对象的引用与赋值  循环链表的实现 1234567891011121314151617181920212223242526272829303132333435363738394041424344454">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">详解Java对象的引用及赋值</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">详解Java对象的引用及赋值</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-23T18:21:00.000Z" itemprop="datePublished" class="page-time">
+  2019-04-23
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#细节-详解Java中对象的引用及赋值"><span class="post-toc-number">1.</span> <span class="post-toc-text">细节 : 详解Java中对象的引用及赋值</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#问题引入"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">问题引入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本数据类型作为参数传递"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">基本数据类型作为参数传递</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">总结</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-详解Java对象的引用及赋值"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">详解Java对象的引用及赋值</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-23 18:21:00" datetime="2019-04-23T18:21:00.000Z"  itemprop="datePublished">2019-04-23</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="细节-详解Java中对象的引用及赋值"><a href="#细节-详解Java中对象的引用及赋值" class="headerlink" title="细节 : 详解Java中对象的引用及赋值"></a>细节 : 详解<code>Java</code>中对象的引用及赋值</h2><h3 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h3><ol>
+<li><em>前言</em></li>
+</ol>
+<p><em>前些天学习数据结构与算法时特意写了一篇名为<code>详解Linked-list的实现方式及其应用</code>的文章,其中<code>循环链表</code>的代码中就淋漓尽致地体现了Java中<code>对象</code>的引用与赋值</em></p>
+<ol start="2">
+<li><p><em>循环链表的实现</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: CircularLinkedList</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 操作循环链表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 16, 2019 7:25:36 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CircularLinkedList</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// get the length of the circular linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getLength</span><span class="params">(ListNode&lt;T&gt; headNode)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">			length++;</span><br><span class="line">			<span class="keyword">if</span> (currentNode == headNode) &#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> length;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// traverse the node of the circular linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traverseNode</span><span class="params">(ListNode&lt;T&gt; headNode)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"\n### [headNode]-address : "</span> + headNode + <span class="string">"\n"</span>);</span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.print(currentNode.getData() + <span class="string">" -&gt; "</span>);</span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">			<span class="keyword">if</span> (currentNode == headNode) &#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.print(<span class="string">"headNode("</span> + currentNode.getData() + <span class="string">")\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add new node at the tail of linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertAtListTail</span><span class="params">(ListNode&lt;T&gt; headNode, ListNode&lt;T&gt; newNode)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode.getNext() != headNode) &#123;</span><br><span class="line">			<span class="comment">//// 注意: 由于`currentNode`无变化,导致`currentNode.getNext() != headNode`继而进入进入死循环 !////</span></span><br><span class="line">			<span class="comment">// currentNode.setNext(currentNode.getNext());</span></span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">		newNode.setNext(newNode);</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			headNode = newNode;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			newNode.setNext(headNode);</span><br><span class="line">			currentNode.setNext(newNode);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add new node at the header of linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ListNode&lt;T&gt; <span class="title">insertAtListHeader</span><span class="params">(ListNode&lt;T&gt; headNode, ListNode&lt;T&gt; newNode)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode.getNext() != headNode) &#123;</span><br><span class="line">			currentNode = currentNode.getNext();<span class="comment">// 尾节点</span></span><br><span class="line">		&#125;</span><br><span class="line">		newNode.setNext(newNode);<span class="comment">// 指针指向自身</span></span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			headNode = newNode;</span><br><span class="line">		&#125;</span><br><span class="line">		newNode.setNext(headNode);</span><br><span class="line">		currentNode.setNext(newNode);</span><br><span class="line">		<span class="comment">// 注意: 此时链表头结点已更新! 所以应该返回更新后的头节点继而避免遍历时出现死循环!!!</span></span><br><span class="line">		headNode = newNode;</span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add the new node by the specified index</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ListNode&lt;T&gt; <span class="title">insertNodeByIndex</span><span class="params">(ListNode&lt;T&gt; headNode, ListNode&lt;T&gt; newNode, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Error: the circular list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (position == <span class="number">1</span>) &#123;</span><br><span class="line">			insertAtListHeader(headNode, newNode);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (position == getLength(headNode)) &#123;</span><br><span class="line">			insertAtListTail(headNode, newNode);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">			ListNode&lt;T&gt; temp = headNode;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; position - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				temp = currentNode;<span class="comment">// 待插节点的前节点</span></span><br><span class="line">				currentNode = currentNode.getNext();<span class="comment">// 待插节点</span></span><br><span class="line">			&#125;</span><br><span class="line">			temp.setNext(newNode);</span><br><span class="line">			newNode.setNext(currentNode);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// delete the last node</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteLastNode</span><span class="params">(ListNode&lt;T&gt; headNode)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		ListNode&lt;T&gt; temp = headNode;</span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the circular list is empty !"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">while</span> (currentNode.getNext() != headNode) &#123;</span><br><span class="line">			temp = currentNode; <span class="comment">// 尾节点的前一个节点</span></span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">		temp.setNext(headNode);</span><br><span class="line">		currentNode = <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// delete the header node</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ListNode&lt;T&gt; <span class="title">deleteHeaderNode</span><span class="params">(ListNode&lt;T&gt; headNode)</span> </span>&#123;</span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the circular list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">while</span> (currentNode.getNext() != headNode) &#123;</span><br><span class="line">			<span class="comment">// currentNode.setNext(currentNode.getNext());//死循环</span></span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">		currentNode.setNext(headNode.getNext());</span><br><span class="line">		<span class="comment">// 注意: 此时链表头结点已更新! 所以应该返回更新后的头节点继而避免遍历时出现死循环!!!</span></span><br><span class="line">		headNode = headNode.getNext();</span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// delete the node by the specified index</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ListNode&lt;T&gt; <span class="title">deleteNodeByIndex</span><span class="params">(ListNode&lt;T&gt; headNode, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Error: the circular linked list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (position == <span class="number">1</span>) &#123;</span><br><span class="line">			deleteHeaderNode(headNode);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (position == getLength(headNode)) &#123;</span><br><span class="line">			deleteLastNode(headNode);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">			ListNode&lt;T&gt; temp = headNode;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; position - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				temp = currentNode;<span class="comment">// 待删节点的前节点</span></span><br><span class="line">				currentNode = currentNode.getNext();<span class="comment">// 待删节点</span></span><br><span class="line">			&#125;</span><br><span class="line">			temp.setNext(currentNode.getNext());</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 初始化链表头结点</span></span><br><span class="line">		CircularLinkedList&lt;Integer&gt; list = <span class="keyword">new</span> CircularLinkedList&lt;&gt;();</span><br><span class="line">		ListNode&lt;Integer&gt; headNode = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		headNode.setData(<span class="number">1</span>);<span class="comment">// 初始化链表头结点</span></span><br><span class="line">		headNode.setNext(headNode);<span class="comment">// 节点指针指向自身</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// 初始化待插入的链表节点</span></span><br><span class="line">		ListNode&lt;Integer&gt; a = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		a.setData(<span class="number">2</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; b = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		b.setData(<span class="number">3</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; c = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		c.setData(<span class="number">4</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; d = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		d.setData(<span class="number">100</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; e = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		e.setData(<span class="number">101</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; f = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		f.setData(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 向链表的尾部添加三个节点</span></span><br><span class="line">		System.out.print(<span class="string">"the origin node: "</span>);</span><br><span class="line">		list.insertAtListTail(headNode, a);</span><br><span class="line">		list.insertAtListTail(headNode, b);</span><br><span class="line">		list.insertAtListTail(headNode, c);</span><br><span class="line">		list.traverseNode(headNode);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 向链表中添加两个头结点( 头结点被更新 )</span></span><br><span class="line">		System.out.print(<span class="string">"add two header node: "</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; newHeadNode = list.insertAtListHeader(headNode, d);</span><br><span class="line">		<span class="comment">// 注意: 由于`头结点`已在`insertAtListHeader`中已更新所以要向`traverseNode`传入新的头结点</span></span><br><span class="line">		ListNode&lt;Integer&gt; newHeadNode2 = list.insertAtListHeader(newHeadNode, e);</span><br><span class="line">		list.traverseNode(newHeadNode2);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 在链表的指定位置上插入新的节点</span></span><br><span class="line">		System.out.print(<span class="string">"Insert the new node at position 3: "</span>);</span><br><span class="line">		list.insertNodeByIndex(headNode, f, <span class="number">3</span>);</span><br><span class="line">		list.traverseNode(newHeadNode2);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 删除链表的尾节点</span></span><br><span class="line">		System.out.print(<span class="string">"delete the tail node:  "</span>);</span><br><span class="line">		list.deleteLastNode(newHeadNode2);</span><br><span class="line">		list.traverseNode(newHeadNode2);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 注意: 由于`头结点`已在`deleteHeaderNode`中已更新所以要向`traverseNode`传入新的头结点对象</span></span><br><span class="line">		ListNode&lt;Integer&gt; newHeadNode3 = list.deleteHeaderNode(newHeadNode2);</span><br><span class="line">		System.out.print(<span class="string">"delete the header node:  "</span>);</span><br><span class="line">		list.traverseNode(newHeadNode3);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 删除链表中指定位置的节点</span></span><br><span class="line">		ListNode&lt;Integer&gt; newHeadNode4 = list.deleteNodeByIndex(newHeadNode3, <span class="number">4</span>);</span><br><span class="line">		System.out.print(<span class="string">"delete the fourth node: "</span>);</span><br><span class="line">		list.traverseNode(newHeadNode4);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">the origin node: </span><br><span class="line">### [headNode]-address : pers.huangyuhui.linkedlist.ListNode@16f65612</span><br><span class="line"></span><br><span class="line"><span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; headNode(<span class="number">1</span>)</span><br><span class="line">the length of the list: <span class="number">4</span></span><br><span class="line">add two header node: </span><br><span class="line">### [headNode]-address : pers.huangyuhui.linkedlist.ListNode@311d617d</span><br><span class="line"></span><br><span class="line"><span class="number">101</span> -&gt; <span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; headNode(<span class="number">101</span>)</span><br><span class="line">the length of the list: <span class="number">6</span></span><br><span class="line">Insert the <span class="keyword">new</span> node at position <span class="number">3</span>: </span><br><span class="line">### [headNode]-address : pers.huangyuhui.linkedlist.ListNode@311d617d</span><br><span class="line"></span><br><span class="line"><span class="number">101</span> -&gt; <span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">0</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; headNode(<span class="number">101</span>)</span><br><span class="line">the length of the list: <span class="number">7</span></span><br><span class="line">delete the tail node:  </span><br><span class="line">### [headNode]-address : pers.huangyuhui.linkedlist.ListNode@311d617d</span><br><span class="line"></span><br><span class="line"><span class="number">101</span> -&gt; <span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">0</span> -&gt; <span class="number">3</span> -&gt; headNode(<span class="number">101</span>)</span><br><span class="line">the length of the list: <span class="number">6</span></span><br><span class="line">delete the header node:  </span><br><span class="line">### [headNode]-address : pers.huangyuhui.linkedlist.ListNode@7c53a9eb</span><br><span class="line"></span><br><span class="line"><span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">0</span> -&gt; <span class="number">3</span> -&gt; headNode(<span class="number">100</span>)</span><br><span class="line">the length of the list: <span class="number">5</span></span><br><span class="line">delete the fourth node: </span><br><span class="line">### [headNode]-address : pers.huangyuhui.linkedlist.ListNode@7c53a9eb</span><br><span class="line"></span><br><span class="line"><span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; headNode(<span class="number">100</span>)</span><br><span class="line">the length of the list: <span class="number">4</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="基本数据类型作为参数传递"><a href="#基本数据类型作为参数传递" class="headerlink" title="基本数据类型作为参数传递"></a>基本数据类型作为参数传递</h3><ol>
+<li><p><em>示例程序</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">		System.out.println(<span class="string">"before change, i="</span> + i);</span><br><span class="line">		change(i);</span><br><span class="line">		System.out.println(<span class="string">"after change, i="</span> + i);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">		i = <span class="number">5</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">before change, i=<span class="number">1</span></span><br><span class="line">after change, i=<span class="number">1</span></span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line"><span class="number">3</span>. *结论*</span><br><span class="line">   </span><br><span class="line">*当`基本数据类型`作为参数传递时,传递时的是`实参的副本`,既传的是`值`,无论在函数中怎么操作这个副本,实参的值是不会被改变的.*</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 对象作为参数传递</span><br><span class="line"><span class="number">1</span>. *第一个示例程序*</span><br><span class="line">```java</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		StringBuffer sb = <span class="keyword">new</span> StringBuffer(<span class="string">"Hello"</span>);</span><br><span class="line">		System.out.println(<span class="string">"before change: "</span> + sb);</span><br><span class="line">		change(sb);</span><br><span class="line">		System.out.println(<span class="string">"after change: "</span> + sb);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">(StringBuffer stringBuffer)</span> </span>&#123;</span><br><span class="line">		stringBuffer.append(<span class="string">" world !"</span>);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">before change: Hello</span><br><span class="line">after change: Hello world !</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>探究结论</em><br><em>从上述程序运行结果可知<code>sb</code>所指的对象的值被改变了!那么我们是否就可以认为Java中的对象作为参数传递时,传递的是该对象的引用呢 <code>?</code> 那我们再来看第二个示例程序.</em></p>
+</li>
+<li><p><em>第二个示例程序</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		StringBuffer sb = <span class="keyword">new</span> StringBuffer(<span class="string">"Hello"</span>);</span><br><span class="line">		System.out.println(<span class="string">"before change: "</span> + sb);</span><br><span class="line">		change(sb);</span><br><span class="line">		System.out.println(<span class="string">"after change: "</span> + sb);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">(StringBuffer stringBuffer)</span> </span>&#123;</span><br><span class="line">		stringBuffer = <span class="keyword">new</span> StringBuffer(<span class="string">"Hi"</span>);</span><br><span class="line">		stringBuffer.append(<span class="string">" world !"</span>);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果</em></p>
+</li>
+</ol>
+<p><em>如果上面的<code>推论</code>:(Java中对象作为参数传递时,实际传递的是该对象的引用)是正确的,那么在调用<code>change</code>函数后,原对象的值应该会被改变,既变为:<code>Hi World !</code>,但是,该程序的运行结果如下 !!!</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">before change: Hello</span><br><span class="line">after change: Hello</span><br></pre></td></tr></table></figure></p>
+<p><em>可知原对象(<code>sb</code>)的值并没有被改变,这是为什么呢? 下面让我们来<code>分析</code>一下其中的原因吧嘿嘿 ~</em></p>
+<ol start="6">
+<li>结论分析</li>
+</ol>
+<p><em>当我们执行<code>StringBuffer sb = new StringBuffer(&quot;Hello&quot;)</code>时,我们便创建了一个指向新建对象<code>new StringBuffer(&quot;Hello&quot;)</code>的引用<code>sb</code>,如下所示.</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sb ——————&gt; [Hello]</span><br></pre></td></tr></table></figure></p>
+<p><em>在<code>第二个示例程序</code>中,当我们调用<code>change</code>函数后,实际上,形参<code>stringBuffer</code>也指向了实参<code>sb</code>所指的对象! 如下所示.</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sb ——————&gt; [Hello] &lt;—————— stringBuffer</span><br></pre></td></tr></table></figure></p>
+<p><em>那么当我们执行<code>stringBuffer.append(&quot;world!&quot;)</code>后,便通过对象的引用(<code>stringBuffer</code>)修改了对象的值,使之修改成了: <code>Hello world !</code>,如下所示:</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sb ——————&gt; [Hello world !] &lt;—————— stringBuffer</span><br></pre></td></tr></table></figure></p>
+<p><em>但是在<code>第二个示例程序</code>中的<code>change</code>函数中,我们又新建了一个对象:<code>new StringBuffer(&quot;Hi&quot;)</code>(该操作实际上是在内存中开辟了一块在原对象地址之外的<code>新区域</code>),这让形参<code>stringBuffer</code>实际指向了这个新建的对象,并将新对象的值设置为了<code>Hi world !</code>,如下所示:</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sb ——————&gt; [Hello]</span><br><span class="line">stringBuffer ——————&gt; [Hi World !]</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><em>综上所述,可以得出结论: <code>在Java中,当对象作为参数传递时,实际上传递的是一份&quot;引用&quot;的拷贝 !</code></em></li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><em>在Java中, <code>=</code> 不能看成一个赋值语句,因为它并不是把一个对象赋给另一个对象的过程,它的执行过程实质上是将右边对象的<code>地址</code>传给了左边的引用,使得左边的引用指向了右边的对象.Java表面上看起来没有指针,但它的引用实质上就是一个<code>指针</code>,引用里面存放的并不是对象,而是存放该对象的地址,使得该引用指向了该对象.</em></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.685Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/&title=《详解Java对象的引用及赋值》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/&title=《详解Java对象的引用及赋值》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《详解Java对象的引用及赋值》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/04/25/VOA-5-Habits-of-Very-Successful-People/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">VOA:5 Habits of Very Successful People</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/04/23/VOA-One-in-Five-Deaths-Linked-to-Unhealthy-Diet/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">VOA:One in Five Deaths Linked to Unhealthy Diet</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/&title=《详解Java对象的引用及赋值》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/&title=《详解Java对象的引用及赋值》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《详解Java对象的引用及赋值》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/04/23/详解Java对象的引用及赋值/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

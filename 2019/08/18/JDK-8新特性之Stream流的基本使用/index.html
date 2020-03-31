@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>JDK 8新特性之Stream流的基本使用 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="JDK">
+    <meta name="description" content="学习笔记 : JDK 8新特性之Stream流的基本使用简介Java 8 API添加了一个新的抽象称为Stream流,其让你以一种声明的方式处理数据. Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象. 其 API 可以极大提高Java程序员的生产力,让程序员写出高效率、干净、简洁的代码. 其把将要处理的元素集合看作一种流, 流在">
+<meta name="keywords" content="JDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDK 8新特性之Stream流的基本使用">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : JDK 8新特性之Stream流的基本使用简介Java 8 API添加了一个新的抽象称为Stream流,其让你以一种声明的方式处理数据. Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象. 其 API 可以极大提高Java程序员的生产力,让程序员写出高效率、干净、简洁的代码. 其把将要处理的元素集合看作一种流, 流在">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JDK 8新特性之Stream流的基本使用">
+<meta name="twitter:description" content="学习笔记 : JDK 8新特性之Stream流的基本使用简介Java 8 API添加了一个新的抽象称为Stream流,其让你以一种声明的方式处理数据. Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象. 其 API 可以极大提高Java程序员的生产力,让程序员写出高效率、干净、简洁的代码. 其把将要处理的元素集合看作一种流, 流在">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">JDK 8新特性之Stream流的基本使用</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">JDK 8新特性之Stream流的基本使用</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-18T21:09:29.000Z" itemprop="datePublished" class="page-time">
+  2019-08-18
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-JDK-8新特性之Stream流的基本使用"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : JDK 8新特性之Stream流的基本使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">简介</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#特征"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">特征</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#获取Stream流的方式"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">获取Stream流的方式</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Stream流的常用方法"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">Stream流的常用方法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#程序示例-对比"><span class="post-toc-number">1.1.4.</span> <span class="post-toc-text">程序示例(对比)</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取Stream流的两种方式"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">获取Stream流的两种方式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#forEach方法"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">forEach方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#复习Consumer接口"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">复习Consumer接口</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基本使用"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">基本使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#filter方法"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">filter方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#复习Predicate接口"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">复习Predicate接口</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基本使用-1"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">基本使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map方法"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">map方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#复习Function接口"><span class="post-toc-number">1.5.1.</span> <span class="post-toc-text">复习Function接口</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基本使用-2"><span class="post-toc-number">1.5.2.</span> <span class="post-toc-text">基本使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#count方法"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">count方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基本使用-3"><span class="post-toc-number">1.6.1.</span> <span class="post-toc-text">基本使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#limit方法"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">limit方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基本使用-4"><span class="post-toc-number">1.7.1.</span> <span class="post-toc-text">基本使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#skip方法"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">skip方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基本使用-5"><span class="post-toc-number">1.8.1.</span> <span class="post-toc-text">基本使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#concat方法"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">concat方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基本使用-6"><span class="post-toc-number">1.9.1.</span> <span class="post-toc-text">基本使用</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JDK-8新特性之Stream流的基本使用"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">JDK 8新特性之Stream流的基本使用</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-18 21:09:29" datetime="2019-08-18T21:09:29.000Z"  itemprop="datePublished">2019-08-18</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-JDK-8新特性之Stream流的基本使用"><a href="#学习笔记-JDK-8新特性之Stream流的基本使用" class="headerlink" title="学习笔记 : JDK 8新特性之Stream流的基本使用"></a>学习笔记 : JDK 8新特性之Stream流的基本使用</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><em>Java 8 API添加了一个新的抽象称为<code>Stream流</code>,其让你以一种声明的方式处理数据. Stream 使用一种类似用 SQL 语句从数据库查询数据的直观方式来提供一种对 Java 集合运算和表达的高阶抽象. 其 API 可以极大提高Java程序员的生产力,让程序员写出高效率、干净、简洁的代码. 其把将要处理的元素集合看作一种流, 流在管道中传输, 并且可以在管道的节点上进行处理, 比如筛选,排序,聚合等, 元素流在管道中经过中间操作 (intermediate operation) 的处理,最后由最终操作 (terminal operation) 得到前面处理的结果</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+--------------------+       +------+   +------+   +---+   +-------+</span><br><span class="line">| stream of elements +-----&gt; |filter+-&gt; |sorted+-&gt; |map+-&gt; |collect|</span><br><span class="line">+--------------------+       +------+   +------+   +---+   +-------+</span><br></pre></td></tr></table></figure>
+<p><em>以上的流程可以转换Java代码 :</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; transactionsIds = </span><br><span class="line">widgets.stream()</span><br><span class="line">        .filter(b -&gt; b.getColor() == RED)</span><br><span class="line">        .sorted((x,y) -&gt; x.getWeight() - y.getWeight())</span><br><span class="line">        .mapToInt(Widget::getWeight)</span><br><span class="line">        .sum();</span><br></pre></td></tr></table></figure></p>
+<h4 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h4><p><em>Stream (流) 是一个来自数据源的元素队列并支持聚合操作 :</em></p>
+<ul>
+<li>元素是特定类型的对象,形成一个队列. Java中的<code>Stream并不会存储元素,而是按需计算</code></li>
+<li>数据源,流的来源可以是集合,数组,I/O channel,产生器generator等</li>
+<li>聚合操作,类似SQL语句一样的操作,比如filter, map, reduce, find, match, sorted等</li>
+</ul>
+<p><em>和以前的Collection操作不同， Stream操作还有如下两个基础的特征 :</em></p>
+<ul>
+<li><code>Pipelining</code> : 中间操作都会返回流对象本身, 这样多个操作可以串联成一个管道,如同流式风格(fluent style), 这样做可以对操作进行优化,比如延迟执行(laziness)和短路(short-circuiting)</li>
+<li><code>内部迭代</code> : 以前对集合遍历都是通过Iterator或者For-Each的方式, 显式的在集合外部进行迭代,这叫做外部迭代. Stream则提供了内部迭代的方式,通过<code>访问者模式(Visitor)</code>实现</li>
+</ul>
+<p><em>当使用一个流的时候,通常包括三个基本步骤 : 获取一个数据源(source) -&gt; 数据转换 -&gt; 执行操作获取想要的结果,每次转换原有 Stream 对象不改变,返回一个新的 Stream 对象(可以有多次转换),这就允许对其操作可以像链条一样排列,变成一个管道. <code>注 : Steam流属于管道流,既只能被消费/使用一次哟</code></em></p>
+<h4 id="获取Stream流的方式"><a href="#获取Stream流的方式" class="headerlink" title="获取Stream流的方式"></a>获取Stream流的方式</h4><p><em><code>java.util.stream.Stream&lt;T&gt;</code>是Java8新加入的最常用的流接口 (注 : 这并不是一个函数式接口哟),获取一个流非常简单,有以下几种常用的方式 :</em></p>
+<ol>
+<li><em>所有的<code>Collection</code>集合都可以通过stream默认方法获取流</em></li>
+<li><em>通过<code>Stream</code>接口的静态方法<code>of</code>可以获取数组对应的流</em></li>
+</ol>
+<h4 id="Stream流的常用方法"><a href="#Stream流的常用方法" class="headerlink" title="Stream流的常用方法"></a>Stream流的常用方法</h4><p><em>Stream流模型的操作很丰富,其方法可以划分为两类 :</em></p>
+<ol>
+<li><em><code>延迟方法</code> : 返回值类型仍然是<code>Stream</code>接口自身类型的方法,因此支持链式调用( 除了终结方法外,其余方法均为延迟方法 )</em></li>
+<li><em><code>终结方法</code> : 返回值类型不再是<code>Stream</code>接口自身类型的方法,因此不再支持类似<code>StringBuilder</code>那样的链式调用,终结方法例如<code>count</code>和<code>forEach</code></em></li>
+</ol>
+<h4 id="程序示例-对比"><a href="#程序示例-对比" class="headerlink" title="程序示例(对比)"></a>程序示例(对比)</h4><p><em>话不多说,来对比一下传统遍历并过滤集合与使用Stream流遍历并过滤集合的代码,感受下Stream流的美~</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.Stream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: jdk-learnig</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 使用Stream流遍历并过滤集合</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 8/18/2019-9:10 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StreamTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//传统方式:遍历并过滤集合</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        list.add(<span class="string">"a"</span>);</span><br><span class="line">        list.add(<span class="string">"bc"</span>);</span><br><span class="line">        list.add(<span class="string">"abc"</span>);</span><br><span class="line">        list.add(<span class="string">"bcd"</span>);</span><br><span class="line">        list.add(<span class="string">"abcd"</span>);</span><br><span class="line">        <span class="comment">//元素内容过滤</span></span><br><span class="line">        List&lt;String&gt; list_a = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (String s : list) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s.startsWith(<span class="string">"a"</span>)) &#123;</span><br><span class="line">                list_a.add(s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//元素长度过滤</span></span><br><span class="line">        List&lt;String&gt; list_len = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (String s : list_a) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s.length() &gt; <span class="number">3</span>) &#123;</span><br><span class="line">                list_len.add(s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//打印集合元素</span></span><br><span class="line">        <span class="keyword">for</span> (String s : list_len) &#123;</span><br><span class="line">            System.out.println(s); <span class="comment">//结果:abcd</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用Steam流:遍历并过滤集合</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testWithStream</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        list.add(<span class="string">"a"</span>);</span><br><span class="line">        list.add(<span class="string">"bc"</span>);</span><br><span class="line">        list.add(<span class="string">"abc"</span>);</span><br><span class="line">        list.add(<span class="string">"bcd"</span>);</span><br><span class="line">        list.add(<span class="string">"abcd"</span>);</span><br><span class="line">        <span class="comment">//过滤集合元素后输出</span></span><br><span class="line">        list.stream()</span><br><span class="line">                .filter(name -&gt; name.startsWith(<span class="string">"a"</span>)) <span class="comment">//元素内容过滤</span></span><br><span class="line">                .filter(name -&gt; name.length() &gt; <span class="number">3</span>) <span class="comment">//元素长度过滤</span></span><br><span class="line">                <span class="comment">//.forEach(name -&gt; System.out.println(name));</span></span><br><span class="line">                .forEach(System.out::println); <span class="comment">//结果:abcd</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="获取Stream流的两种方式"><a href="#获取Stream流的两种方式" class="headerlink" title="获取Stream流的两种方式"></a>获取Stream流的两种方式</h3><p><em>获取流的两种方式 : 一将集合装换为Stream流, 二将数组转换为Stream流</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.Stream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.util.stream.Stream;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: jdk-learnig</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 获取流的两种方式:将集合装换为Stream流,及将数组转换为Stream流</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 8/19/2019-8:30 AM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GetStreamWay</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将List集合装换为Stream流</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        Stream&lt;String&gt; stream = list.stream();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将Set集合转换为Stream流</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">        Stream&lt;String&gt; stream = set.stream();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将Map集合转换为Stream流</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Map&lt;Integer, String&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//分别获取并存储键与值</span></span><br><span class="line">        Set&lt;Integer&gt; integers = map.keySet();</span><br><span class="line">        Collection&lt;String&gt; values = map.values();</span><br><span class="line">        <span class="comment">//将存储键与值的集合转换为Stream流</span></span><br><span class="line">        Stream&lt;Integer&gt; key = integers.stream();</span><br><span class="line">        Stream&lt;String&gt; value = values.stream();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取键值对(键与值映射关系),并将其转换为Stream流</span></span><br><span class="line">        Set&lt;Map.Entry&lt;Integer, String&gt;&gt; entries = map.entrySet();</span><br><span class="line">        Stream&lt;Map.Entry&lt;Integer, String&gt;&gt; entry = entries.stream();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将数组转换为Stream流</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testArray</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String[] array = &#123;<span class="string">"a"</span>, <span class="string">"ab"</span>, <span class="string">"bc"</span>, <span class="string">"abc"</span>, <span class="string">"bcd"</span>, <span class="string">"abcd"</span>&#125;;</span><br><span class="line">        Stream&lt;String&gt; stream = Stream.of(array);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ······</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="forEach方法"><a href="#forEach方法" class="headerlink" title="forEach方法"></a>forEach方法</h3><p><em>该方法接收一个<code>Consumer</code>接口函数,会将每一个流元素交给该函数进行处理</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forEach</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> T&gt; action)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="复习Consumer接口"><a href="#复习Consumer接口" class="headerlink" title="复习Consumer接口"></a>复习Consumer接口</h4><p><em>此前已学过<code>java.util.function.Consumer&lt;T&gt;</code>函数式接口,该接口是一个消费型接口,其中唯一的抽象方法如下,意为消费一个指定泛型的数据</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(T t)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h4><p><em>遍历输出数组中的元素</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testForEach</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array = &#123;<span class="string">"a"</span>, <span class="string">"bc"</span>, <span class="string">"abc"</span>, <span class="string">"bcd"</span>, <span class="string">"abcd"</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第一种方式</span></span><br><span class="line">    Stream&lt;String&gt; stream = Arrays.stream(array);</span><br><span class="line">    stream.forEach(element -&gt; System.out.println(element));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二种方式</span></span><br><span class="line">    Stream&lt;String&gt; stream2 = Stream.of(array);</span><br><span class="line">    stream2.forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="filter方法"><a href="#filter方法" class="headerlink" title="filter方法"></a>filter方法</h3><p><em>可以通过<code>filter</code>方法将一个流转换成另一个子集流,该接口接收一个<code>Predicate</code>函数式接口参数( 可以是一个Lambda或方法引用 )作为筛选条件</em></p>
+<h4 id="复习Predicate接口"><a href="#复习Predicate接口" class="headerlink" title="复习Predicate接口"></a>复习Predicate接口</h4><p><em>此前已学过<code>java.util.function.Predicate&lt;T&gt;</code>函数式接口,其中唯一的抽象方法如下,该方法将会产生一个boolean值结果,代表指定的条件是否满足,如果结果为true,那么Stream流的<code>filter</code>方法将会留用元素,反之舍弃</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">test</span><span class="params">(T t)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="基本使用-1"><a href="#基本使用-1" class="headerlink" title="基本使用"></a>基本使用</h4><p><em>延迟方法与终结方法结合使用 : 过滤并遍历数组元素</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array = &#123;<span class="string">"a"</span>, <span class="string">"bc"</span>, <span class="string">"abc"</span>, <span class="string">"bcd"</span>, <span class="string">"abcd"</span>&#125;;</span><br><span class="line">    Stream.of(array)</span><br><span class="line">            .filter(element -&gt; element.startsWith(<span class="string">"a"</span>))</span><br><span class="line">            .filter(element -&gt; element.length() &gt; <span class="number">3</span>)</span><br><span class="line">            .forEach(System.out::println); <span class="comment">//abcd</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="map方法"><a href="#map方法" class="headerlink" title="map方法"></a>map方法</h3><p><em>如果需要将流中的元素映射到另一个流中,则可以使用<code>map</code>方法,方法签名如下,该接口需要一个函数式接口参数,可以将当前流中的T类型数据转换为另一种R类型的流</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;R&gt; <span class="function">Stream&lt;R&gt; <span class="title">map</span><span class="params">(function&lt;? <span class="keyword">super</span> T,? extends R&gt; mapper)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="复习Function接口"><a href="#复习Function接口" class="headerlink" title="复习Function接口"></a>复习Function接口</h4><p><em>此前已学过<code>java.util.function.Function&lt;T, R&gt;</code>函数式接口,其中唯一的抽象方法如下,其可以将一种 T 类型转换为 R 类型,而这种转换的动作称为<code>映射</code></em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">R <span class="title">apply</span><span class="params">(T t)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="基本使用-2"><a href="#基本使用-2" class="headerlink" title="基本使用"></a>基本使用</h4><p><em>将String类型的数组元素装换为Integer类型并输出</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Lambda表达式写法</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMapWithLambda</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array = &#123;<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>, <span class="string">"4"</span>, <span class="string">"5"</span>&#125;;</span><br><span class="line">    Stream&lt;String&gt; stream = Stream.of(array);</span><br><span class="line">    Stream&lt;Integer&gt; stream2 = stream.map((String string) -&gt; &#123;</span><br><span class="line">        <span class="keyword">return</span> Integer.valueOf(string);</span><br><span class="line">    &#125;);</span><br><span class="line">    stream2.forEach(element -&gt; System.out.println(element));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Lambda表达式简写</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMapWithSimpleLambda</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array = &#123;<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>, <span class="string">"4"</span>, <span class="string">"5"</span>&#125;;</span><br><span class="line">    Stream.of(array)</span><br><span class="line">            .map(string -&gt; Integer.valueOf(string))</span><br><span class="line">            .forEach(element -&gt; System.out.println(element));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法引用写法</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMapWithMethodRef</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array = &#123;<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>, <span class="string">"4"</span>, <span class="string">"5"</span>&#125;;</span><br><span class="line">    Stream.of(array)</span><br><span class="line">            .map(Integer::valueOf)</span><br><span class="line">            .forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="count方法"><a href="#count方法" class="headerlink" title="count方法"></a>count方法</h3><p><em>正如就集合<code>Collection</code>当中的<code>size</code>方法一样,Stream流提供了<code>count</code>方法来计数元素个数,该方法返回一个long值代表元素个数(不再像同旧集合为int值). 注 : 该方法为终结方法哟~</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">count</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="基本使用-3"><a href="#基本使用-3" class="headerlink" title="基本使用"></a>基本使用</h4><p><em>统计数组中以”a”开头的元素个数</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array = &#123;<span class="string">"a"</span>, <span class="string">"bc"</span>, <span class="string">"abc"</span>, <span class="string">"bcd"</span>, <span class="string">"abcd"</span>&#125;;</span><br><span class="line">    <span class="keyword">long</span> count = Stream.of(array).filter(element -&gt; element.startsWith(<span class="string">"a"</span>)).count();</span><br><span class="line">    System.out.println(count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="limit方法"><a href="#limit方法" class="headerlink" title="limit方法"></a>limit方法</h3><p><em><code>limit</code>方法可以对流进行截取,如果集合当前长度大于参数则进行截取,否则不进行操作</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stream&lt;T&gt; <span class="title">limit</span><span class="params">(<span class="keyword">long</span> maxSize)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="基本使用-4"><a href="#基本使用-4" class="headerlink" title="基本使用"></a>基本使用</h4><p><em>截取数组中的前三个元素并输出</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testLimit</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array = &#123;<span class="string">"a"</span>, <span class="string">"bc"</span>, <span class="string">"abc"</span>, <span class="string">"bcd"</span>, <span class="string">"abcd"</span>&#125;;</span><br><span class="line">    Stream.of(array).limit(<span class="number">3</span>).forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="skip方法"><a href="#skip方法" class="headerlink" title="skip方法"></a>skip方法</h3><p><em>如果希望跳过前几个元素,可以使用<code>skip</code>方法获取一个截取之后的流. 如果流的当前长度大于n,则跳过前n个,否则将会的到一个长度为0的空流</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stream&lt;T&gt; <span class="title">skip</span><span class="params">(<span class="keyword">long</span> n)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="基本使用-5"><a href="#基本使用-5" class="headerlink" title="基本使用"></a>基本使用</h4><p><em>使用<code>skip</code>方法跳过数组中的前三个元素并输出</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSkip</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array = &#123;<span class="string">"a"</span>, <span class="string">"bc"</span>, <span class="string">"abc"</span>, <span class="string">"bcd"</span>, <span class="string">"abcd"</span>&#125;;</span><br><span class="line">    Stream.of(array).skip(<span class="number">3</span>).forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="concat方法"><a href="#concat方法" class="headerlink" title="concat方法"></a>concat方法</h3><p><em>如果有两个流,希望合并称为一个流,那么可以使用Stream接口的静态方法<code>concat</code>. 注 : 这是一个静态方法,不用与<code>java.lang.String</code>中的<code>concat</code>方法哟</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Stream&lt;T&gt; <span class="title">skip</span><span class="params">(<span class="keyword">long</span> n)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="基本使用-6"><a href="#基本使用-6" class="headerlink" title="基本使用"></a>基本使用</h4><p><em>通过合并两个数组中的元素得到新的流,并输出合并后的数组元素</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Lambda表达式写法</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testConcat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array1 = &#123;<span class="string">"a"</span>, <span class="string">"abc"</span>&#125;;</span><br><span class="line">    String[] array2 = &#123;<span class="string">"abcd"</span>, <span class="string">"abcde"</span>&#125;;</span><br><span class="line">    Stream&lt;String&gt; stream1 = Stream.of(array1);</span><br><span class="line">    Stream&lt;String&gt; stream2 = Stream.of(array2);</span><br><span class="line">    Stream&lt;Serializable&gt; concatStream = Stream.concat(stream1, stream2);</span><br><span class="line">    concatStream.forEach(System.out::println);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//简写</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testSimpleConcat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String[] array1 = &#123;<span class="string">"a"</span>, <span class="string">"abc"</span>&#125;;</span><br><span class="line">    String[] array2 = &#123;<span class="string">"abcd"</span>, <span class="string">"abcde"</span>&#125;;</span><br><span class="line">    Stream.concat(Stream.of(array1), Stream.of(array2)).forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><em>参考《Java 8 Stream》 : <a href="https://www.runoob.com/java/java8-streams.html" target="_blank" rel="noopener">https://www.runoob.com/java/java8-streams.html</a></em></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.529Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JDK/">JDK</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/&title=《JDK 8新特性之Stream流的基本使用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/&title=《JDK 8新特性之Stream流的基本使用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《JDK 8新特性之Stream流的基本使用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/08/19/JDK-8新特性之Stream流的基本使用案例/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">JDK 8新特性之Stream流的基本使用案例</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/08/18/JDK-8新特性之方法引用/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JDK 8新特性之方法引用</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/&title=《JDK 8新特性之Stream流的基本使用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/&title=《JDK 8新特性之Stream流的基本使用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《JDK 8新特性之Stream流的基本使用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/08/18/JDK-8新特性之Stream流的基本使用/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

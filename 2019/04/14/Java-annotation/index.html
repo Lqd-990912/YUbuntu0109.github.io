@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Java annotation | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java">
+    <meta name="description" content="Java注解 (元数据)注解的概念及作用 从JDK1.5开始,Java支持在源文件中嵌入补充信息,这类信息被称为注解(annotation).注解不会改变程序的动作,因此也就不会改变程序的语义,但是在开发和部署期间,各种工具可以使用这类信息,例如: 源代码生成器可以处理注解! 注: 如果没有注解信息处理流程(如:通过反射查询注解),则注解毫无意义 !  说明: 其实术语元数据(metadata),">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java annotation">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/04/14/Java-annotation/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="Java注解 (元数据)注解的概念及作用 从JDK1.5开始,Java支持在源文件中嵌入补充信息,这类信息被称为注解(annotation).注解不会改变程序的动作,因此也就不会改变程序的语义,但是在开发和部署期间,各种工具可以使用这类信息,例如: 源代码生成器可以处理注解! 注: 如果没有注解信息处理流程(如:通过反射查询注解),则注解毫无意义 !  说明: 其实术语元数据(metadata),">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/04/14/Java-annotation/SuppressWarnings.PNG">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.533Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java annotation">
+<meta name="twitter:description" content="Java注解 (元数据)注解的概念及作用 从JDK1.5开始,Java支持在源文件中嵌入补充信息,这类信息被称为注解(annotation).注解不会改变程序的动作,因此也就不会改变程序的语义,但是在开发和部署期间,各种工具可以使用这类信息,例如: 源代码生成器可以处理注解! 注: 如果没有注解信息处理流程(如:通过反射查询注解),则注解毫无意义 !  说明: 其实术语元数据(metadata),">
+<meta name="twitter:image" content="https://yubuntu0109.github.io/2019/04/14/Java-annotation/SuppressWarnings.PNG">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Java annotation</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Java annotation</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-14T09:43:16.000Z" itemprop="datePublished" class="page-time">
+  2019-04-14
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java注解-元数据"><span class="post-toc-number">1.</span> <span class="post-toc-text">Java注解 (元数据)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#注解的概念及作用"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">注解的概念及作用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#声明注解"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">声明注解</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#注解的分类"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">注解的分类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#内置注解"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">内置注解</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#内置注解分类"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">内置注解分类</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#内置注解-非元注解"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">内置注解 : 非元注解</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#内置注解-元注解"><span class="post-toc-number">1.4.3.</span> <span class="post-toc-text">内置注解 : 元注解</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#使用反射获取注解"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">使用反射获取注解</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#标记注解"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">标记注解</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#重复注解"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">重复注解</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Java-annotation"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Java annotation</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-14 09:43:16" datetime="2019-04-14T09:43:16.000Z"  itemprop="datePublished">2019-04-14</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="Java注解-元数据"><a href="#Java注解-元数据" class="headerlink" title="Java注解 (元数据)"></a>Java注解 (元数据)</h2><h3 id="注解的概念及作用"><a href="#注解的概念及作用" class="headerlink" title="注解的概念及作用"></a>注解的概念及作用</h3><ul>
+<li><p><em>从JDK1.5开始,Java支持在源文件中嵌入补充信息,这类信息被称为<code>注解(annotation)</code>.注解不会改变程序的动作,因此也就不会改变程序的语义,但是在开发和部署期间,各种工具可以使用这类信息,例如: 源代码生成器可以处理注解! 注: <code>如果没有注解信息处理流程(如:通过反射查询注解),则注解毫无意义 !</code></em></p>
+</li>
+<li><p><em>说明: 其实术语<code>元数据(metadata)</code>,但是<code>注解</code>这个名称更具有描述性并且更常用.</em></p>
+</li>
+</ul>
+<h3 id="声明注解"><a href="#声明注解" class="headerlink" title="声明注解"></a>声明注解</h3><ul>
+<li><em>注解是一种代码级别的说明.它与<code>类</code>,<code>接口</code>,<code>枚举</code>在同一个层次,它可以声明在<code>包</code>,<code>类</code>,<code>字段</code>,<code>方法</code>,<code>局部变量</code>,<code>方法参数</code>等的前面,用来对这些元素进行说明,注释..</em></li>
+</ul>
+<h3 id="注解的分类"><a href="#注解的分类" class="headerlink" title="注解的分类"></a>注解的分类</h3><ol>
+<li>特殊的注解 : <code>标记注解</code>,<code>单成员注解</code>.</li>
+<li><code>内置注解</code>.</li>
+<li><code>类型注解</code>.</li>
+<li><code>重复注解</code>.</li>
+</ol>
+<h3 id="内置注解"><a href="#内置注解" class="headerlink" title="内置注解"></a>内置注解</h3><h4 id="内置注解分类"><a href="#内置注解分类" class="headerlink" title="内置注解分类"></a>内置注解分类</h4><ol>
+<li><em><code>java.lang.annotation</code>包下的注解分别是 : <code>@Retention</code>,<code>@Documnetd</code>,<code>@Target</code>,<code>@Inherited</code></em></li>
+</ol>
+<ul>
+<li><em>以上四个注解被称为<code>元注解</code>,其作用是负责注解其它的注解,用来提供对其它<code>annotation</code>类型做说明.</em></li>
+</ul>
+<ol start="2">
+<li><em><code>java.lang</code>包下注解分别是 : <code>@Override</code>,<code>@Deprecated</code>,<code>@FunctionalInterface</code>,<code>@SafeVarargs</code>,<code>@SuppressWarnings</code></em></li>
+</ol>
+<ul>
+<li><em>注意: <code>JDK8</code>在<code>java.lang.annotation</code>中添加了<code>Repeatable</code>和<code>Native</code>注解.其中<code>Repeatable</code>支持重复注解,<code>Native</code>用于注解本机代码可以访问的域变量.</em></li>
+</ul>
+<h4 id="内置注解-非元注解"><a href="#内置注解-非元注解" class="headerlink" title="内置注解 : 非元注解"></a>内置注解 : <code>非元注解</code></h4><ul>
+<li><em><code>@SuppressWarnings</code>注解使用详解如下图所示</em><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/14/Java-annotation/SuppressWarnings.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+</li>
+</ul>
+<ol>
+<li><p><em><code>@Override</code>,<code>@Deprecated</code>,<code>@SafeVarargs</code>,<code>SuppressWarnings</code>程序示例</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.annotation.built_in_annotation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: Built_in_annotations</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 非元注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 9:36:20 AM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Built_in_annotations</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</span><br><span class="line">	<span class="keyword">private</span> T[] args;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Type safety: Potential heap pollution via varargs parameter args..</span></span><br><span class="line">	<span class="comment">// @SafeVarargs: 为标记注解,只能用于方法和构造方法,指示没有发生与可变长度参数相关的不安全动作.</span></span><br><span class="line">	<span class="meta">@SafeVarargs</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Built_in_annotations</span><span class="params">(T... args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.args = args;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// @SafeVarargs: 该注解只能用于varargs方法或者声明为static或final的构造方法.</span></span><br><span class="line">	<span class="meta">@SafeVarargs</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">safeVarargsTest</span><span class="params">(T... args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</span><br><span class="line">		T t : args) &#123;</span><br><span class="line">			System.out.println(args);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// @Override: 用于确保超类方法被真正地重写,而不是简单地重载.</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">super</span>.toString();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// @Deprecated: 为标记注解,用于指示声明是过时的,并且已经被更新到的形式取代.</span></span><br><span class="line">	<span class="meta">@Deprecated</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deprecatedTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// @SuppressWarnings: 用于抑制一个或多个编译器可能会报告的警告.使用以字符串形式表示的名称来指定要被抑制的警告.</span></span><br><span class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"rawtypes"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">supressWarningsTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</span><br><span class="line">		ArrayList arrayList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em><code>@FunctionalInterface</code>程序示例</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: functionalInterface</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: `学习<span class="doctag">@functionalInterface</span>注解`</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 10:39:46 AM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">//`Java8`为函数式接口引入了一个新注解`@FunctionalInterface`,其主要用于编译错误检查,</span></span><br><span class="line"><span class="comment">//加上该注释后当你写的接口不符合函数式定义时,编译器就会报错 !</span></span><br><span class="line"><span class="comment">//注意: 是否添加`@FunctionalInterface`对于接口是不是函数式接口没有影响,</span></span><br><span class="line"><span class="comment">//该注释只是提醒`编译器`去检查该接口是否仅仅包含一个抽象方法.</span></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">functionalInterface</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 注意: 函数式接口中只能有一个抽象方法 !</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">myLambda</span><span class="params">(String message)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 函数式接口里是可以包含默认方法,因为默认方法不是抽象方法,其有一个默认实现,</span></span><br><span class="line">    <span class="comment">//所以是符合函数式接口的定义的.</span></span><br><span class="line">	<span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">defaultMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// method body..</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 函数式接口里是可以包含静态方法,因为静态方法不能是抽象方法,是一个已经实现了的方法,</span></span><br><span class="line">    <span class="comment">//所以是符合函数式接口的定义的.</span></span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">staticMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// method body..</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 函数式接口里是可以包含Object里的public方法,这些方法对于函数式接口来说,</span></span><br><span class="line">	<span class="comment">// 不被当成是抽象方法(虽然它们是抽象方法).因为任何一个函数式接口的实现,默认都继承了Object类,</span></span><br><span class="line">    <span class="comment">//其包含了来自java.lang.Object里对这些抽象方法的实现!</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object object)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用`@FunctionalInterface`注解的函数式接口继而可以使用`Lambda`表示式来表示该接口的一个实现.</span></span><br><span class="line"><span class="comment">//(Java8 之前一般是使用匿名类实现的).</span></span><br><span class="line"><span class="comment">//functionalInterface  f = message-&gt;System.out.println();</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="内置注解-元注解"><a href="#内置注解-元注解" class="headerlink" title="内置注解 : 元注解"></a>内置注解 : <code>元注解</code></h4><ul>
+<li><p><em>使用<code>@Target</code>,<code>@Retention</code>自定义注解</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: MyTarget_annotation</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 自定义注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 11:12:54 AM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Target</span>(&#123; ElementType.TYPE, ElementType.METHOD, ElementType.FIELD, ElementType.LOCAL_VARIABLE,</span><br><span class="line">		ElementType.CONSTRUCTOR &#125;)<span class="comment">//用于指定可以应用注解的声明类型,被设计为只能注解其它注解.</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.CLASS)<span class="comment">//指定保留策略.</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyTarget_annotation &#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">id</span><span class="params">()</span> <span class="keyword">default</span> -1</span>; <span class="comment">//使用默认值</span></span><br><span class="line"></span><br><span class="line">	<span class="function">String <span class="title">name</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">	String[] address() <span class="keyword">default</span> &#123; <span class="string">"null"</span> &#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>使用自定义注解</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pers.huangyuhui.annotation.myannotation.MyTarget_annotation;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: TargetTest</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 使用自定义注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 11:38:23 AM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@MyTarget</span>_annotation(name = <span class="string">""</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TargetTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 由于声明的注解类型包含 : `CONSTRUCTOR`, 所以可以在构造方法前使用.</span></span><br><span class="line">	<span class="meta">@MyTarget</span>_annotation(name = <span class="string">""</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TargetTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated constructor stub</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 由于声明的注解类型包含 : `FIELD`, 所以可以在域变量前使用.</span></span><br><span class="line">	<span class="meta">@MyTarget</span>_annotation(name = <span class="string">""</span>)</span><br><span class="line">	<span class="keyword">private</span> String s;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 由于声明的注解类型包含 : `METHOD`, 所以可以在方法前使用.</span></span><br><span class="line">	<span class="meta">@MyTarget</span>_annotation(id = <span class="number">1</span>, name = <span class="string">"YUbuntu0109"</span>, address = <span class="string">"my address"</span>) <span class="comment">// 显式的定义注解值</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 由于声明的注解类型包含 : `LOCAL_VARIABLE`, 所以可以在局部变量前使用.</span></span><br><span class="line">		<span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)</span><br><span class="line">		<span class="meta">@MyTarget</span>_annotation(name = <span class="string">""</span>)</span><br><span class="line">		<span class="keyword">int</span> i;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="使用反射获取注解"><a href="#使用反射获取注解" class="headerlink" title="使用反射获取注解"></a>使用反射获取注解</h3><ol>
+<li>通过<code>反射</code>获取方法关联的注解</li>
+</ol>
+<ul>
+<li><p><em>首先自定义一个注解</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.annotation.myannotation;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: MyAnnotation</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 自定义注解,用于通过反射获取注解信息的测试</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 5:52:05 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)<span class="comment">//指定保留策略</span></span><br><span class="line"><span class="meta">@Target</span>(&#123; ElementType.METHOD, ElementType.TYPE &#125;)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyAnnotation &#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">id</span><span class="params">()</span> <span class="keyword">default</span> 1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> "<span class="keyword">default</span> value"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>通过反射获取自定义注解信息</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pers.huangyuhui.annotation.myannotation.MyAnnotation;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: getAnnotationInfo</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 通过反射获取方法关联的注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 5:45:32 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">getAnnotationInfo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@MyAnnotation</span>(name = <span class="string">"Hello annotation !"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">double</span> d, String s)</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		getAnnotationInfo getInfo = <span class="keyword">new</span> getAnnotationInfo();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 获取Class对象</span></span><br><span class="line">		Class&lt;?&gt; class1 = getInfo.getClass();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 通过调用Class泛型类提供的`getMethod`方法获取与方法相关的信息</span></span><br><span class="line">			Method method = class1.getMethod(<span class="string">"fun"</span>, <span class="keyword">double</span><span class="class">.<span class="keyword">class</span>, <span class="title">String</span>.<span class="title">class</span>)</span>;</span><br><span class="line">			<span class="comment">// 通过调用`getAnnotation`获取与对象相关联的特定注解</span></span><br><span class="line">			MyAnnotation annotatioin = method.getAnnotation(MyAnnotation<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">			System.out.println(<span class="string">"id : "</span> + annotatioin.id() + <span class="string">"\nname : "</span> + annotatioin.name());</span><br><span class="line"></span><br><span class="line">		&#125; <span class="keyword">catch</span> (NoSuchMethodException | SecurityException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id : <span class="number">1</span> </span><br><span class="line">name : Hello annotation !</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol start="2">
+<li>通过<code>反射</code>获取所有注解</li>
+</ol>
+<ul>
+<li><p><em>首先自定义一个注解</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.annotation.myannotation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: MyAnnotation2</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 自定义注解,用于反射获取注解信息的测试</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 6:09:15 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyAnnotation2 &#123;</span><br><span class="line"></span><br><span class="line">	<span class="function">String <span class="title">description</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>通过反射获取自定义<code>注解</code>信息</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.annotation.reflect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Annotation;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pers.huangyuhui.annotation.myannotation.MyAnnotation;</span><br><span class="line"><span class="keyword">import</span> pers.huangyuhui.annotation.myannotation.MyAnnotation2;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: getAllAnnotationInfo</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 通过反射机制获取所有注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 6:10:29 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@MyAnnotation</span>()</span><br><span class="line"><span class="meta">@MyAnnotation</span>2(description = <span class="string">"Test class"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">getAllAnnotationInfo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@MyAnnotation</span>(id = <span class="number">1</span>, name = <span class="string">"Hello annotation !"</span>)</span><br><span class="line">	<span class="meta">@MyAnnotation</span>2(description = <span class="string">"Test method"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NoSuchMethodException, SecurityException </span>&#123;</span><br><span class="line">		getAllAnnotationInfo allAnnotationInfo = <span class="keyword">new</span> getAllAnnotationInfo();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 通过`getAnnoations`获取该类所有注解信息</span></span><br><span class="line">		Annotation annotation[] = allAnnotationInfo.getClass().getAnnotations();</span><br><span class="line"></span><br><span class="line">		System.out.println(<span class="string">"`getAllAnnotationInfo`类的所有注解 : "</span>);</span><br><span class="line">		<span class="keyword">for</span> (Annotation info : annotation) &#123;</span><br><span class="line">			System.out.println(info);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		System.out.println();</span><br><span class="line">		<span class="comment">// 通过调用Class泛型类提供的`getMethod`方法获取与方法相关的信息</span></span><br><span class="line">		Method method = allAnnotationInfo.getClass().getMethod(<span class="string">"fun"</span>);</span><br><span class="line">		<span class="comment">// 通过调用`getAnnotation`获取与对象相关联的特定注解</span></span><br><span class="line">		annotation = method.getAnnotations();</span><br><span class="line"></span><br><span class="line">		System.out.println(<span class="string">"方法`fun()`的所有注解 : "</span>);</span><br><span class="line">		<span class="keyword">for</span> (Annotation info : annotation) &#123;</span><br><span class="line">			System.out.println(info);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">`getAllAnnotationInfo`类的所有注解 : </span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation(name=<span class="string">"default value"</span>, id=<span class="number">1</span>)</span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation2(description=<span class="string">"Test class"</span>)</span><br><span class="line"></span><br><span class="line">方法`fun()`的所有注解 : </span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation(name=<span class="string">"Hello annotation !"</span>, id=<span class="number">1</span>)</span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation2(description=<span class="string">"Test method"</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="标记注解"><a href="#标记注解" class="headerlink" title="标记注解"></a>标记注解</h3><ul>
+<li><p><em>编写示例程序来判断<code>标记注解</code>是否存在</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: TagTest</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 标记注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 6:57:26 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@interface</span> MyMarker_annotation &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MarketTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@MyMarker</span>_annotation</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		MarketTest marketTest = <span class="keyword">new</span> MarketTest();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// 通过调用Class泛型类提供的`getMethod`方法获取与该方法相关的信息</span></span><br><span class="line">			Method method = marketTest.getClass().getMethod(<span class="string">"fun"</span>);</span><br><span class="line">			<span class="comment">// 通过使用`AnnotatedElement`接口的`isAnnotationPresent`方法来确定自定义注解中是否存在`标记注解`</span></span><br><span class="line">			<span class="keyword">if</span> (method.isAnnotationPresent(MyMarker_annotation<span class="class">.<span class="keyword">class</span>)) </span>&#123;</span><br><span class="line">				System.out.println(<span class="string">"存在标记注解 !"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Method not found !"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		fun();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">存在标记注解 !</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em><code>说明</code> : 因为<code>标记注解没有成员</code>,所以应用标记注解时,后面不需要有圆括号.如果提供空的圆括号,也不会报错,但不是必需的.类似地,对于所有成员都使用<code>默认值(default)</code>的注解也可以没有圆括号.</em></p>
+</li>
+</ul>
+<h3 id="重复注解"><a href="#重复注解" class="headerlink" title="重复注解"></a>重复注解</h3><ul>
+<li><p><em>要创建<code>重复注解</code>,必须创建<code>容器注解</code></em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.annotation.myannotation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: MyReapeatable_annotation</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: `重复注解`的容器注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 8:08:21 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyReapeatable_annotation &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// `value`成员指定的是重复注解类型的数组</span></span><br><span class="line">	MyAnnotation[] value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>创建<code>重复注解</code></em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.annotation.myannotation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Repeatable;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: MyAnnotation</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 重复注解</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 5:52:05 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//指定`@Repeatable`注解的`value`成员值为容器注解 : `MyReapeatable_annotation`</span></span><br><span class="line"><span class="meta">@Repeatable</span>(MyReapeatable_annotation<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">Retention</span>(<span class="title">RetentionPolicy</span>.<span class="title">RUNTIME</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> @<span class="title">interface</span> <span class="title">MyAnnotation</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">id</span><span class="params">()</span> <span class="keyword">default</span> 1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> "<span class="keyword">default</span> value"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>通过反射获取<code>重复注解</code>信息</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.annotation.myannotation_test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Annotation;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pers.huangyuhui.annotation.myannotation.MyAnnotation;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: RepeatTest</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 通过反射获取`重复注解`的信息</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 14, 2019 7:58:54 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RepeatTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@MyAnnotation</span></span><br><span class="line">	<span class="meta">@MyAnnotation</span>(id=<span class="number">2</span>)</span><br><span class="line">	<span class="meta">@MyAnnotation</span>(id=<span class="number">3</span>,name=<span class="string">"YUbuntu0109"</span>)</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		RepeatTest repeatTest = <span class="keyword">new</span> RepeatTest();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// 获取Class对象</span></span><br><span class="line">			Class&lt;?&gt; class1 = repeatTest.getClass();</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// 通过调用Class泛型类提供的`getMethod`方法获取与该方法相关的信息</span></span><br><span class="line">			Method method = class1.getMethod(<span class="string">"testMethod"</span>);</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// `getAnnotation`用于获取与指定对象关联的特定注解</span></span><br><span class="line">			<span class="comment">// Annotation annotation = method.getAnnotation(MyReapeatable_annotation.class);</span></span><br><span class="line">			<span class="comment">// System.out.println(annotation);</span></span><br><span class="line"></span><br><span class="line">			<span class="comment">// 使用`getAnnotationsByType`来获取`MyAnnotation`重复注解</span></span><br><span class="line">			Annotation[] annotations = method.getAnnotationsByType(MyAnnotation<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">			<span class="keyword">for</span> (Annotation info : annotations) &#123;</span><br><span class="line">				System.out.println(info);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">		&#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error : Method not found !"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		testMethod();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//程序运行结果 :</span></span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyReapeatable_annotation(value=&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation(name=<span class="string">"default value"</span>, id=<span class="number">1</span>), </span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation(name=<span class="string">"default value"</span>, id=<span class="number">2</span>), </span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation(name=<span class="string">"YUbuntu0109"</span>, id=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//程序运行结果(使用`getAnnotationsByType`来获取`MyAnnotation`重复注解) : </span></span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation(name=<span class="string">"default value"</span>, id=<span class="number">1</span>)</span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation(name=<span class="string">"default value"</span>, id=<span class="number">2</span>)</span><br><span class="line"><span class="meta">@pers</span>.huangyuhui.annotation.myannotation.MyAnnotation(name=<span class="string">"YUbuntu0109"</span>, id=<span class="number">3</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.533Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/14/Java-annotation/&title=《Java annotation》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/14/Java-annotation/&title=《Java annotation》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/14/Java-annotation/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java annotation》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/14/Java-annotation/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/14/Java-annotation/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/04/15/Java-reflection/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Java reflection</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/04/13/详解Stack的实现方式及其应用/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">详解Stack的实现方式及其应用</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/14/Java-annotation/&title=《Java annotation》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/14/Java-annotation/&title=《Java annotation》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/14/Java-annotation/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java annotation》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/14/Java-annotation/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/14/Java-annotation/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/04/14/Java-annotation/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

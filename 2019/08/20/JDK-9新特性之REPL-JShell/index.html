@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>JDK 9新特性之REPL( JShell ) | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="JDK">
+    <meta name="description" content="学习笔记 : JDK 9新特性之REPL( JShell )产生背景像 Python 和 Scala之类的语言早就有交互式编程环境 REPL( read-evaluate-print-loop )了,以交互式的方式对语句和表达式进行求值,开发者只需要输入一些代码,就可以在编译前获得对程序的反馈. 而之前的 Java 版本想要执行代码,必须创建文件,声明类,提供测试方法才可以实现,而现在使用 JSh">
+<meta name="keywords" content="JDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDK 9新特性之REPL( JShell )">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : JDK 9新特性之REPL( JShell )产生背景像 Python 和 Scala之类的语言早就有交互式编程环境 REPL( read-evaluate-print-loop )了,以交互式的方式对语句和表达式进行求值,开发者只需要输入一些代码,就可以在编译前获得对程序的反馈. 而之前的 Java 版本想要执行代码,必须创建文件,声明类,提供测试方法才可以实现,而现在使用 JSh">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/JShell-Edit-Pad-Demo.PNG">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JDK 9新特性之REPL( JShell )">
+<meta name="twitter:description" content="学习笔记 : JDK 9新特性之REPL( JShell )产生背景像 Python 和 Scala之类的语言早就有交互式编程环境 REPL( read-evaluate-print-loop )了,以交互式的方式对语句和表达式进行求值,开发者只需要输入一些代码,就可以在编译前获得对程序的反馈. 而之前的 Java 版本想要执行代码,必须创建文件,声明类,提供测试方法才可以实现,而现在使用 JSh">
+<meta name="twitter:image" content="https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/JShell-Edit-Pad-Demo.PNG">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">JDK 9新特性之REPL( JShell )</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">JDK 9新特性之REPL( JShell )</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-20T18:24:35.000Z" itemprop="datePublished" class="page-time">
+  2019-08-20
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-JDK-9新特性之REPL-JShell"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : JDK 9新特性之REPL( JShell )</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#产生背景"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">产生背景</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#实现目标"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">实现目标</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基本使用"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">基本使用</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JDK-9新特性之REPL-JShell"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">JDK 9新特性之REPL( JShell )</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-20 18:24:35" datetime="2019-08-20T18:24:35.000Z"  itemprop="datePublished">2019-08-20</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-JDK-9新特性之REPL-JShell"><a href="#学习笔记-JDK-9新特性之REPL-JShell" class="headerlink" title="学习笔记 : JDK 9新特性之REPL( JShell )"></a>学习笔记 : JDK 9新特性之REPL( JShell )</h2><h3 id="产生背景"><a href="#产生背景" class="headerlink" title="产生背景"></a>产生背景</h3><p><em>像 Python 和 Scala之类的语言早就有交互式编程环境 REPL( read-evaluate-print-loop )了,以交互式的方式对语句和表达式进行求值,开发者只需要输入一些代码,就可以在编译前获得对程序的反馈. 而之前的 Java 版本想要执行代码,必须创建文件,声明类,提供测试方法才可以实现,而现在使用 JShell( 既写既的,快速运行 ) 就可以摆脱这种困扰咯~</em></p>
+<h3 id="实现目标"><a href="#实现目标" class="headerlink" title="实现目标"></a>实现目标</h3><ul>
+<li>Java9 终于拥有了 REPL 工具 JShell : 既而可以让 Java 可以像脚本语言一样运行,从控制台启动 JShell,利用 JShell 在没有创建类的情况下直接声明变量,计算表达式,执行语句. 既开发时可以在命令行里直接运行Java的代码,而无需再创建 Java 文件,无需再使用 <code>public static void main(String[]args)</code>这句废话</li>
+<li>JShell 也可以从文件中加载语句或将语句保存到文件中</li>
+<li>JShell 也可以是 tab 键进行自动补全和自动添加分号</li>
+</ul>
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p><em>JShell 中的命令和代码片段是不一样的,命令都是以前导的反斜杠 <code>/</code> 开头,比如要显示所有已经定义的变量,可以使用 <code>/var</code>, 要显示所有已经定义的方法,可以使用 <code>/methods</code>,要显示所有已经定义的类型,可以使用 <code>/types</code>, 要显示所有输入的代码片段,可以使用 <code>/list</code> · · ·</em></p>
+<p><em>进入JShell命令行环境 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator</span><br><span class="line">λ jshell</span><br><span class="line">|  Welcome to JShell -- Version 11.0.2</span><br><span class="line">|  For an introduction type: /help intro</span><br><span class="line"></span><br><span class="line">jshell&gt;</span><br></pre></td></tr></table></figure></p>
+<p><em>输入<code>/help</code>可以查看 JShell 相关的命令 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /help                                                                                     </span><br><span class="line">|  Type a Java language expression, statement, or declaration.                                    </span><br><span class="line">|  Or type one of the following commands:                                                         </span><br><span class="line">|  /list [&lt;name or id&gt;|-all|-start]                                                               </span><br><span class="line">|       list the source you have typed                                                            </span><br><span class="line">|  /edit &lt;name or id&gt;                                                                             </span><br><span class="line">|       edit a source entry                                                                       </span><br><span class="line">|  /drop &lt;name or id&gt;                                                                             </span><br><span class="line">|       delete a source entry                                                                     </span><br><span class="line">|  /save [-all|-history|-start] &lt;file&gt;                                                            </span><br><span class="line">|       Save snippet source to a file                                                             </span><br><span class="line">|  /open &lt;file&gt;                                                                                   </span><br><span class="line">|       open a file as source input                                                               </span><br><span class="line">|  /vars [&lt;name or id&gt;|-all|-start]                                                               </span><br><span class="line">|       list the declared variables and their values                                              </span><br><span class="line">|  /methods [&lt;name or id&gt;|-all|-start]                                                            </span><br><span class="line">|       list the declared methods and their signatures                                            </span><br><span class="line">|  /types [&lt;name or id&gt;|-all|-start]                                                              </span><br><span class="line">|       list the type declarations                                                                </span><br><span class="line">|  /imports                                                                                       </span><br><span class="line">|       list the imported items                                                                   </span><br><span class="line">|  /exit [&lt;integer-expression-snippet&gt;]                                                           </span><br><span class="line">|       exit the jshell tool                                                                      </span><br><span class="line">|  /env [-class-path &lt;path&gt;] [-module-path &lt;path&gt;] [-add-modules &lt;modules&gt;] ...                   </span><br><span class="line">|       view or change the evaluation context                                                     </span><br><span class="line">|  /reset [-class-path &lt;path&gt;] [-module-path &lt;path&gt;] [-add-modules &lt;modules&gt;]...                  </span><br><span class="line">|       reset the jshell tool                                                                     </span><br><span class="line">|  /reload [-restore] [-quiet] [-class-path &lt;path&gt;] [-module-path &lt;path&gt;]...                      </span><br><span class="line">|       reset and replay relevant history -- current or previous (-restore)                       </span><br><span class="line">|  /history [-all]                                                                                </span><br><span class="line">|       history of what you have typed                                                            </span><br><span class="line">|  /help [&lt;command&gt;|&lt;subject&gt;]                                                                    </span><br><span class="line">|       get information about using the jshell tool                                               </span><br><span class="line">|  /set editor|start|feedback|mode|prompt|truncation|format ...                                   </span><br><span class="line">|       set configuration information                                                             </span><br><span class="line">|  /? [&lt;command&gt;|&lt;subject&gt;]                                                                       </span><br><span class="line">|       get information about using the jshell tool                                               </span><br><span class="line">|  /!                                                                                             </span><br><span class="line">|       rerun last snippet -- see /help rerun                                                     </span><br><span class="line">|  /&lt;id&gt;                                                                                          </span><br><span class="line">|       rerun snippets by ID or ID range -- see /help rerun                                       </span><br><span class="line">|  /-&lt;n&gt;                                                                                          </span><br><span class="line">|       rerun n-th previous snippet -- see /help rerun                                            </span><br><span class="line">|                                                                                                 </span><br><span class="line">|  For more information type &apos;/help&apos; followed by the name of a                                    </span><br><span class="line">|  command or a subject.                                                                          </span><br><span class="line">|  For example &apos;/help /list&apos; or &apos;/help intro&apos;.                                                    </span><br><span class="line">|                                                                                                 </span><br><span class="line">|  Subjects:                                                                                      </span><br><span class="line">|                                                                                                 </span><br><span class="line">|  intro                                                                                          </span><br><span class="line">|       an introduction to the jshell tool                                                        </span><br><span class="line">|  id                                                                                             </span><br><span class="line">|       a description of snippet IDs and how use them                                             </span><br><span class="line">|  shortcuts                                                                                      </span><br><span class="line">|       a description of keystrokes for snippet and command completion,                           </span><br><span class="line">|       information access, and automatic code generation                                         </span><br><span class="line">|  context                                                                                        </span><br><span class="line">|       a description of the evaluation context options for /env /reload and /reset               </span><br><span class="line">|  rerun                                                                                          </span><br><span class="line">|       a description of ways to re-evaluate previously entered snippets                          </span><br><span class="line">                                                                                                  </span><br><span class="line">jshell&gt;</span><br></pre></td></tr></table></figure></p>
+<p><em>JShell 命令的自动补全功能 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /</span><br><span class="line">/!          /?          /drop       /edit       /env        /exit       /help       /history    /imports</span><br><span class="line">/list       /methods    /open       /reload     /reset      /save       /set        /types      /vars</span><br><span class="line"></span><br><span class="line">&lt;press tab again to see synopsis&gt;</span><br><span class="line"></span><br><span class="line">jshell&gt; /</span><br></pre></td></tr></table></figure></p>
+<p><em><code>System.out.</code>后按下 Tab 键,就会列出当前类的所有的 public 方法的列表哟</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; System.out.</span><br><span class="line">append(        checkError()   close()        equals(        flush()        format(        getClass()</span><br><span class="line">hashCode()     notify()       notifyAll()    print(         printf(        println(       toString()</span><br><span class="line">wait(          write(</span><br><span class="line"></span><br><span class="line">jshell&gt;</span><br></pre></td></tr></table></figure></p>
+<p><em>实例 : 在 JShell 中使用 Stream 流过滤并遍历输出数组元素 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; public void streamDemo()&#123;</span><br><span class="line">   ...&gt; String[]array = &#123;&quot;a&quot;,&quot;bc&quot;,&quot;bcd&quot;,&quot;abcd&quot;&#125;;</span><br><span class="line">   ...&gt; Stream.of(array).filter(e-&gt;e.startsWith(&quot;a&quot;)).filter(e-&gt;e.length()&gt;3).forEach(System.out::println);</span><br><span class="line">   ...&gt; &#125;</span><br><span class="line">|  created method streamDemo()</span><br><span class="line"></span><br><span class="line">jshell&gt; streamDemo();</span><br><span class="line">abcd</span><br></pre></td></tr></table></figure></p>
+<p><em>例如使用<code>/imports</code>命令用于查看已导入的包 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /imports</span><br><span class="line">|    import java.io.*</span><br><span class="line">|    import java.math.*</span><br><span class="line">|    import java.net.*</span><br><span class="line">|    import java.nio.file.*</span><br><span class="line">|    import java.util.*</span><br><span class="line">|    import java.util.concurrent.*</span><br><span class="line">|    import java.util.function.*</span><br><span class="line">|    import java.util.prefs.*</span><br><span class="line">|    import java.util.regex.*</span><br><span class="line">|    import java.util.stream.*</span><br><span class="line"></span><br><span class="line">jshell&gt;</span><br></pre></td></tr></table></figure></p>
+<p><em>列出到目前为止当前 <code>session</code> 里所有有效的代码片段 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /list</span><br><span class="line"></span><br><span class="line">   1 : System.out.println(&quot;demo&quot;);</span><br><span class="line">   2 : public void streamDemo()&#123;</span><br><span class="line">       String[]array = &#123;&quot;a&quot;,&quot;bc&quot;,&quot;bcd&quot;,&quot;abcd&quot;&#125;;</span><br><span class="line">       Stream.of(array)</span><br><span class="line">       .filter(e-&gt;e.startsWith(&quot;a&quot;))</span><br><span class="line">       .filter(e-&gt;e.length()&gt;3)</span><br><span class="line">       .forEach(System.out::println);</span><br><span class="line">       &#125;</span><br><span class="line">   3 : streamDemo();</span><br><span class="line"></span><br><span class="line">jshell&gt;</span><br></pre></td></tr></table></figure></p>
+<p><em>列出到目前为止当前 session 里所有方法 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /method</span><br><span class="line">|    void StreamDemo()</span><br></pre></td></tr></table></figure></p>
+<p><em>在 JShell 中可以启用 JShell Edit Pad 编辑器来写更加便捷地书写 Java 代码,只需要输入命令<code>/edit</code>,代码编辑完成后,先点击”Accept”按钮,再点击”Exit”按钮,继而退出编辑器</em><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/08/20/JDK-9新特性之REPL-JShell/JShell-Edit-Pad-Demo.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<p><em>调用已修改的程序,其运行结果如下所示 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /edit</span><br><span class="line">|  created method streamDemo()</span><br><span class="line"></span><br><span class="line">jshell&gt; /edit</span><br><span class="line">|  modified method streamDemo()</span><br><span class="line">|    update overwrote method streamDemo()</span><br><span class="line"></span><br><span class="line">jshell&gt; streamDemo();</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line">jshell&gt;</span><br></pre></td></tr></table></figure></p>
+<p><em>JShell Edit Pad 编辑器功能非常有限,仅能提供一些最基础的功能,不过好消息是 JShell 可以配置外部的代码编辑器,只需要使用 <code>/edit</code> 设置外部编辑器的完整路径即可,例如使用 VS Code 来作为外部的代码编辑器</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /set editor /Visual Studio Code/Microsoft VS Code/Code.exe</span><br><span class="line">|  Editor set to: /Visual Studio Code/Microsoft VS Code/Code.exe</span><br></pre></td></tr></table></figure></p>
+<p><em>从外部加载源代码 : 如果在外部已经有写好的 Java 文件,则可以使用 <code>/open</code> 命令导入到 JShell 环境中,例如现在有一个Test.java文件</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /open /Java/Test.java</span><br><span class="line"></span><br><span class="line">jshell&gt; /methods</span><br><span class="line">|    int add(int,int)</span><br><span class="line">|    int sub(int,int)</span><br><span class="line"></span><br><span class="line">jshell&gt; add(1,2);</span><br><span class="line">$5 ==&gt; 3</span><br><span class="line"></span><br><span class="line">jshell&gt;</span><br></pre></td></tr></table></figure></p>
+<p><em>JShell 命令缩写,例如 <code>/list</code> 的缩写为 <code>/l</code>,例如 <code>/list -all</code> 的缩写为 <code>/l -a</code>. 例如,我们可以使用 <code>/l -a</code> 来代替 <code>list -all</code> 输出所有的代码片段 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /l -a                                                                     </span><br><span class="line">                                                                                  </span><br><span class="line">  s1 : import java.io.*;                                                          </span><br><span class="line">  s2 : import java.math.*;                                                        </span><br><span class="line">  s3 : import java.net.*;                                                         </span><br><span class="line">  s4 : import java.nio.file.*;                                                    </span><br><span class="line">  s5 : import java.util.*;                                                        </span><br><span class="line">  s6 : import java.util.concurrent.*;                                             </span><br><span class="line">  s7 : import java.util.function.*;                                               </span><br><span class="line">  s8 : import java.util.prefs.*;                                                  </span><br><span class="line">  s9 : import java.util.regex.*;                                                  </span><br><span class="line"> s10 : import java.util.stream.*;                                                 </span><br><span class="line">   1 : System.out.println(&quot;demo&quot;);                                                </span><br><span class="line">   2 : public void StreamDemo()&#123;                                                  </span><br><span class="line">       String[]array = &#123;&quot;a&quot;,&quot;bc&quot;,&quot;bcd&quot;,&quot;abcd&quot;&#125;;                                   </span><br><span class="line">       Stream.of(array)                                                           </span><br><span class="line">       .filter(e-&gt;e.startsWith(&quot;a&quot;))                                              </span><br><span class="line">       .filter(e-&gt;e.length()&gt;3)                                                   </span><br><span class="line">       .forEach(System.out::println);                                             </span><br><span class="line">       &#125;                                                                          </span><br><span class="line">   3 : StreamDemo();                                                              </span><br><span class="line">   4 : public void streamDemo() &#123;                                                 </span><br><span class="line">           String[] array = &#123;&quot;a&quot;, &quot;bc&quot;, &quot;abc&quot;, &quot;bcd&quot;, &quot;abcd&quot;&#125;;                    </span><br><span class="line">           long count = Stream.of(array)                                          </span><br><span class="line">        .filter(element -&gt; element.startsWith(&quot;a&quot;))                               </span><br><span class="line">        .filter(element -&gt; element.length()&gt;3)                                    </span><br><span class="line">        .count();                                                                 </span><br><span class="line">           System.out.println(count);                                             </span><br><span class="line">       &#125;                                                                          </span><br><span class="line">   5 : public void streamDemo() &#123;                                                 </span><br><span class="line">           String[] array = &#123;&quot;a&quot;, &quot;bc&quot;, &quot;abc&quot;, &quot;bcd&quot;, &quot;abcd&quot;, &quot;abcde&quot;&#125;;           </span><br><span class="line">           long count = Stream.of(array)                                          </span><br><span class="line">        .skip(1)                                                                  </span><br><span class="line">        .filter(element -&gt; element.startsWith(&quot;a&quot;))                               </span><br><span class="line">        .filter(element -&gt; element.length()&gt;3)                                    </span><br><span class="line">        .count();                                                                 </span><br><span class="line">           System.out.println(count);                                             </span><br><span class="line">       &#125;                                                                          </span><br><span class="line">   6 : streamDemo();                                                              </span><br><span class="line">                                                                                  </span><br><span class="line">jshell&gt;</span><br></pre></td></tr></table></figure></p>
+<p><em>退出 JShell</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jshell&gt; /exit</span><br><span class="line">|  Goodbye</span><br></pre></td></tr></table></figure></p>
+<p><em>更多 JShell 的详细介绍请参考 : <a href="https://docs.oracle.com/javase/9/jshell/introduction-jshell.htm" target="_blank" rel="noopener">官方介绍文档</a></em></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.529Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JDK/">JDK</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/&title=《JDK 9新特性之REPL( JShell )》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/&title=《JDK 9新特性之REPL( JShell )》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《JDK 9新特性之REPL( JShell )》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/08/21/JDK-9新特性详解/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">详解JDK 9中的新特性</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/08/20/JDK-9目录结构的变化及新特性之模块化/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JDK 9目录结构的变化及新特性之模块化</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/&title=《JDK 9新特性之REPL( JShell )》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/&title=《JDK 9新特性之REPL( JShell )》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《JDK 9新特性之REPL( JShell )》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/08/20/JDK-9新特性之REPL-JShell/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

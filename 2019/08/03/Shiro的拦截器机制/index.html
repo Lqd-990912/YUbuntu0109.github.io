@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Shiro的拦截器机制 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java,Shiro">
+    <meta name="description" content="学习笔记 : Shiro的拦截机制默认拦截器Shiro内置了很多默认的拦截器,比如身份验证、授权等相关的.更多默认拦截器可以参考 org.apache.shiro.web.filter.mgt.DefaultFilter中的枚举拦截器,如下所示 :1234567891011121314151617181920212223242526272829303132333435363738394041424">
+<meta name="keywords" content="Java,Shiro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shiro的拦截器机制">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : Shiro的拦截机制默认拦截器Shiro内置了很多默认的拦截器,比如身份验证、授权等相关的.更多默认拦截器可以参考 org.apache.shiro.web.filter.mgt.DefaultFilter中的枚举拦截器,如下所示 :1234567891011121314151617181920212223242526272829303132333435363738394041424">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/Shiro-ShiroFilter.jpg">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.553Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Shiro的拦截器机制">
+<meta name="twitter:description" content="学习笔记 : Shiro的拦截机制默认拦截器Shiro内置了很多默认的拦截器,比如身份验证、授权等相关的.更多默认拦截器可以参考 org.apache.shiro.web.filter.mgt.DefaultFilter中的枚举拦截器,如下所示 :1234567891011121314151617181920212223242526272829303132333435363738394041424">
+<meta name="twitter:image" content="https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/Shiro-ShiroFilter.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Shiro的拦截器机制</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Shiro的拦截器机制</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-03T08:01:57.000Z" itemprop="datePublished" class="page-time">
+  2019-08-03
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-Shiro的拦截机制"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : Shiro的拦截机制</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#默认拦截器"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">默认拦截器</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Shiro的拦截器机制"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Shiro的拦截器机制</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-03 08:01:57" datetime="2019-08-03T08:01:57.000Z"  itemprop="datePublished">2019-08-03</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-Shiro的拦截机制"><a href="#学习笔记-Shiro的拦截机制" class="headerlink" title="学习笔记 : Shiro的拦截机制"></a>学习笔记 : Shiro的拦截机制</h2><h3 id="默认拦截器"><a href="#默认拦截器" class="headerlink" title="默认拦截器"></a>默认拦截器</h3><p><em>Shiro内置了很多默认的拦截器,比如身份验证、授权等相关的.更多默认拦截器可以参考 <code>org.apache.shiro.web.filter.mgt.DefaultFilter</code>中的枚举拦截器,如下所示 :</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Enum representing all of the default Shiro Filter instances available to web applications.  </span></span><br><span class="line"><span class="comment"> * Each filter instance is typically accessible </span></span><br><span class="line"><span class="comment"> * in configuration the &#123;<span class="doctag">@link</span> #name() name&#125; of the enum constant.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> DefaultFilter &#123;</span><br><span class="line"></span><br><span class="line">    anon(AnonymousFilter<span class="class">.<span class="keyword">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">authc</span>(<span class="title">FormAuthenticationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">authcBasic</span>(<span class="title">BasicHttpAuthenticationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">logout</span>(<span class="title">LogoutFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">noSessionCreation</span>(<span class="title">NoSessionCreationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">perms</span>(<span class="title">PermissionsAuthorizationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">port</span>(<span class="title">PortFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">rest</span>(<span class="title">HttpMethodPermissionFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">roles</span>(<span class="title">RolesAuthorizationFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">ssl</span>(<span class="title">SslFilter</span>.<span class="title">class</span>),</span></span><br><span class="line"><span class="class">    <span class="title">user</span>(<span class="title">UserFilter</span>.<span class="title">class</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Class&lt;? extends Filter&gt; filterClass;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">DefaultFilter</span><span class="params">(Class&lt;? extends Filter&gt; filterClass)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.filterClass = filterClass;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Filter <span class="title">newInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Filter) ClassUtils.newInstance(<span class="keyword">this</span>.filterClass);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Class&lt;? extends Filter&gt; getFilterClass() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.filterClass;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String, Filter&gt; <span class="title">createInstanceMap</span><span class="params">(FilterConfig config)</span> </span>&#123;</span><br><span class="line">        Map&lt;String, Filter&gt; filters = <span class="keyword">new</span> LinkedHashMap&lt;String, Filter&gt;(values().length);</span><br><span class="line">        <span class="keyword">for</span> (DefaultFilter defaultFilter : values()) &#123;</span><br><span class="line">            Filter filter = defaultFilter.newInstance();</span><br><span class="line">            <span class="keyword">if</span> (config != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    filter.init(config);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (ServletException e) &#123;</span><br><span class="line">                    String msg = <span class="string">"Unable to correctly init default filter instance of type "</span> +</span><br><span class="line">                            filter.getClass().getName();</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(msg, e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            filters.put(defaultFilter.name(), filter);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> filters;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/08/03/Shiro的拦截器机制/Shiro-ShiroFilter.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">过滤器简称</th>
+<th style="text-align:center">对应的java类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">anon</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authc.AnonymousFilter</td>
+</tr>
+<tr>
+<td style="text-align:center">authc</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authc.FormAuthenticationFilter</td>
+</tr>
+<tr>
+<td style="text-align:center">authcBasic</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter</td>
+</tr>
+<tr>
+<td style="text-align:center">roles</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authz.RolesAuthorizationFilter</td>
+</tr>
+<tr>
+<td style="text-align:center">perms</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter</td>
+</tr>
+<tr>
+<td style="text-align:center">user</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authc.UserFilter</td>
+</tr>
+<tr>
+<td style="text-align:center">logout</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authc.LogoutFilter</td>
+</tr>
+<tr>
+<td style="text-align:center">port</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authz.PortFilter</td>
+</tr>
+<tr>
+<td style="text-align:center">rest</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authz.HttpMethodPermissionFilter</td>
+</tr>
+<tr>
+<td style="text-align:center">ssl</td>
+<td style="text-align:center">org.apache.shiro.web.filter.authz.SslFilter</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><code>anon</code> : 匿名拦截器,即不需要登录即可访问. 一般用于静态资源过滤,示例”/static/**=anon”</li>
+<li><code>authc</code> : 表示需要认证(登录)才能使用,示例”/**=authc”,主要属性有 : <ul>
+<li>usernameParam : 表单提交的用户名参数名(username)</li>
+<li>passwordParam : 表单提交的密码参数名(password)</li>
+<li>rememberMeParam : 表单提交的密码参数名(rememberMe)</li>
+<li>loginUrl : 登录请求地址(/login.jsp)</li>
+<li>successUrl : 登录成功后的默认重定向地址</li>
+<li>failureKeyAttribute : 登录失败后错误信息存储key(shiroLoginFailure)</li>
+</ul>
+</li>
+<li><code>authcBasic</code> : Basic HTTP身份验证拦截器,主要属性 : applicationName:弹出登录框显示的信息(application)</li>
+<li><code>roles</code> : 角色授权拦截器,验证用户是否拥有资源角色. 示例”/admin/**=roles[admin]”</li>
+<li><code>perms</code> : 权限授权拦截器,验证用户是否拥有资源权限. 示例”/user/create=perms[“user:create”]”</li>
+<li><code>user</code> : 用户拦截器,用户已经身份验证/记住我的登录. 示例”/index=user”</li>
+<li><code>logout</code> : 退出拦截器,主要属性 : redirectUrl:退出成功后重定向的地址(/). 示例”/logout=logout”</li>
+<li><code>port</code> : 端口拦截器,主要属性 : port(80):可以通过的端口. 示例”/test= port[80]”,如果用户访问该页面是非80,将自动将请求端口改为80并重定向到该80端口,其他路径/参数等相同</li>
+<li><code>rest</code> : rest风格拦截器,自动根据请求方法构建权限字符串(GET=read,POST=create,PUT=update,DELETE=delete,HEAD=read,TRACE=read,OPTIONS=read, MKCOL=create)构建权限字符串. 示例”/users=rest[user]”,会自动拼出”user:read,user:create,user:update,user:delete”权限字符串进行权限匹配(所有都得匹配:isPermittedAll)</li>
+<li><code>ssl</code> : SSL拦截器,只有请求协议是https才能通过. 否则自动跳转会https端口(443). 其他和port拦截器一样</li>
+</ol>
+<ul>
+<li>注 : anon,authcBasic,auchc,user是认证过滤器. perms,roles,ssl,rest,port是授权过滤器</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.553Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shiro/">Shiro</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/&title=《Shiro的拦截器机制》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/&title=《Shiro的拦截器机制》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Shiro的拦截器机制》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/08/04/Hi-Layui/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Hi Layui ~</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/08/02/Shiro之用户授权/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Shiro之用户授权</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/&title=《Shiro的拦截器机制》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/&title=《Shiro的拦截器机制》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Shiro的拦截器机制》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/08/03/Shiro的拦截器机制/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

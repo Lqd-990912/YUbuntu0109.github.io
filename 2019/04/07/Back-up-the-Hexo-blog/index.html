@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Back up the Hexo blog | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Hexo,github_">
+    <meta name="description" content="文章主题 : 备份及恢复Hexo博客的详细教程 备份原理: master branch: 管理Hexo生成的静态网页.  HexoBackup branch: 管理Hexo 重要的本地源文件及配置文件.  前言 : 如果你利用Hexo搭建了一个静态的网站用于写博客,会发现自己利用Hexo deploy的都是Hexo generate生成的静态网页.而下面的目录并没有被push到远程仓库 ! 需要备">
+<meta name="keywords" content="Hexo,github_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Back up the Hexo blog">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="文章主题 : 备份及恢复Hexo博客的详细教程 备份原理: master branch: 管理Hexo生成的静态网页.  HexoBackup branch: 管理Hexo 重要的本地源文件及配置文件.  前言 : 如果你利用Hexo搭建了一个静态的网站用于写博客,会发现自己利用Hexo deploy的都是Hexo generate生成的静态网页.而下面的目录并没有被push到远程仓库 ! 需要备">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.525Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Back up the Hexo blog">
+<meta name="twitter:description" content="文章主题 : 备份及恢复Hexo博客的详细教程 备份原理: master branch: 管理Hexo生成的静态网页.  HexoBackup branch: 管理Hexo 重要的本地源文件及配置文件.  前言 : 如果你利用Hexo搭建了一个静态的网站用于写博客,会发现自己利用Hexo deploy的都是Hexo generate生成的静态网页.而下面的目录并没有被push到远程仓库 ! 需要备">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Back up the Hexo blog</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Back up the Hexo blog</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-07T09:55:40.000Z" itemprop="datePublished" class="page-time">
+  2019-04-07
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文章主题-备份及恢复Hexo博客的详细教程"><span class="post-toc-number">1.</span> <span class="post-toc-text">文章主题 : 备份及恢复Hexo博客的详细教程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#前言-如果你利用Hexo搭建了一个静态的网站用于写博客-会发现自己利用Hexo-deploy的都是Hexo-generate生成的静态网页-而下面的目录并没有被push到远程仓库"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">前言 : 如果你利用Hexo搭建了一个静态的网站用于写博客,会发现自己利用Hexo deploy的都是Hexo generate生成的静态网页.而下面的目录并没有被push到远程仓库 !</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#备份"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">备份</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更新-在本地对博客修改-包括修改主题样式-发布新文章等"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">更新( 在本地对博客修改: 包括修改主题样式,发布新文章等.. )</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#恢复-重装电脑后-或者在其它电脑上想修改自己的博客"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">恢复 ( 重装电脑后,或者在其它电脑上想修改自己的博客.. )</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#注意事项-Hexo无法备份themes主题目录中的部分theme"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">注意事项 ( Hexo无法备份themes主题目录中的部分theme.. )</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Back-up-the-Hexo-blog"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Back up the Hexo blog</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-07 09:55:40" datetime="2019-04-07T09:55:40.000Z"  itemprop="datePublished">2019-04-07</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="文章主题-备份及恢复Hexo博客的详细教程"><a href="#文章主题-备份及恢复Hexo博客的详细教程" class="headerlink" title="文章主题 : 备份及恢复Hexo博客的详细教程"></a>文章主题 : 备份及恢复<code>Hexo</code>博客的详细教程</h2><ul>
+<li><em>备份原理: <code>master branch</code>: 管理<code>Hexo</code>生成的静态网页.  <code>HexoBackup branch</code>: 管理<code>Hexo 重要的本地源文件及配置文件.</code></em></li>
+</ul>
+<h3 id="前言-如果你利用Hexo搭建了一个静态的网站用于写博客-会发现自己利用Hexo-deploy的都是Hexo-generate生成的静态网页-而下面的目录并没有被push到远程仓库"><a href="#前言-如果你利用Hexo搭建了一个静态的网站用于写博客-会发现自己利用Hexo-deploy的都是Hexo-generate生成的静态网页-而下面的目录并没有被push到远程仓库" class="headerlink" title="前言 : 如果你利用Hexo搭建了一个静态的网站用于写博客,会发现自己利用Hexo deploy的都是Hexo generate生成的静态网页.而下面的目录并没有被push到远程仓库 !"></a>前言 : 如果你利用<code>Hexo</code>搭建了一个静态的网站用于写博客,会发现自己利用<code>Hexo deploy</code>的都是<code>Hexo generate</code>生成的静态网页.而下面的目录并没有被<code>push</code>到远程仓库 !</h3><ul>
+<li><em>需要备份的目录及配置文件</em></li>
+</ul>
+<ol>
+<li><code>source</code>目录 : 博客文章的<code>.md</code>文件.(需要备份)</li>
+<li><code>themes</code> 目录 : 主题文件夹.(需要备份)</li>
+<li><code>scaffolds</code>目录 : 文章的模板.(需要备份)</li>
+<li><code>package.json</code> : 安装包的名称.(需要备份)</li>
+<li><code>.gitignore</code> : 限定在<code>push</code>时哪些文件可以忽略.(需要备份)</li>
+<li><code>_config.yml</code> : 站点的配置文件.(需要备份)</li>
+</ol>
+<ul>
+<li><em>不需要备份的目录及配置文件</em></li>
+</ul>
+<ol>
+<li><code>node_modules/</code> : 是安装包的目录，在执行<code>npm install</code>的时候会重新生成.(不需要备份)</li>
+<li><code>.git/</code> : 主题和站点都有，标志这是一个git项目.(不需要备份)</li>
+<li><code>public</code>是<code>hexo generate</code>生成的静态网页.(不需要备份)</li>
+<li><code>.deploy_git</code> : 同<code>3</code>,<code>hexo g</code>也会生成.(不需要备份)</li>
+<li><code>db.json</code> : 配置文件.(不需要备份)</li>
+</ol>
+<ul>
+<li><em>注 : 不需要拷贝的文件正是<code>.gitignore</code>中所忽略的哟 !</em></li>
+</ul>
+<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><ol>
+<li>创建<code>GitHub</code>仓库<code>Username.github.io</code>如果同名仓库之前已经创建,请将之前的仓库改名,新建的仓库必须是<code>Username.github.io</code>.</li>
+<li>在<code>Username.github.io</code>仓库中创建一个新的分支<code>HexoBackup</code>.(此时的默认分支是: <code>master</code>)</li>
+<li>在该仓库中的<code>Setting</code>中将<code>HexoBackup</code>修改为为默认分支.</li>
+<li>将刚刚创建的新仓库<code>clone</code>至本地后将之前你存放<code>Hexo bolg</code>文件夹中的<code>_config.yml</code>,<code>themes/</code>,<code>source/</code>,<code>scaffolds/</code>,<code>package.json</code>,<code>.gitignore</code>复制至你所<code>clone</code>下来的<code>Username.github.io</code>文件夹中.</li>
+<li>将<code>themes/theme-name/</code>中的<code>.git/</code>删除,否则无法将主题文件夹<code>push</code>到远程分支.(<code>易错点 : 详情见文章最后的注意事项</code>)</li>
+<li>在<code>Username.github.io</code>文件夹执行<code>npm install</code>和<code>npm install hexo-deployer-git</code>(注意: 此时在该文件内的分支名应该显示为:<code>HexoBackup</code>).</li>
+<li>通过执行<code>git add .</code>,<code>git commit -m &quot;A description of the information submitted&quot;</code>,<code>git push origin HexoBackup</code>来提交<code>Hexo bolg</code>网站的源文件.</li>
+<li>如果更新博客文章后可以通过执行<code>hexo g -d</code>生成静态网页部署到<code>Github</code>上.</li>
+</ol>
+<h3 id="更新-在本地对博客修改-包括修改主题样式-发布新文章等"><a href="#更新-在本地对博客修改-包括修改主题样式-发布新文章等" class="headerlink" title="更新( 在本地对博客修改: 包括修改主题样式,发布新文章等.. )"></a>更新( 在本地对博客修改: 包括修改主题样式,发布新文章等.. )</h3><ul>
+<li><em>以下两个步骤没有严格的顺序,小伙伴们随心所欲呗 ~</em></li>
+</ul>
+<ol>
+<li>首先执行<code>hexo g -d</code>生成静态网页部署至<code>Github</code>上.</li>
+<li>其次依次执行<code>git add .</code>,<code>git commit -m &quot;&quot;</code>,<code>git push origin HexoBackup</code>来提交<code>Hexo bolg</code>网站源文件.</li>
+</ol>
+<h3 id="恢复-重装电脑后-或者在其它电脑上想修改自己的博客"><a href="#恢复-重装电脑后-或者在其它电脑上想修改自己的博客" class="headerlink" title="恢复 ( 重装电脑后,或者在其它电脑上想修改自己的博客.. )"></a>恢复 ( 重装电脑后,或者在其它电脑上想修改自己的博客.. )</h3><ol>
+<li>安装<code>git</code>.</li>
+<li>安装<code>Nodejs</code>和<code>npm</code>.</li>
+<li>将博客仓库<code>clone</code>到本地.</li>
+<li>在文件夹内执行命令<code>npm install hexo-cli -g</code>,<code>npm install</code>,<code>npm install hexo-deployer-git</code>.</li>
+</ol>
+<h3 id="注意事项-Hexo无法备份themes主题目录中的部分theme"><a href="#注意事项-Hexo无法备份themes主题目录中的部分theme" class="headerlink" title="注意事项 ( Hexo无法备份themes主题目录中的部分theme.. )"></a>注意事项 ( <code>Hexo</code>无法备份<code>themes</code>主题目录中的部分<code>theme</code>.. )</h3><ul>
+<li><p><em>如果想正常备份你所喜欢的<code>theme</code>的话,可以在博客目录运行如下命令 :</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ git rm --cached themes\theme-name\</span><br><span class="line">rm <span class="string">'themes/theme-name'</span></span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Your branch is up-to-date with <span class="string">'origin/HexoBackup'</span>.</span><br><span class="line"></span><br><span class="line">Changes to be committed:</span><br><span class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</span><br><span class="line"></span><br><span class="line">        deleted:    themes/theme-name</span><br><span class="line"></span><br><span class="line">Untracked files:</span><br><span class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to include in what will be committed)</span><br><span class="line"></span><br><span class="line">        themes/theme-name/</span><br><span class="line"></span><br><span class="line"><span class="comment">//最后再执行: `git add themes/theme-name/` 就会发现可以成功备份该主题了哟 !</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>原因分析 : 这是因为用到了<code>git</code>的子模块(<code>git submodule</code>)功能,既你在你的<code>git</code>项目里<code>clone</code>的他人的项目.在你的主项目的<code>git</code>库里,子模块只是一个<code>HEAD</code>指针,指向子模块的<code>commit</code> ..详情见下述参考的博客文章哟 (っ•̀ω•́)っ✎⁾⁾</strong></p>
+</li>
+</ul>
+<ul>
+<li><em>参考博客文章如下( 甚是感谢 )</em> :</li>
+<li><a href="https://blog.itswincer.com/posts/7efd2818/" target="_blank" rel="noopener">https://blog.itswincer.com/posts/7efd2818/</a></li>
+<li><a href="https://hoxis.github.io/hexo-backup-theme-dir.html" target="_blank" rel="noopener">https://hoxis.github.io/hexo-backup-theme-dir.html</a></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.525Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/github/">github_</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/&title=《Back up the Hexo blog》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/&title=《Back up the Hexo blog》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Back up the Hexo blog》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/04/08/Java-Servlet-API/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Java Servlet API</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/04/06/Servlet-lifecycle/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Servlet lifecycle</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/&title=《Back up the Hexo blog》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/&title=《Back up the Hexo blog》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Back up the Hexo blog》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/04/07/Back-up-the-Hexo-blog/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

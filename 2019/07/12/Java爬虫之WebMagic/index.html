@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Java爬虫之WebMagic | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java,WebMagic">
+    <meta name="description" content="学习笔记 :  Java爬虫之WebMagic简介 : WebMagic是一款简单灵活的爬虫框架,WebMagic的结构分为Downloader、PageProcessor、Scheduler、Pipeline四大组件,并由Spider将它们彼此组织起来. 这四大组件对应爬虫生命周期中的下载、处理、管理和持久化等功能. 而Spider则将这几个组件组织起来，让它们可以互相交互，流程化的执行，可以认">
+<meta name="keywords" content="Java,WebMagic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java爬虫之WebMagic">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 :  Java爬虫之WebMagic简介 : WebMagic是一款简单灵活的爬虫框架,WebMagic的结构分为Downloader、PageProcessor、Scheduler、Pipeline四大组件,并由Spider将它们彼此组织起来. 这四大组件对应爬虫生命周期中的下载、处理、管理和持久化等功能. 而Spider则将这几个组件组织起来，让它们可以互相交互，流程化的执行，可以认">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/WebMagic-总体架构图.jpg">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.537Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java爬虫之WebMagic">
+<meta name="twitter:description" content="学习笔记 :  Java爬虫之WebMagic简介 : WebMagic是一款简单灵活的爬虫框架,WebMagic的结构分为Downloader、PageProcessor、Scheduler、Pipeline四大组件,并由Spider将它们彼此组织起来. 这四大组件对应爬虫生命周期中的下载、处理、管理和持久化等功能. 而Spider则将这几个组件组织起来，让它们可以互相交互，流程化的执行，可以认">
+<meta name="twitter:image" content="https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/WebMagic-总体架构图.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Java爬虫之WebMagic</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Java爬虫之WebMagic</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-07-12T19:58:43.000Z" itemprop="datePublished" class="page-time">
+  2019-07-12
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-Java爬虫之WebMagic"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 :  Java爬虫之WebMagic</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#WebMagic的四个组件"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">WebMagic的四个组件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Downloader"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">Downloader</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#PageProcessor"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">PageProcessor</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Scheduler"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">Scheduler</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Pipeline"><span class="post-toc-number">1.1.4.</span> <span class="post-toc-text">Pipeline</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#用于数据流转的对象"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">用于数据流转的对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Request"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">Request</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Page"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">Page</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#ResultItems"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">ResultItems</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#控制爬虫运转的引擎-Spider"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">控制爬虫运转的引擎-Spider</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#WebMagic入门程序"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">WebMagic入门程序</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#WebMagic抽取元素功能"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">WebMagic抽取元素功能</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#WebMagic自定义配置"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">WebMagic自定义配置</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Java爬虫之WebMagic"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Java爬虫之WebMagic</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-07-12 19:58:43" datetime="2019-07-12T19:58:43.000Z"  itemprop="datePublished">2019-07-12</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-Java爬虫之WebMagic"><a href="#学习笔记-Java爬虫之WebMagic" class="headerlink" title="学习笔记 :  Java爬虫之WebMagic"></a>学习笔记 :  Java爬虫之WebMagic</h2><p><em>简介 : <code>WebMagic</code>是一款简单灵活的爬虫框架,WebMagic的结构分为<code>Downloader</code>、<code>PageProcessor</code>、<code>Scheduler</code>、<code>Pipeline</code>四大组件,并由Spider将它们彼此组织起来. 这四大组件对应爬虫生命周期中的下载、处理、管理和持久化等功能. 而<code>Spider</code>则将这几个组件组织起来，让它们可以互相交互，流程化的执行，可以认为Spider是一个大的容器，它也是WebMagic逻辑的核心. Little book of WebMagic : <a href="http://webmagic.io/docs/zh/" target="_blank" rel="noopener">http://webmagic.io/docs/zh/</a></em></p>
+<p><em>WebMagic总体架构图如下所示 :</em></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/07/12/Java爬虫之WebMagic/WebMagic-总体架构图.jpg" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h3 id="WebMagic的四个组件"><a href="#WebMagic的四个组件" class="headerlink" title="WebMagic的四个组件"></a>WebMagic的四个组件</h3><h4 id="Downloader"><a href="#Downloader" class="headerlink" title="Downloader"></a>Downloader</h4><p><em>Downloader负责从互联网上下载页面,以便后续处理. WebMagic默认使用了<code>Apache HttpClient</code>作为下载工具</em></p>
+<h4 id="PageProcessor"><a href="#PageProcessor" class="headerlink" title="PageProcessor"></a>PageProcessor</h4><p><em>PageProcessor负责解析页面,抽取有用信息,以及发现新的链接,WebMagic使用<code>Jsoup</code>作为HTML解析工具,并基于其开发了解析<code>XPath</code>的工具<code>Xsoup</code>. 注意 : 在这四个组件中,PageProcessor对于每个站点每个页面都不一样,是需要使用者定制的部分 .</em></p>
+<h4 id="Scheduler"><a href="#Scheduler" class="headerlink" title="Scheduler"></a>Scheduler</h4><p><em>Scheduler负责管理待抓取的URL,以及一些去重的工作. WebMagic默认提供了<code>JDK的内存队列</code>来管理URL,并用集合来进行去重. 也支持使用Redis进行分布式管理 .</em></p>
+<h4 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h4><p><em>Pipeline负责抽取结果的处理,包括计算、持久化到文件、数据库等.. WebMagic默认提供了<code>输出到控制台</code>和<code>保存到文件</code>两种结果处理方案. Pipeline定义了结果保存的方式,如果你要保存到指定数据库,则需要编写对应的Pipeline. 对于一类需求一般只需编写一个Pipeline .</em></p>
+<h3 id="用于数据流转的对象"><a href="#用于数据流转的对象" class="headerlink" title="用于数据流转的对象"></a>用于数据流转的对象</h3><h4 id="Request"><a href="#Request" class="headerlink" title="Request"></a>Request</h4><p><em><code>Request</code>是对URL地址的一层封装,一个Request对应一个URL地址. 它是PageProcessor与Downloader交互的载体,也是PageProcessor控制Downloader唯一方式. 除了URL本身外,它还包含一个<code>Key-Value</code>结构的字段<code>extra</code>. 你可以在extra中保存一些特殊的属性,然后在其他地方读取,以完成不同的功能。例如附加上一个页面的一些信息等 .</em></p>
+<h4 id="Page"><a href="#Page" class="headerlink" title="Page"></a>Page</h4><p><em>Page代表了从Downloader下载到的一个页面——可能是HTML,也可能是JSON或者其他文本格式的内容. <code>Page为WebMagic抽取过程的核心对象</code>,它提供一些方法可供抽取、结果保存等 ..</em></p>
+<h4 id="ResultItems"><a href="#ResultItems" class="headerlink" title="ResultItems"></a>ResultItems</h4><p><em>ResultItems相当于一个<code>Map</code>,它保存PageProcessor处理的结果,供Pipeline使用. 它的API与Map很类似,值得注意的是它有一个字段<code>skip</code>,若设置为true,则不应被Pipeline处理 .</em></p>
+<h3 id="控制爬虫运转的引擎-Spider"><a href="#控制爬虫运转的引擎-Spider" class="headerlink" title="控制爬虫运转的引擎-Spider"></a>控制爬虫运转的引擎-Spider</h3><p><em><code>Spider</code>是WebMagic内部流程的核心. <code>Downloader</code>、<code>PageProcessor</code>、<code>Scheduler</code>、<code>Pipeline</code>都是Spider的一个属性,这些属性是可以自由设置的,通过设置这个属性可以实现不同的功能. Spider也是WebMagic操作的入口,它封装了爬虫的创建、启动、停止、多线程等功能 .. 注意 : 一般来说,对于编写一个爬虫,PageProcessor是需要编写的部分,而Spider则是创建和控制爬虫的入口哟 ~</em></p>
+<h3 id="WebMagic入门程序"><a href="#WebMagic入门程序" class="headerlink" title="WebMagic入门程序"></a>WebMagic入门程序</h3><p><em>获取我博客中的个人姓名信息,示例程序如下 :</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.crawler.WebMagic_Demo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Page;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Site;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.Spider;</span><br><span class="line"><span class="keyword">import</span> us.codecraft.webmagic.processor.PageProcessor;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: crawler_learning</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 第一个WebMagic小爬虫:爬取博客中的个人姓名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 7/10/2019-3:54 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FirstDemo</span> <span class="keyword">implements</span> <span class="title">PageProcessor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//可以对爬虫进行一些配置,包括编码,抓取间隔,超时时间,重试次数等..</span></span><br><span class="line">    <span class="keyword">private</span> Site site = Site.me();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(Page page)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//解析Page,并将其结果存放到ResultItem中</span></span><br><span class="line">        page.putField(<span class="string">"name"</span>, page.getHtml().css(<span class="string">"aside#menu hgroup.introduce h5"</span>, <span class="string">"text"</span>));</span><br><span class="line">        System.out.println(page.getResultItems().toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Site <span class="title">getSite</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> site;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//WebMagic默认将爬取结果输出到控制台</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Spider.create(<span class="keyword">new</span> FirstDemo())</span><br><span class="line">                .addUrl(<span class="string">"https://yubuntu0109.github.io/"</span>)</span><br><span class="line">                .run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><em>程序运行结果 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">19-07-13 15:58:11,084 INFO  us.codecraft.webmagic.Spider(Spider.java:306) ## Spider yubuntu0109.github.io started!</span><br><span class="line"></span><br><span class="line">19-07-13 15:58:12,210 INFO  us.codecraft.webmagic.downloader.HttpClientDownloader(HttpClientDownloader.java:86) ## downloading page success https://yubuntu0109.github.io/</span><br><span class="line"></span><br><span class="line">ResultItems&#123;fields=&#123;name=黄宇辉&#125;, request=Request&#123;url=&apos;https://yubuntu0109.github.io/&apos;, method=&apos;null&apos;, extras=null, priority=0, headers=&#123;&#125;, cookies=&#123;&#125;&#125;, skip=false&#125;</span><br><span class="line">get page: https://yubuntu0109.github.io/</span><br><span class="line"></span><br><span class="line">name:	黄宇辉      &lt;----------WebMagic默认将爬取结果输出到控制台</span><br><span class="line"></span><br><span class="line">19-07-13 15:58:17,405 INFO  us.codecraft.webmagic.Spider(Spider.java:338) ## Spider yubuntu0109.github.io closed! 1 pages downloaded.</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure></p>
+<h3 id="WebMagic抽取元素功能"><a href="#WebMagic抽取元素功能" class="headerlink" title="WebMagic抽取元素功能"></a>WebMagic抽取元素功能</h3><p><em><code>CSS</code> : 爬取博客个人姓名信息的元素标签</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.putField(<span class="string">"name"</span>, page.getHtml().css(<span class="string">"aside#menu hgroup.introduce h5"</span>));</span><br></pre></td></tr></table></figure></p>
+<p><em>程序运行结果 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name:	&lt;h5 class=&quot;nickname&quot;&gt;黄宇辉&lt;/h5&gt;</span><br></pre></td></tr></table></figure></p>
+<p><em><code>CSS</code> : 爬取博客个人姓名信息</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.putField(<span class="string">"name"</span>, page.getHtml().css(<span class="string">"aside#menu hgroup.introduce h5"</span>, <span class="string">"text"</span>));</span><br></pre></td></tr></table></figure></p>
+<p><em>程序运行结果 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name:	黄宇辉</span><br></pre></td></tr></table></figure></p>
+<p><em><code>CSS</code> : 爬取博客首页所有文章标题</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.putField(<span class="string">"title"</span>, page.getHtml().css(<span class="string">"div.container h3 a"</span>, <span class="string">"text"</span>).all());</span><br></pre></td></tr></table></figure></p>
+<p><em>程序运行结果 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">title:	</span><br><span class="line">[</span><br><span class="line">    Java爬虫之Jsoup, </span><br><span class="line">    Java爬虫之HttpClient,</span><br><span class="line">    Spring-Boot拥抱MyBatis及Redis ~, </span><br><span class="line">    Spring Boot之文件上传与下载,</span><br><span class="line">    Spring Boot项目:好友备忘录, </span><br><span class="line">    Spring Boot之Thymeleaf, </span><br><span class="line">    Spring Boot之整合视图层技术, </span><br><span class="line">    Spring Boot之基本Web开发, </span><br><span class="line">    Hi Redis ~, </span><br><span class="line">    Hi Spring Boot ~</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p><em><code>XPath</code> : 爬取博客首页所有文章标题的元素标签</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.putField(<span class="string">"title"</span>, page.getHtml().xpath(<span class="string">"//div[@class=container]/ul/li/article/h3/a"</span>).all());</span><br></pre></td></tr></table></figure></p>
+<p><em>程序运行结果 :</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">title:	</span><br><span class="line">[</span><br><span class="line">    &lt;a class="post-title-link" href="/2019/07/10/Java爬虫之Jsoup/"&gt;Java爬虫之Jsoup&lt;/a&gt;, </span><br><span class="line">    &lt;a class="post-title-link" href="/2019/07/10/Java爬虫之HttpClient/"&gt;Java爬虫之HttpClient&lt;/a&gt;, </span><br><span class="line">    &lt;a class="post-title-link" href="/2019/07/01/Spring-Boot拥抱MyBatis及Redis/"&gt;Spring-Boot拥抱MyBatis及Redis ~&lt;/a&gt;, </span><br><span class="line">    &lt;a class="post-title-link" href="/2019/06/30/Spring-Boot之文件上传/"&gt;Spring Boot之文件上传与下载&lt;/a&gt;, </span><br><span class="line">    &lt;a class="post-title-link" href="/2019/06/30/Spring-Boot项目-好友备忘录/"&gt;Spring Boot项目:好友备忘录&lt;/a&gt;, </span><br><span class="line">    &lt;a class="post-title-link" href="/2019/06/27/Spring-Boot之Thymeleaf/"&gt;Spring Boot之Thymeleaf&lt;/a&gt;, </span><br><span class="line">    &lt;a class="post-title-link" href="/2019/06/26/Spring-Boot之整合视图层技术/"&gt;Spring Boot之整合视图层技术&lt;/a&gt;, </span><br><span class="line">    &lt;a class="post-title-link" href="/2019/06/26/Spring-Boot之基本Web开发/"&gt;Spring Boot之基本Web开发&lt;/a&gt;, </span><br><span class="line">    &lt;a class="post-title-link" href="/2019/06/25/Hi-Redis/"&gt;Hi Redis ~&lt;/a&gt;, </span><br><span class="line">    &lt;a class="post-title-link" href="/2019/06/23/Hi-Spring-Boot/"&gt;Hi Spring Boot ~&lt;/a&gt;</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p><em><code>Regex</code> : 爬取博客首页含’Java’关键字的文章标题</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.putField(<span class="string">"title"</span>, page.getHtml().css(<span class="string">"div.container h3 a"</span>, <span class="string">"text"</span>).regex(<span class="string">".*Java.*"</span>).all());</span><br></pre></td></tr></table></figure></p>
+<p><em>程序运行结果 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">title:	[Java爬虫之Jsoup, Java爬虫之HttpClient]</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p><em><code>Link</code> : 爬取博客首页含’Java’关键字的文章链接</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取博客首页中包含'Hi'关键字的文章链接</span></span><br><span class="line">page.addTargetRequests(page.getHtml().css(<span class="string">"div.container h3 a"</span>).links().regex(<span class="string">".*Hi.*"</span>).all());</span><br><span class="line"><span class="comment">//根据文章链接获取该文章标题</span></span><br><span class="line">page.putField(<span class="string">"blog-title"</span>, page.getHtml().css(<span class="string">"div.post-content h2"</span>, <span class="string">"text"</span>).all());</span><br></pre></td></tr></table></figure></p>
+<p><em>程序运行结果 :</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">19-07-13 16:52:15,233 INFO  us.codecraft.webmagic.downloader.HttpClientDownloader(HttpClientDownloader.java:86) </span><br><span class="line">## downloading page success https://yubuntu0109.github.io/2019/06/25/Hi-Redis/</span><br><span class="line">get page: https://yubuntu0109.github.io/2019/06/25/Hi-Redis/</span><br><span class="line">blog-title:	[学习笔记 : 拥抱Redis ~]</span><br><span class="line"></span><br><span class="line">19-07-13 16:52:20,490 INFO  us.codecraft.webmagic.downloader.HttpClientDownloader(HttpClientDownloader.java:86) </span><br><span class="line">## downloading page success https://yubuntu0109.github.io/2019/06/23/Hi-Spring-Boot/</span><br><span class="line">get page: https://yubuntu0109.github.io/2019/06/23/Hi-Spring-Boot/</span><br><span class="line">blog-title:	[学习笔记 : 拥抱Spring Boot]</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h3 id="WebMagic自定义配置"><a href="#WebMagic自定义配置" class="headerlink" title="WebMagic自定义配置"></a>WebMagic自定义配置</h3><p><em>对爬虫进行一些配置</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Site site = Site.me()</span><br><span class="line">        .setCharset(<span class="string">"utf-8"</span>)<span class="comment">//字符编码</span></span><br><span class="line">        .setTimeOut(<span class="number">10000</span>)<span class="comment">//超时时间-10s</span></span><br><span class="line">        .setRetrySleepTime(<span class="number">2000</span>)<span class="comment">//重试间隔时间-2s</span></span><br><span class="line">        .setRetryTimes(<span class="number">5</span>);<span class="comment">//重试次数</span></span><br></pre></td></tr></table></figure></p>
+<p><em>将爬取的数据存储到指定文件夹中</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Spider.create(<span class="keyword">new</span> PipelineDemo()).addPipeline(<span class="keyword">new</span> FilePipeline(<span class="string">"D:\\WebMagic-Pipeline-Demo\\Data\\"</span>)) ..</span><br></pre></td></tr></table></figure></p>
+<p><em>设置处理爬虫的线程数</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Spider.create(<span class="keyword">new</span> ThreadDemo()).thread(<span class="number">5</span>)..</span><br></pre></td></tr></table></figure></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.537Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WebMagic/">WebMagic</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/&title=《Java爬虫之WebMagic》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/&title=《Java爬虫之WebMagic》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java爬虫之WebMagic》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/07/14/小爬虫-JDBookCrawler-V1-0/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">小爬虫:JDBookCrawler-V1.0</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/07/10/Java爬虫之Jsoup/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Java爬虫之Jsoup</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/&title=《Java爬虫之WebMagic》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/&title=《Java爬虫之WebMagic》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java爬虫之WebMagic》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/07/12/Java爬虫之WebMagic/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

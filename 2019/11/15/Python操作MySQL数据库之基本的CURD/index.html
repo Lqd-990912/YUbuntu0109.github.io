@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Python操作MySQL数据库之基本的CURD | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="MySQL,Python">
+    <meta name="description" content="学习笔记 : Python 操作 MySQL 数据库之基本的 CURD🐍 学习完 Python 的基础知识后，当然需要进阶地学习关于 Python 的数据库编程知识啦~ 下面是我写的一个操作 MySQL 数据库的基本增删改查，其对于和我一样初学 Python 的同学来说，非常具有参考与学习价值哟~  tb_user : 数据库表结构 1234567CREATE TABLE `tb_user` (">
+<meta name="keywords" content="MySQL,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python操作MySQL数据库之基本的CURD">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : Python 操作 MySQL 数据库之基本的 CURD🐍 学习完 Python 的基础知识后，当然需要进阶地学习关于 Python 的数据库编程知识啦~ 下面是我写的一个操作 MySQL 数据库的基本增删改查，其对于和我一样初学 Python 的同学来说，非常具有参考与学习价值哟~  tb_user : 数据库表结构 1234567CREATE TABLE `tb_user` (">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.553Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python操作MySQL数据库之基本的CURD">
+<meta name="twitter:description" content="学习笔记 : Python 操作 MySQL 数据库之基本的 CURD🐍 学习完 Python 的基础知识后，当然需要进阶地学习关于 Python 的数据库编程知识啦~ 下面是我写的一个操作 MySQL 数据库的基本增删改查，其对于和我一样初学 Python 的同学来说，非常具有参考与学习价值哟~  tb_user : 数据库表结构 1234567CREATE TABLE `tb_user` (">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Python操作MySQL数据库之基本的CURD</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Python操作MySQL数据库之基本的CURD</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-11-15T20:56:04.000Z" itemprop="datePublished" class="page-time">
+  2019-11-15
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-Python-操作-MySQL-数据库之基本的-CURD"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : Python 操作 MySQL 数据库之基本的 CURD</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Python操作MySQL数据库之基本的CURD"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Python操作MySQL数据库之基本的CURD</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-11-15 20:56:04" datetime="2019-11-15T20:56:04.000Z"  itemprop="datePublished">2019-11-15</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-Python-操作-MySQL-数据库之基本的-CURD"><a href="#学习笔记-Python-操作-MySQL-数据库之基本的-CURD" class="headerlink" title="学习笔记 : Python 操作 MySQL 数据库之基本的 CURD"></a>学习笔记 : Python 操作 MySQL 数据库之基本的 CURD</h2><p><em>🐍 学习完 Python 的基础知识后，当然需要进阶地学习关于 Python 的数据库编程知识啦~ 下面是我写的一个操作 MySQL 数据库的基本增删改查，其对于和我一样初学 Python 的同学来说，非常具有参考与学习价值哟~</em></p>
+<ol>
+<li><p><em>tb_user : 数据库表结构</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`tb_user`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">45</span>) <span class="keyword">COLLATE</span> utf8mb4_unicode_ci <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`sex`</span> <span class="built_in">char</span>(<span class="number">1</span>) <span class="keyword">COLLATE</span> utf8mb4_unicode_ci <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`phone`</span> <span class="built_in">varchar</span>(<span class="number">45</span>) <span class="keyword">COLLATE</span> utf8mb4_unicode_ci <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">9</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4 <span class="keyword">COLLATE</span>=utf8mb4_unicode_ci</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>dbconfig.ini : 存储数据库的配置信息</em></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[DATABASE_CONFIGURATION_INFOS]</span></span><br><span class="line"><span class="attr">host</span> = localhost</span><br><span class="line"><span class="attr">user</span> = root</span><br><span class="line"><span class="attr">password</span> = </span><br><span class="line"><span class="attr">database</span> = </span><br><span class="line"><span class="attr">charset</span> = utf8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Utils.py : 连接数据库的工具类</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Project name : python-learning</span></span><br><span class="line"><span class="string">Description : A SIMPLE TOOL FOR OPERATING DATABASE</span></span><br><span class="line"><span class="string">Author : 黄宇辉</span></span><br><span class="line"><span class="string">Version : 1.0</span></span><br><span class="line"><span class="string">Website : https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="string">Created on 11/12/2019-9:30 PM</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> configparser</span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DBUtils</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    get the databse configuration infos from the specified file</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getConnConfig</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            configpar = configparser.ConfigParser()</span><br><span class="line">            configpar.read(<span class="string">"dbconfig.ini"</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">            connConfig_items = dict(configpar.items(<span class="string">'DATABASE_CONFIGURATION_INFOS'</span>))</span><br><span class="line">            <span class="keyword">return</span> connConfig_items</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> FileNotFoundError <span class="keyword">as</span> e:</span><br><span class="line">            print(<span class="string">"CATCH THE EXCEPTION INFO : %s"</span> % e)</span><br><span class="line"></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    get the database connection object</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getConnection</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">global</span> connection  <span class="comment"># defined a global connection object</span></span><br><span class="line">            connConfig = DBUtils.getConnConfig()  <span class="comment"># get the database configuration infos</span></span><br><span class="line">            connection = pymysql.connect(host=connConfig.get(<span class="string">'host'</span>),</span><br><span class="line">                                         user=connConfig.get(<span class="string">'user'</span>),</span><br><span class="line">                                         password=connConfig.get(<span class="string">'password'</span>),</span><br><span class="line">                                         database=connConfig.get(<span class="string">'database'</span>),</span><br><span class="line">                                         charset=connConfig.get(<span class="string">'charset'</span>))</span><br><span class="line">            <span class="keyword">return</span> connection</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(<span class="string">"FAIL TO CONNECT TO THE DATABASE : %s"</span> % e)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>CURD.py : 操作数据库的测试类</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Project name : python-learning</span></span><br><span class="line"><span class="string">Description : BASIC CURD ON MYSQL DATABASE</span></span><br><span class="line"><span class="string">Author : 黄宇辉</span></span><br><span class="line"><span class="string">Version : 1.0</span></span><br><span class="line"><span class="string">Website : https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="string">Created on 11/11/2019-10:08 PM</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"><span class="keyword">from</span> Utils <span class="keyword">import</span> DBUtils  <span class="comment"># format : from filename import classname</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CURDTest</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">global</span> connection  <span class="comment"># defined a global variable</span></span><br><span class="line">        connection = DBUtils.getConnection()  <span class="comment"># get the database connection</span></span><br><span class="line"></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    select the specified user info by id</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">selectById</span><span class="params">(cls, userid)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># create the cursor object</span></span><br><span class="line">            <span class="keyword">with</span> connection.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">                <span class="comment"># defined the sql statement</span></span><br><span class="line">                sql = <span class="string">'SELECT id,name,sex,phone FROM tb_user WHERE id = %s'</span></span><br><span class="line">                <span class="comment"># execute the specified sql statement</span></span><br><span class="line">                cursor.execute(sql, [userid])</span><br><span class="line">                <span class="comment"># get the result</span></span><br><span class="line">                row = cursor.fetchone()</span><br><span class="line">                <span class="comment"># ouput the result</span></span><br><span class="line">                <span class="keyword">if</span> row <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                    print(<span class="string">'ID:&#123;0&#125; - NAME:&#123;1&#125; - SEX:&#123;2&#125; - PHONE:&#123;3&#125;'</span>.format(row[<span class="number">0</span>], row[<span class="number">1</span>], row[<span class="number">2</span>], row[<span class="number">3</span>]))</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    print(<span class="string">"NOT FOUND THE SPECIFIED USER INFO BY ID : %s"</span> % userid)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># catch the exception about database</span></span><br><span class="line">        <span class="keyword">except</span> pymysql.DatabaseError <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">        <span class="comment"># release the connection resource</span></span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            connection.close()</span><br><span class="line"></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    select all of user infos</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">selectAll</span><span class="params">(cls)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">with</span> connection.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">                sql = <span class="string">'SELECT id,name,sex,phone FROM tb_user'</span></span><br><span class="line">                cursor.execute(sql)</span><br><span class="line">                result_set = cursor.fetchall()</span><br><span class="line">                <span class="keyword">for</span> row <span class="keyword">in</span> result_set:</span><br><span class="line">                    print(<span class="string">'ID:&#123;0&#125; - NAME:&#123;1&#125; - SEX:&#123;2&#125; - PHONE:&#123;3&#125;'</span>.format(row[<span class="number">0</span>], row[<span class="number">1</span>], row[<span class="number">2</span>], row[<span class="number">3</span>]))</span><br><span class="line">        <span class="keyword">except</span> pymysql.DatabaseError <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            connection.close()</span><br><span class="line"></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    insert the user info</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addUser</span><span class="params">(cls, username, sex, telephone)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">with</span> connection.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">                sql = <span class="string">'INSERT INTO tb_user(name,sex,phone) VALUE (%s,%s,%s)'</span></span><br><span class="line">                affectedcount = cursor.execute(sql, (username, sex, telephone))</span><br><span class="line">                print(<span class="string">'inserted successfully and the affected count : %s'</span> % affectedcount)</span><br><span class="line">                connection.commit()</span><br><span class="line">        <span class="keyword">except</span> pymysql.DatabaseError <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            connection.rollback()</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            connection.close()</span><br><span class="line"></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    update the user info</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">updateUser</span><span class="params">(cls, username, sex, telephone, userid)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">with</span> connection.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">                sql = <span class="string">'UPDATE tb_user SET name = %s, sex = %s, phone = %s WHERE id = %s'</span></span><br><span class="line">                affectedcount = cursor.execute(sql, (username, sex, telephone, userid))</span><br><span class="line">                print(<span class="string">'updated successfully and the affected count : %s'</span> % affectedcount)</span><br><span class="line">                connection.commit()</span><br><span class="line">        <span class="keyword">except</span> pymysql.DatabaseError <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            connection.rollback()</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            connection.close()</span><br><span class="line"></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    delete the user info</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delUser</span><span class="params">(cls, userid)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">with</span> connection.cursor() <span class="keyword">as</span> cursor:</span><br><span class="line">                sql = <span class="string">'DELETE FROM tb_user WHERE id = %s'</span></span><br><span class="line">                affectedcount = cursor.execute(sql, userid)</span><br><span class="line">                print(<span class="string">"deleted successfully and the affected count : %s"</span> % affectedcount)</span><br><span class="line">                connection.commit()</span><br><span class="line">        <span class="keyword">except</span> pymysql.DatabaseError <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            connection.rollback()</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            connection.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">test</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">curd = CURDTest()</span><br><span class="line">curd.selectAll()</span><br><span class="line"><span class="comment"># curd.selectById(userid=1)</span></span><br><span class="line"><span class="comment"># curd.addUser(username='addUser', sex='m', telephone='00000000000')</span></span><br><span class="line"><span class="comment"># curd.updateUser(username='updateUser', sex='f', telephone='11111111111', userid=1)</span></span><br><span class="line"><span class="comment"># curd.delUser(userid=1)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下所示( 仅供参考 ) :</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ID:1 - NAME:黄宇辉 - SEX:男 - PHONE:11111111111</span><br><span class="line">ID:2 - NAME:燕子 - SEX:女 - PHONE:00000000000</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.553Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/&title=《Python操作MySQL数据库之基本的CURD》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/&title=《Python操作MySQL数据库之基本的CURD》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python操作MySQL数据库之基本的CURD》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/11/15/将Kail-linux完美安装到U盘-persistent-storage/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">将Kail linux完美安装到U盘( persistent storage )</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/11/08/hello-Python/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">hello Python</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/&title=《Python操作MySQL数据库之基本的CURD》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/&title=《Python操作MySQL数据库之基本的CURD》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python操作MySQL数据库之基本的CURD》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/11/15/Python操作MySQL数据库之基本的CURD/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

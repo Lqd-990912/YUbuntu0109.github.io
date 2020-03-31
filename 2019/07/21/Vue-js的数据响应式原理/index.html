@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Vue.js的数据响应式原理 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Vue">
+    <meta name="description" content="学习笔记 : Vue.js对的数据响应式原理简介 : Vue中最重要的概念就是响应式数据,一方面是指衍生和元数据之间的响应,通过数据链来实现. 另一方面是指视图与数据之间的绑定 . 初始数据链数据链在学术上被定义为连通数据的链路,在这条链路上有一到多个数据起点(元数据),并通过改点不断衍生扩展新的节点(衍生数据),形成 一个庞大的网状结构. 当你修改数据起点时, 所有存在网上的节点值都将会同步更新">
+<meta name="keywords" content="Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue.js的数据响应式原理">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : Vue.js对的数据响应式原理简介 : Vue中最重要的概念就是响应式数据,一方面是指衍生和元数据之间的响应,通过数据链来实现. 另一方面是指视图与数据之间的绑定 . 初始数据链数据链在学术上被定义为连通数据的链路,在这条链路上有一到多个数据起点(元数据),并通过改点不断衍生扩展新的节点(衍生数据),形成 一个庞大的网状结构. 当你修改数据起点时, 所有存在网上的节点值都将会同步更新">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/data-chain.png">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/Vue-数据链.PNG">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/Vue-数据绑定视图的实现原理.PNG">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.581Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue.js的数据响应式原理">
+<meta name="twitter:description" content="学习笔记 : Vue.js对的数据响应式原理简介 : Vue中最重要的概念就是响应式数据,一方面是指衍生和元数据之间的响应,通过数据链来实现. 另一方面是指视图与数据之间的绑定 . 初始数据链数据链在学术上被定义为连通数据的链路,在这条链路上有一到多个数据起点(元数据),并通过改点不断衍生扩展新的节点(衍生数据),形成 一个庞大的网状结构. 当你修改数据起点时, 所有存在网上的节点值都将会同步更新">
+<meta name="twitter:image" content="https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/data-chain.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Vue.js的数据响应式原理</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Vue.js的数据响应式原理</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-07-21T14:32:26.000Z" itemprop="datePublished" class="page-time">
+  2019-07-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-Vue-js对的数据响应式原理"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : Vue.js对的数据响应式原理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#初始数据链"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">初始数据链</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Vue中的数据链"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Vue中的数据链</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数据绑定视图"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">数据绑定视图</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Vue-js的数据响应式原理"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Vue.js的数据响应式原理</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-07-21 14:32:26" datetime="2019-07-21T14:32:26.000Z"  itemprop="datePublished">2019-07-21</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-Vue-js对的数据响应式原理"><a href="#学习笔记-Vue-js对的数据响应式原理" class="headerlink" title="学习笔记 : Vue.js对的数据响应式原理"></a>学习笔记 : Vue.js对的数据响应式原理</h2><p><em>简介 : <code>Vue</code>中最重要的概念就是响应式数据,一方面是指衍生和元数据之间的响应,通过数据链来实现. 另一方面是指视图与数据之间的绑定 .</em></p>
+<h3 id="初始数据链"><a href="#初始数据链" class="headerlink" title="初始数据链"></a>初始数据链</h3><p><em>数据链在学术上被定义为连通数据的链路,在这条链路上有一到多个数据起点(元数据),并通过改点不断衍生扩展新的节点(衍生数据),形成 一个庞大的网状结构. 当你修改数据起点时, 所有存在网上的节点值都将会同步更新,如下图所示 :</em></p>
+<p><img src="/2019/07/21/Vue-js的数据响应式原理/data-chain.png" alt></p>
+<h3 id="Vue中的数据链"><a href="#Vue中的数据链" class="headerlink" title="Vue中的数据链"></a>Vue中的数据链</h3><p><em>Vue实例提供了<code>computed</code>计算属性选项,以供开发者生成衍生数据对象. 虽然计算属性以函数形式声明,却并不接受参数,也只能以属性的方式调用. 由于计算属性的<code>this</code>指向<code>Vue</code>实例,所以它可以获取实例上所有已挂载的可见属性,如下示例此程序 :</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"../resources/vue.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span>Vue中的数据链<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">			<span class="selector-id">#app</span>&#123;</span></span><br><span class="line">				font-family: "lucida console",sans-serif;</span><br><span class="line"><span class="css">				<span class="selector-tag">color</span>: <span class="selector-id">#67B168</span>;</span></span><br><span class="line">			&#125;</span><br><span class="line"><span class="css">			<span class="selector-class">.data-label</span>&#123;</span></span><br><span class="line">				display: inline-block;</span><br><span class="line">				width: 160px;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span> <span class="attr">class</span>=<span class="string">"data-label"</span>&gt;</span>A<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">v-model</span>=<span class="string">"a"</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span> <span class="attr">class</span>=<span class="string">"data-label"</span>&gt;</span>B<span class="tag">&lt;/<span class="name">strong</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">v-model</span>=<span class="string">"b"</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span> <span class="attr">class</span>=<span class="string">"data-label"</span>&gt;</span>C=A*2+2<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>&#123;&#123;c&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span> <span class="attr">class</span>=<span class="string">"data-label"</span>&gt;</span>D=A+B*2<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>&#123;&#123;d&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span> <span class="attr">class</span>=<span class="string">"data-label"</span>&gt;</span>E=B/2<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>&#123;&#123;e&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span> <span class="attr">class</span>=<span class="string">"data-label"</span>&gt;</span>F=C+D<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>&#123;&#123;f&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">strong</span> <span class="attr">class</span>=<span class="string">"data-label"</span>&gt;</span>G=D-E<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>&#123;&#123;g&#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">			<span class="keyword">let</span> vm = <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="actionscript">				el: <span class="string">'#app'</span>,</span></span><br><span class="line">				data() &#123;</span><br><span class="line"><span class="actionscript">					<span class="keyword">return</span> &#123;</span></span><br><span class="line">						a: 3,</span><br><span class="line">						b: 4</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;,</span><br><span class="line"><span class="actionscript">				<span class="comment">//计算属性将被混入到Vue实例中.</span></span></span><br><span class="line"><span class="actionscript">				<span class="comment">//所有getter和setter的this上下文自动地绑定为Vue实例.</span></span></span><br><span class="line">				computed: &#123;</span><br><span class="line">					c() &#123;</span><br><span class="line"><span class="actionscript">						<span class="keyword">return</span> <span class="keyword">this</span>.a * <span class="number">2</span> + <span class="number">2</span></span></span><br><span class="line">					&#125;,</span><br><span class="line">					d() &#123;</span><br><span class="line"><span class="javascript">						<span class="keyword">return</span> <span class="built_in">Number</span>(<span class="keyword">this</span>.a) + <span class="keyword">this</span>.b * <span class="number">2</span></span></span><br><span class="line">					&#125;,</span><br><span class="line">					e() &#123;</span><br><span class="line"><span class="actionscript">						<span class="keyword">return</span> <span class="keyword">this</span>.b / <span class="number">2</span></span></span><br><span class="line">					&#125;,</span><br><span class="line">					f() &#123;</span><br><span class="line"><span class="javascript">						<span class="keyword">return</span> <span class="built_in">Number</span>(<span class="keyword">this</span>.c) + <span class="built_in">Number</span>(<span class="keyword">this</span>.d)</span></span><br><span class="line">					&#125;,</span><br><span class="line">					g() &#123;</span><br><span class="line"><span class="actionscript">						<span class="keyword">return</span> <span class="keyword">this</span>.d - <span class="keyword">this</span>.e</span></span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;);</span><br><span class="line">		<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><em>程序运行效果如下图所示 :</em><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/07/21/Vue-js的数据响应式原理/Vue-数据链.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<h3 id="数据绑定视图"><a href="#数据绑定视图" class="headerlink" title="数据绑定视图"></a>数据绑定视图</h3><p><em>下面通过一个示例程序,事实现数据与视图之间的<code>双向绑定</code> : 在对象函数的setter函数中修改文本节点的值,所以当obj.profile被重新赋值时,节点视图也会同步更新; 然后对输入框添加事件监听(addEventListener),当用户事件触发时,输入值将被赋予obj.profile. 以此方式,我们实现了数据与视图之间的双向绑定,这也就是Vue数据与视图绑定的实现原理 .</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span>Vue.js数据绑定视图的实现原理<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"harry"</span> <span class="attr">style</span>=<span class="string">"line-height: 32px;"</span>&gt;</span><span class="symbol">&amp;nbsp;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"trigger"</span> <span class="attr">type</span>=<span class="string">"text"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">			<span class="keyword">let</span> harry = <span class="built_in">document</span>.getElementById(<span class="string">"harry"</span>)</span></span><br><span class="line"><span class="javascript">			<span class="keyword">let</span> trigger = <span class="built_in">document</span>.getElementById(<span class="string">"trigger"</span>)</span></span><br><span class="line"><span class="javascript">			<span class="keyword">let</span> key = <span class="string">'profile'</span> <span class="comment">//对象属性键名</span></span></span><br><span class="line"><span class="javascript">			<span class="keyword">let</span> store = &#123;&#125; <span class="comment">//辅助get取值</span></span></span><br><span class="line"><span class="javascript">			<span class="keyword">let</span> obj = &#123; <span class="comment">//对象</span></span></span><br><span class="line"><span class="actionscript">				profile: <span class="string">''</span></span></span><br><span class="line">			&#125;</span><br><span class="line"><span class="javascript">			<span class="built_in">Object</span>.defineProperty(obj, key, &#123;</span></span><br><span class="line"><span class="javascript">				<span class="keyword">set</span>(value) &#123;</span></span><br><span class="line"><span class="actionscript">					harry.innerText = value <span class="comment">//重点:修改DOM节点视图</span></span></span><br><span class="line">					store[key] = value</span><br><span class="line">				&#125;,</span><br><span class="line"><span class="javascript">				<span class="keyword">get</span>() &#123;</span></span><br><span class="line"><span class="actionscript">					<span class="keyword">return</span> store[key]</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;)</span><br><span class="line"><span class="actionscript">			trigger.addEventListener(<span class="string">'keyup'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span></span><br><span class="line"><span class="actionscript">				obj[key] = <span class="keyword">this</span>.value</span></span><br><span class="line"><span class="javascript">				<span class="built_in">console</span>.log(obj[key])</span></span><br><span class="line">			&#125;)</span><br><span class="line">		<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><em>程序运行效果如下图所示 :</em><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/07/21/Vue-js的数据响应式原理/Vue-数据绑定视图的实现原理.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<p><em>在Vue中,当我们把普通的JavaScript对象传给Vue实例的data选项时,Vue将遍历对象属性,并使用<code>Object.defineProperty</code>将其全部转换为<code>getter/setter</code>,并在组件渲染时将属性记录为依赖. 之后当依赖项的setter函数被调用时,会通知<code>watcher</code>重新计算并更新其关联的所有组件. 由于Object.definedProperty是<code>ES5</code>中一个无法shim(自定义扩展)的特性,所以Vue应用无法运行在不支持Objcet.defineProperty的IE8及其以下版本的浏览器上 .</em></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.581Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/">Vue</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/&title=《Vue.js的数据响应式原理》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/&title=《Vue.js的数据响应式原理》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue.js的数据响应式原理》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/07/23/Vue-js的自定义指令与过滤器/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Vue.js的自定义指令与过滤器</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/07/21/Vue-js的语法/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Vue.js的语法</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/&title=《Vue.js的数据响应式原理》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/&title=《Vue.js的数据响应式原理》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Vue.js的数据响应式原理》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/07/21/Vue-js的数据响应式原理/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>jQuery 过滤器学习笔记 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="jQuery">
+    <meta name="description" content="jQuery 初学过滤器总结jQuery 过滤器分类 基础过滤器 内容过滤器 子元素过滤器 可见性过滤器  jQuery 基础过滤器 :header : 过滤器用于筛选所有标题元素.从’h1’到’h6’均在此选择范围内. :eq() : 过滤器用于选择指定序号为’n’的元素,序号从0开始. gt() : 过滤器用于选择大于序号为’n’的元素,序号从0开始. lt() : 过滤器用于选择所有小于序号">
+<meta name="keywords" content="jQuery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jQuery 过滤器学习笔记">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="jQuery 初学过滤器总结jQuery 过滤器分类 基础过滤器 内容过滤器 子元素过滤器 可见性过滤器  jQuery 基础过滤器 :header : 过滤器用于筛选所有标题元素.从’h1’到’h6’均在此选择范围内. :eq() : 过滤器用于选择指定序号为’n’的元素,序号从0开始. gt() : 过滤器用于选择大于序号为’n’的元素,序号从0开始. lt() : 过滤器用于选择所有小于序号">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/jQuery-基础过滤器示例图.PNG">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/jQuery-内容过滤器示例图.PNG">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/jQuery-子过滤器示例图.PNG">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/jQuery-可见性过滤器示例图.PNG">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.585Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jQuery 过滤器学习笔记">
+<meta name="twitter:description" content="jQuery 初学过滤器总结jQuery 过滤器分类 基础过滤器 内容过滤器 子元素过滤器 可见性过滤器  jQuery 基础过滤器 :header : 过滤器用于筛选所有标题元素.从’h1’到’h6’均在此选择范围内. :eq() : 过滤器用于选择指定序号为’n’的元素,序号从0开始. gt() : 过滤器用于选择大于序号为’n’的元素,序号从0开始. lt() : 过滤器用于选择所有小于序号">
+<meta name="twitter:image" content="https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/jQuery-基础过滤器示例图.PNG">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">jQuery 过滤器学习笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">jQuery 过滤器学习笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-10T09:59:17.000Z" itemprop="datePublished" class="page-time">
+  2019-04-10
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#jQuery-初学过滤器总结"><span class="post-toc-number">1.</span> <span class="post-toc-text">jQuery 初学过滤器总结</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#jQuery-过滤器分类"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">jQuery 过滤器分类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#jQuery-基础过滤器"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">jQuery 基础过滤器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#jQuery-内容过滤器"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">jQuery 内容过滤器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#jQuery-子过滤器"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">jQuery 子过滤器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#jQuery-可见性过滤器"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">jQuery 可见性过滤器</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-jQuery-过滤器学习笔记"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">jQuery 过滤器学习笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-10 09:59:17" datetime="2019-04-10T09:59:17.000Z"  itemprop="datePublished">2019-04-10</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="jQuery-初学过滤器总结"><a href="#jQuery-初学过滤器总结" class="headerlink" title="jQuery 初学过滤器总结"></a>jQuery 初学过滤器总结</h2><h3 id="jQuery-过滤器分类"><a href="#jQuery-过滤器分类" class="headerlink" title="jQuery 过滤器分类"></a>jQuery 过滤器分类</h3><ul>
+<li><em>基础过滤器</em></li>
+<li><em>内容过滤器</em></li>
+<li><em>子元素过滤器</em></li>
+<li><em>可见性过滤器</em></li>
+</ul>
+<h3 id="jQuery-基础过滤器"><a href="#jQuery-基础过滤器" class="headerlink" title="jQuery 基础过滤器"></a>jQuery 基础过滤器</h3><ol>
+<li><em><code>:header</code> : 过滤器用于筛选所有标题元素.从’h1’到’h6’均在此选择范围内.</em></li>
+<li><em><code>:eq()</code> : 过滤器用于选择指定序号为’n’的元素,序号从0开始.</em></li>
+<li><em><code>gt()</code> : 过滤器用于选择大于序号为’n’的元素,序号从0开始.</em></li>
+<li><em><code>lt()</code> : 过滤器用于选择所有小于序号为’n’的元素,序号从0开始.</em></li>
+<li><em><code>:first</code> : 过滤器用于筛选第一个符合条件的元素.</em></li>
+<li><em><code>:last</code> : 过滤器用于筛选最后一个符合条件的元素.</em></li>
+<li><em><code>even</code> : 过滤器用于筛选符合条件的偶数个元素.</em></li>
+<li><em><code>odd</code> : 过滤器用于筛选符合条件的奇数个元素.</em></li>
+<li><em><code>not()</code> : 过滤器用于筛选所有不符合条件的元素.</em></li>
+</ol>
+<ul>
+<li><p><em>jQuery 基础过滤器示例</em></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span>jQuery 基础过滤器总结<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"../../../jQuerySource/jquery-1.12.4.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':header' : 过滤器用于筛选所有标题元素.从&lt;h1&gt;到&lt;h6&gt;均在此选择范围内 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">				$(<span class="string">":header"</span>).css(<span class="string">"background-color"</span>, <span class="string">"palegreen"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':eq()' : 过滤器用于选择指定序号为'n'的元素,序号从0开始 --&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--'gt()' : 过滤器用于选择大于序号为'n'的元素,序号从0开始 --&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--'lt()' : 过滤器用于选择所有小于序号为'n'的元素,序号从0开始 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="actionscript">				<span class="comment">//'equal' : 影响的是第三行的列表选项元素&lt;li&gt;.</span></span></span><br><span class="line"><span class="javascript">				$(<span class="string">"li:eq(2)"</span>).css(<span class="string">"border"</span>, <span class="string">"1px solid #00FFFF"</span>);</span></span><br><span class="line"><span class="actionscript">				<span class="comment">//'less than' : 影响的是第三行之后的所有列表选项.</span></span></span><br><span class="line"><span class="javascript">				$(<span class="string">"li:gt(2)"</span>).css(<span class="string">"border"</span>, <span class="string">"1px solid blue"</span>);</span></span><br><span class="line"><span class="actionscript">				<span class="comment">//'greater than' : 影响的是第三行之前的所有列表选项.</span></span></span><br><span class="line"><span class="javascript">				$(<span class="string">"li:lt(2)"</span>).css(<span class="string">"border"</span>, <span class="string">"1px solid red"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':first' : 过滤器用于筛选第一个符合条件的元素 --&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':last' : 过滤器用于筛选最后一个符合条件的元素 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="actionscript">				<span class="comment">//':first()' : 过滤器用于筛选第一个符合条件的元素.</span></span></span><br><span class="line"><span class="javascript">				$(<span class="string">"p:first"</span>).css(<span class="string">"border"</span>, <span class="string">"1px solid lawngreen"</span>);</span></span><br><span class="line"><span class="actionscript">				<span class="comment">//':last()'  : 过滤器用于筛选最后一个符合条件的元素.</span></span></span><br><span class="line"><span class="javascript">				$(<span class="string">"p:last"</span>).css(<span class="string">"background-color"</span>, <span class="string">"bisque"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--'even' : 过滤器用于筛选符合条件的偶数个元素 --&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--'odd' : 过滤器用于筛选符合条件的奇数个元素 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="actionscript">				<span class="comment">//':even' : 过滤器用于筛选符合条件的偶数个元素.</span></span></span><br><span class="line"><span class="javascript">				$(<span class="string">"div#even_old tr:even"</span>).css(<span class="string">"background-color"</span>, <span class="string">"lightblue"</span>);</span></span><br><span class="line"><span class="actionscript">				<span class="comment">//':odd' : 过滤器用于筛选符合条件的奇数个元素.</span></span></span><br><span class="line"><span class="javascript">				$(<span class="string">"div#even_old tr:odd"</span>).css(<span class="string">"background-color"</span>, <span class="string">"silver"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--'not()' : 过滤器用于筛选所有不符合条件的元素 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="actionscript">				<span class="comment">//注意:为避免冲突不能同时使用两行该过滤器,如果要同时除去两个段落元素可以使用如下语法规则.</span></span></span><br><span class="line"><span class="javascript">				$(<span class="string">":not(div#eq_gt_lt ul li,div#first_last p)"</span>).css(<span class="string">"border"</span>, <span class="string">"0.5px solid magenta"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line">		<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span></span><br><span class="line">			div &#123;</span><br><span class="line">				width: 160px;</span><br><span class="line">				height: 180px;</span><br><span class="line">				border: 1px solid;</span><br><span class="line">				float: left;</span><br><span class="line">				margin: 10px;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			ul &#123;</span><br><span class="line">				width: 80px;</span><br><span class="line">				height: auto;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">center</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span>&gt;</span>jQuery 基础过滤器总结<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"eq_gt_lt"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>第一章<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>第二章<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>第三章<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>第四章<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>第五章<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"first_last"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>第一个段落元素<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>第二个段落元素<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>第三个段落元素<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"even_old"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">table</span> <span class="attr">id</span>=<span class="string">"test"</span> <span class="attr">border</span>=<span class="string">"1"</span> <span class="attr">width</span>=<span class="string">"160"</span> <span class="attr">height</span>=<span class="string">"180"</span>&gt;</span></span><br><span class="line">				<span class="comment">&lt;!-- &lt;caption&gt;table&lt;/caption&gt; --&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">th</span>&gt;</span>Header<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">th</span>&gt;</span>Header<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>jQuery 基础过滤器示例图</em></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/10/jQuery-过滤器学习笔记/jQuery-基础过滤器示例图.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+</li>
+</ul>
+<h3 id="jQuery-内容过滤器"><a href="#jQuery-内容过滤器" class="headerlink" title="jQuery 内容过滤器"></a>jQuery 内容过滤器</h3><ol>
+<li><em><code>:parent()</code> : 用于选择包含子节点(子元素和文本)的元素,和<code>:empty()</code>恰相反哟.</em></li>
+<li><em><code>:empty()</code> : 用于选择未包含子节点(子元素和文本的元素).</em></li>
+<li><em><code>:contains()</code> : 用于筛选出所有包含指定文本内容的元素.</em></li>
+<li><em><code>:has()</code> : 用于选择包含指定选择器的元素.</em></li>
+</ol>
+<ul>
+<li><p><em>jQuery 内容过滤器示例</em></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span>jQuery 内容过滤器总结<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"../../../jQuerySource/jquery-1.12.4.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':contains()' : 用于筛选出所有包含指定文本内容的元素 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">				$(<span class="string">"p:contains('瘦西湖')"</span>).css(<span class="string">"color"</span>, <span class="string">"red"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':empty()' : 用于选择未包含子节点(子元素和文本的元素) --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">				$(<span class="string">"div#empty td:empty"</span>).css(<span class="string">"background"</span>, <span class="string">"darkgray"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':parent()' : 用于选择包含子节点(子元素和文本)的元素,和':empty()'恰相反哟 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">				$(<span class="string">"div#parent td:parent"</span>).css(<span class="string">"background-color"</span>, <span class="string">"lightblue"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line"></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':has()' : 用于选择包含指定选择器的元素 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="handlebars"><span class="xml">				//选择包含<span class="tag">&lt;<span class="name">strong</span>&gt;</span>标签的<span class="tag">&lt;<span class="name">p</span>&gt;</span>元素.</span></span></span><br><span class="line"><span class="javascript">				$(<span class="string">"p:has(strong)"</span>).css(<span class="string">"background"</span>, <span class="string">"khaki"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line">		<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span></span><br><span class="line">			div &#123;</span><br><span class="line">				width: 150px;</span><br><span class="line">				height: 230px;</span><br><span class="line">				border: 1px solid;</span><br><span class="line">				float: left;</span><br><span class="line">				margin: 10px;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">center</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span>&gt;</span>jQuery 内容过滤器总结<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"contains"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>大明寺<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>瘦西湖北门<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>观音山<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>瘦西湖南门<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>扬州动植物园<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>瘦西湖东门<span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"empty"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">table</span> <span class="attr">border</span>=<span class="string">"1"</span> <span class="attr">width</span>=<span class="string">"150"</span> <span class="attr">height</span>=<span class="string">"230"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">th</span>&gt;</span>Header<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">th</span>&gt;</span>Header<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"parent"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">table</span> <span class="attr">border</span>=<span class="string">"1"</span> <span class="attr">width</span>=<span class="string">"150"</span> <span class="attr">height</span>=<span class="string">"230"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">th</span>&gt;</span>Header<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">th</span>&gt;</span>Header<span class="tag">&lt;/<span class="name">th</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span>Data<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"has"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>这是段落元素..<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>这是<span class="tag">&lt;<span class="name">strong</span>&gt;</span>段落<span class="tag">&lt;/<span class="name">strong</span>&gt;</span>元素..<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>这是<span class="tag">&lt;<span class="name">span</span>&gt;</span>段落<span class="tag">&lt;/<span class="name">span</span>&gt;</span>元素..<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>这是段落元素..<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>这是段落元素..<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>jQuery 内容过滤器示例图</em></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/10/jQuery-过滤器学习笔记/jQuery-内容过滤器示例图.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+</li>
+</ul>
+<h3 id="jQuery-子过滤器"><a href="#jQuery-子过滤器" class="headerlink" title="jQuery 子过滤器"></a>jQuery 子过滤器</h3><ol>
+<li><em><code>:nth-child</code> : 用于筛选页面上每个父元素中的第’n’个子元素.序号从1开始计数</em></li>
+<li><em><code>:first-child</code> : 过滤器用于筛选页面上每个父元素中的第一个子元素.</em></li>
+<li><em><code>:last-child</code> : 过滤器用于筛选页面上每个父元素中的最后一个子元素.</em></li>
+<li><em><code>:only</code> : 用于筛选所有在父元素中有且只有一个的子元素.</em></li>
+</ol>
+<ul>
+<li><p><em>jQuery 子过滤器示例</em></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span>jQuery 子过滤器总结<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"../../../jQuerySource/jquery-1.12.4.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':first-child' : 过滤器用于筛选页面上每个父元素中的第一个子元素 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">				$(<span class="string">"div#firstChild ul li:first-child"</span>).css(&#123;</span></span><br><span class="line"><span class="actionscript">					fontWeight: <span class="string">"bold"</span>,</span></span><br><span class="line"><span class="actionscript">					color: <span class="string">"red"</span></span></span><br><span class="line">				&#125;);</span><br><span class="line">			&#125;);</span><br><span class="line">			</span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':last-child' : 过滤器用于筛选页面上每个父元素中的最后一个子元素 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">				$(<span class="string">"div#lastChild p:last-child"</span>).css(&#123;</span></span><br><span class="line"><span class="actionscript">					fontWeight: <span class="string">"bold"</span>,</span></span><br><span class="line"><span class="actionscript">					color: <span class="string">"#0000FF"</span></span></span><br><span class="line">				&#125;);</span><br><span class="line">			&#125;);</span><br><span class="line">			</span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':only' : 用于筛选所有在父元素中有且只有一个的子元素 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">				$(<span class="string">"div#onlyChild ul li:only-child"</span>).css(&#123;</span></span><br><span class="line"><span class="actionscript">					fontWeight: <span class="string">"bold"</span>,</span></span><br><span class="line"><span class="actionscript">					color: <span class="string">"chartreuse"</span></span></span><br><span class="line">				&#125;);</span><br><span class="line">			&#125;);</span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':nth-child' : 用于筛选页面上每个父元素中的第'n'个子元素.序号从1开始计数 --&gt;</span></span></span></span><br><span class="line"><span class="actionscript"><span class="comment">// 			$(document).ready(function() &#123;</span></span></span><br><span class="line"><span class="actionscript"><span class="comment">// 				//筛选奇数项子元素.</span></span></span><br><span class="line"><span class="actionscript"><span class="comment">// 				$("ul#item01 li:nth-child(odd)").css("color", "red");</span></span></span><br><span class="line"><span class="actionscript"><span class="comment">// 				//选择第一个子元素.</span></span></span><br><span class="line"><span class="actionscript"><span class="comment">// 				$("ul#item02 li:nth-child(2)").css("color", "red");</span></span></span><br><span class="line"><span class="actionscript"><span class="comment">// 				//选择第3n+2个子元素.</span></span></span><br><span class="line"><span class="actionscript"><span class="comment">// 				$("ul#item03 li:nth-child(3n+2)").css("color", "red);</span></span></span><br><span class="line"><span class="actionscript"><span class="comment">// 			&#125;);</span></span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span></span><br><span class="line">			div &#123;</span><br><span class="line">				width: 150px;</span><br><span class="line">				height: 180px;</span><br><span class="line">				border: 1px solid;</span><br><span class="line">				float: left;</span><br><span class="line">				margin: 10px;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			ul &#123;</span><br><span class="line">				float: left;</span><br><span class="line">			&#125;</span><br><span class="line">		<span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">center</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span>&gt;</span>jQuery 子过滤器总结<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"firstChild"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>Apple<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>Pear<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>Grape<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>Milk<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>Bread<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>Coffee<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"lastChild"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>段落元素01..<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>段落元素02..<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>段落元素03..<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">p</span>&gt;</span>段落元素05..<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"onlyChild"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>第一个子元素<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>第二个子元素<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>唯一的子元素<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">				无标签的文本内容..</span><br><span class="line">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"nthChild"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"item01"</span>&gt;</span></span><br><span class="line">				<span class="comment">&lt;!-- li:nth-child(odd): 筛选奇数项元素 --&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>3<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>4<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>5<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"item02"</span>&gt;</span></span><br><span class="line">				<span class="comment">&lt;!-- li:nth-child(2): 筛选第2个元素 --&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>a<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>b<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>c<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>d<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>e<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"item03"</span>&gt;</span></span><br><span class="line">				<span class="comment">&lt;!-- li:nth-child(3n+2): 筛选第3n+2个元素 --&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>3<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>4<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>5<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>jQuery 子过滤器示例图</em></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/10/jQuery-过滤器学习笔记/jQuery-子过滤器示例图.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+</li>
+</ul>
+<h3 id="jQuery-可见性过滤器"><a href="#jQuery-可见性过滤器" class="headerlink" title="jQuery 可见性过滤器"></a>jQuery 可见性过滤器</h3><ol>
+<li><em><code>:hidden</code> : 过滤器用于筛选出所有处于隐藏状态的元素.</em></li>
+<li><em><code>:visible</code> : 过滤器用于筛选出所有处于可见状态的元素.</em></li>
+</ol>
+<ul>
+<li><p><em>jQuery 可见性过滤器示例</em></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span>jQuery 可见性选择器<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"../../../jQuerySource/jquery-1.12.4.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':hidden' : 过滤器用于筛选出所有处于隐藏状态的元素 --&gt;</span></span></span></span><br><span class="line"><span class="handlebars"><span class="xml">			<span class="comment">&lt;!--':visible' : 过滤器用于筛选出所有处于可见状态的元素 --&gt;</span></span></span></span><br><span class="line"><span class="javascript">			$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">				<span class="comment">//选择处于隐藏状态的div元素.</span></span></span><br><span class="line"><span class="actionscript">				<span class="comment">//find(selector): 用于查找处于可见状态的元素.该方法可以返回符合条件的元素的对象数组.</span></span></span><br><span class="line"><span class="javascript">				<span class="keyword">var</span> hideDiv = $(<span class="string">"body"</span>).find(<span class="string">"div:hidden"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">				<span class="comment">//选择处于隐藏状态的input元素.</span></span></span><br><span class="line"><span class="actionscript">				<span class="comment">//$(div#test01): 表示在id="test01"的div元素中查找.</span></span></span><br><span class="line"><span class="javascript">				<span class="keyword">var</span> hideInput = $(<span class="string">"div#test01"</span>).find(<span class="string">"input:hidden"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">				<span class="comment">//选择处于可见状态的input元素.</span></span></span><br><span class="line"><span class="javascript">				<span class="keyword">var</span> visbleInput = $(<span class="string">"div.test02"</span>).find(<span class="string">"input:visible"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">				<span class="comment">//选择处于可见状态的div元素.</span></span></span><br><span class="line"><span class="javascript">				<span class="keyword">var</span> visbleDiv = $(<span class="string">"body"</span>).find(<span class="string">"div:visible"</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">				<span class="built_in">window</span>.alert(<span class="string">"处于隐藏状态的div元素有:"</span> + hideDiv.length +</span></span><br><span class="line"><span class="actionscript">					<span class="string">"个!\n处于隐藏状态的input元素有:"</span> + hideInput.length + <span class="string">"个 !"</span> +</span></span><br><span class="line"><span class="actionscript">					<span class="string">"\n处于显示状态的div元素有 : "</span> + visbleDiv.length + <span class="string">"个!"</span> +</span></span><br><span class="line"><span class="actionscript">					<span class="string">"\n处于显示状态的input元素有 : "</span> + visbleInput.length + <span class="string">"个!"</span>);</span></span><br><span class="line">			&#125;);</span><br><span class="line">		<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">h3</span>&gt;</span><span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 隐藏状态的div元素 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"display: none"</span>&gt;</span>display:none<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 显示状态的div元素 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"test01"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 隐藏状态的input元素 --&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- 显示状态的div元素 --&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"test02"</span>&gt;</span></span><br><span class="line">			<span class="comment">&lt;!-- 显示状态的input元素 --&gt;</span></span><br><span class="line">			name : <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"username"</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">			password: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">name</span>=<span class="string">"userpassword"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>jQuery 可见性过滤器示例图</em></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/10/jQuery-过滤器学习笔记/jQuery-可见性过滤器示例图.PNG" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+</li>
+</ul>
+<ul>
+<li><em>Ok,学习笔记很简约,毕竟初学<code>jQuery</code>嘛.后期会不断更新我学习<code>jQuery</code>的学习笔记的(っ•̀ω•́)っ✎⁾⁾ ~ 最近养成了晨跑和夜跑的好习惯,也改掉了熬夜及大量饮咖啡的坏习惯,只想证明: 我会努力让自己更喜欢自己 !让你们喜欢我(✪ω✪) ~</em> </li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.585Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/&title=《jQuery 过滤器学习笔记》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/&title=《jQuery 过滤器学习笔记》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《jQuery 过滤器学习笔记》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/04/12/A-simple-MVC-example/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">A simple MVC example</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/04/08/Java-Servlet-API/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Java Servlet API</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/&title=《jQuery 过滤器学习笔记》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/&title=《jQuery 过滤器学习笔记》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《jQuery 过滤器学习笔记》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/04/10/jQuery-过滤器学习笔记/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

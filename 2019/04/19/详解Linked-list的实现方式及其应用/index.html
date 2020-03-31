@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>详解Linked list的实现方式及其应用 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java,Data Structures and Algorithms">
+    <meta name="description" content="链表链表的定义链表是一种物理存储单元上非连续、非顺序的存储结构,数据元素的逻辑顺序是通过链表中的指针链接次序实现的.链表由一系列结点(链表中每一个元素称为结点)组成,结点可以在运行时动态生成.每个结点包括两个部分: 一个是存储数据元素的数据域,另一个是存储下一个结点地址的指针域. 链表的使用场景 数据量较小. 不需要预先知道数据规模. 适应于频繁的插入操作.  链表的实现方式单向链表 首先定义一个">
+<meta name="keywords" content="Java,Data Structures and Algorithms">
+<meta property="og:type" content="article">
+<meta property="og:title" content="详解Linked list的实现方式及其应用">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="链表链表的定义链表是一种物理存储单元上非连续、非顺序的存储结构,数据元素的逻辑顺序是通过链表中的指针链接次序实现的.链表由一系列结点(链表中每一个元素称为结点)组成,结点可以在运行时动态生成.每个结点包括两个部分: 一个是存储数据元素的数据域,另一个是存储下一个结点地址的指针域. 链表的使用场景 数据量较小. 不需要预先知道数据规模. 适应于频繁的插入操作.  链表的实现方式单向链表 首先定义一个">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.685Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="详解Linked list的实现方式及其应用">
+<meta name="twitter:description" content="链表链表的定义链表是一种物理存储单元上非连续、非顺序的存储结构,数据元素的逻辑顺序是通过链表中的指针链接次序实现的.链表由一系列结点(链表中每一个元素称为结点)组成,结点可以在运行时动态生成.每个结点包括两个部分: 一个是存储数据元素的数据域,另一个是存储下一个结点地址的指针域. 链表的使用场景 数据量较小. 不需要预先知道数据规模. 适应于频繁的插入操作.  链表的实现方式单向链表 首先定义一个">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">详解Linked list的实现方式及其应用</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">详解Linked list的实现方式及其应用</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-19T11:54:07.000Z" itemprop="datePublished" class="page-time">
+  2019-04-19
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#链表"><span class="post-toc-number">1.</span> <span class="post-toc-text">链表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#链表的定义"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">链表的定义</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#链表的使用场景"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">链表的使用场景</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#链表的实现方式"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">链表的实现方式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#单向链表"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">单向链表</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#双向链表"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">双向链表</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#推荐书籍"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">推荐书籍</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-详解Linked-list的实现方式及其应用"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">详解Linked list的实现方式及其应用</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-19 11:54:07" datetime="2019-04-19T11:54:07.000Z"  itemprop="datePublished">2019-04-19</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h3 id="链表的定义"><a href="#链表的定义" class="headerlink" title="链表的定义"></a>链表的定义</h3><p><em><code>链表</code>是一种物理存储单元上非连续、非顺序的存储结构,数据元素的逻辑顺序是通过链表中的指针链接次序实现的.链表由一系列<code>结点</code>(链表中每一个元素称为结点)组成,结点可以在运行时动态生成.每个结点包括两个部分: 一个是存储数据元素的<code>数据域</code>,另一个是存储下一个结点地址的<code>指针域</code>.</em></p>
+<h3 id="链表的使用场景"><a href="#链表的使用场景" class="headerlink" title="链表的使用场景"></a>链表的使用场景</h3><ol>
+<li>数据量较小.</li>
+<li>不需要预先知道数据规模.</li>
+<li>适应于频繁的插入操作.</li>
+</ol>
+<h3 id="链表的实现方式"><a href="#链表的实现方式" class="headerlink" title="链表的实现方式"></a>链表的实现方式</h3><h4 id="单向链表"><a href="#单向链表" class="headerlink" title="单向链表"></a>单向链表</h4><ol>
+<li><p><em>首先定义一个链表</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: ListNode</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 单向链表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 15, 2019 8:59:50 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SinglyListNode</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> E data;</span><br><span class="line">	<span class="keyword">private</span> SinglyListNode&lt;E&gt; next;<span class="comment">// the pointer</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> E <span class="title">getData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> data;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(E data)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.data = data;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> SinglyListNode&lt;E&gt; <span class="title">getNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> next;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNext</span><span class="params">(SinglyListNode&lt;E&gt; next)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.next = next;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>操作单向链表的示例程序</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: SinglyLinkedList</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 操作单向链表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 15, 2019 8:54:46 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SinglyLinkedList</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	SinglyListNode&lt;T&gt; headNode;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createLinkedList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		headNode = <span class="keyword">new</span> SinglyListNode&lt;T&gt;();</span><br><span class="line">		<span class="comment">// headNode.setData(0);// attention: the header node is zero default</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// get the header node of the linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">getHeaderNode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> headNode.getData();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// get the length of the linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getListLength</span><span class="params">(<span class="comment">/* ListNode headNode */</span>)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line">		SinglyListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">			length++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> length;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add a new node into the linked list by specified position</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> SinglyListNode&lt;T&gt; <span class="title">insertInLinked</span><span class="params">(SinglyListNode&lt;T&gt; nodeToInsert, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the linked list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> nodeToInsert;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> size = getListLength();</span><br><span class="line">		<span class="keyword">if</span> (position &gt; size + <span class="number">1</span> || position &lt; <span class="number">1</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Position of node to insert is invalid. The vaild inputs are 1 to "</span> + (size + <span class="number">1</span>));</span><br><span class="line">			<span class="keyword">return</span> headNode;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (position == <span class="number">1</span>) &#123;</span><br><span class="line">			nodeToInsert.setNext(headNode);</span><br><span class="line">			headNode = nodeToInsert;</span><br><span class="line">			<span class="keyword">return</span> nodeToInsert;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">			SinglyListNode&lt;T&gt; previousNode = headNode;</span><br><span class="line">			<span class="keyword">while</span> (count &lt; position - <span class="number">1</span>) &#123;</span><br><span class="line">				previousNode = previousNode.getNext();<span class="comment">// 待插节点的前节点</span></span><br><span class="line">				count++;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			SinglyListNode&lt;T&gt; currentNode = previousNode.getNext();<span class="comment">// 待插节点的后节点</span></span><br><span class="line">			nodeToInsert.setNext(currentNode);</span><br><span class="line">			previousNode.setNext(nodeToInsert);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// delete the node by the specified position in the linked node</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">deleteNodeFromLinkedList</span><span class="params">(<span class="comment">/* ListNode headNode, */</span> <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> size = getListLength();</span><br><span class="line">		<span class="keyword">if</span> (position &gt; size || position &lt; <span class="number">1</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Position of node to insert is invalid. The vaild inputs are 1 to"</span> + (size + <span class="number">1</span>));</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (position == <span class="number">1</span>) &#123;</span><br><span class="line">			SinglyListNode&lt;T&gt; currentNode = headNode.getNext();</span><br><span class="line">			headNode = currentNode;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;<span class="comment">// 删除中间或表尾结点</span></span><br><span class="line">			<span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">			SinglyListNode&lt;T&gt; previousNode = headNode.getNext();</span><br><span class="line">			<span class="keyword">while</span> (count &lt; position) &#123;</span><br><span class="line">				previousNode = previousNode.getNext(); <span class="comment">// 找到待删节点的前节点</span></span><br><span class="line">				count++;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			SinglyListNode&lt;T&gt; currentNode = previousNode.getNext();<span class="comment">// 待删节点</span></span><br><span class="line">			previousNode.setNext(currentNode.getNext());</span><br><span class="line">			currentNode = <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// delete the singly linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">destroyLinkedList</span><span class="params">(<span class="comment">/* ListNode headNode */</span>)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the singly linked list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.print(<span class="string">"delete the node: "</span>);</span><br><span class="line">		<span class="keyword">while</span> (headNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.print(headNode.getData() + <span class="string">" , "</span>);</span><br><span class="line">			headNode = headNode.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println();</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Iterate through all the data in the linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">traverseNode</span><span class="params">( <span class="comment">/* ListNode headNode */</span>)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the linked node is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		SinglyListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		System.out.print(<span class="string">"All of node: "</span>);</span><br><span class="line">		<span class="keyword">while</span> (currentNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.print(currentNode.getData() + <span class="string">" , "</span>);</span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println();</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		SinglyLinkedList&lt;String&gt; list = <span class="keyword">new</span> SinglyLinkedList&lt;String&gt;();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 定义待插入链表的节点</span></span><br><span class="line">		SinglyListNode&lt;String&gt; a = <span class="keyword">new</span> SinglyListNode&lt;String&gt;();</span><br><span class="line">		a.setData(<span class="string">"A"</span>);</span><br><span class="line">		SinglyListNode&lt;String&gt; b = <span class="keyword">new</span> SinglyListNode&lt;String&gt;();</span><br><span class="line">		b.setData(<span class="string">"B"</span>);</span><br><span class="line">		SinglyListNode&lt;String&gt; c = <span class="keyword">new</span> SinglyListNode&lt;String&gt;();</span><br><span class="line">		c.setData(<span class="string">"C"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 向单向链表中添加新的节点</span></span><br><span class="line">		list.createLinkedList();</span><br><span class="line">		list.insertInLinked(a, <span class="number">1</span>);</span><br><span class="line">		list.insertInLinked(b, <span class="number">2</span>);</span><br><span class="line">		list.insertInLinked(c, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">		System.out.println(<span class="string">"The size of linked list: "</span> + list.getListLength());</span><br><span class="line">		System.out.println(<span class="string">"The header node : "</span> + list.getHeaderNode());</span><br><span class="line">		list.traverseNode();</span><br><span class="line">		System.out.println(<span class="string">"Delete the node which the position is first: "</span> + list.deleteNodeFromLinkedList(<span class="number">1</span>));</span><br><span class="line">		list.traverseNode();</span><br><span class="line">		System.out.println(<span class="string">"Delete all of node: "</span> + list.destroyLinkedList());</span><br><span class="line">		System.out.println(<span class="string">"The size of linked list: "</span> + list.getListLength());</span><br><span class="line">		list.traverseNode();</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">The size of linked list: <span class="number">4</span></span><br><span class="line">The header node : C</span><br><span class="line">All of node: C , A , B , <span class="keyword">null</span> , </span><br><span class="line">Delete the node which the position is first: <span class="keyword">true</span></span><br><span class="line">All of node: A , B , <span class="keyword">null</span> , </span><br><span class="line">delete the node: A , B , <span class="keyword">null</span> , </span><br><span class="line">Delete all of node: <span class="keyword">true</span></span><br><span class="line">The size of linked list: <span class="number">0</span></span><br><span class="line">Error: the linked node is empty !</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="双向链表"><a href="#双向链表" class="headerlink" title="双向链表"></a>双向链表</h4><ol>
+<li><p><em>定义链表</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: BidirectionalLinkList</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 双向链表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 16, 2019 2:31:09 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DoubleListNode</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> E data;</span><br><span class="line">	<span class="keyword">private</span> DoubleListNode&lt;E&gt; next;<span class="comment">// the pointer</span></span><br><span class="line">	<span class="keyword">private</span> DoubleListNode&lt;E&gt; previous;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> E <span class="title">getData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> data;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(E data)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.data = data;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> DoubleListNode&lt;E&gt; <span class="title">getNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> next;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNext</span><span class="params">(DoubleListNode&lt;E&gt; next)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.next = next;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> DoubleListNode&lt;E&gt; <span class="title">getPrevious</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> previous;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrevious</span><span class="params">(DoubleListNode&lt;E&gt; previous)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.previous = previous;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>操作双向链表的示例程序</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: CircularList</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 操作循环链表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 16, 2019 2:28:27 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DoubleLinkedList</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	DoubleListNode&lt;T&gt; headNode;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// initialize the circular list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createCircularList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		headNode = <span class="keyword">new</span> DoubleListNode&lt;T&gt;();<span class="comment">// Attention: the header node is empty default</span></span><br><span class="line">		<span class="comment">// headNode.setData(0);</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// get the length of the circular list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getLength</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line">		DoubleListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">			length++;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> length;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// get the header node of the double linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">getHeaderNode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the double linked list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> headNode.getData();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add new node into the double linked list by the specified position</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> DoubleListNode&lt;T&gt; <span class="title">insertNode</span><span class="params">(DoubleListNode&lt;T&gt; newNode, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the double linked list is empty !"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> size = getLength();</span><br><span class="line">		<span class="keyword">if</span> (position &lt; <span class="number">1</span> || position &gt; size + <span class="number">1</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Position of node to insert is invalid. The vaild inputs are 1 to "</span> + (size + <span class="number">1</span>));</span><br><span class="line">			<span class="keyword">return</span> headNode;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (position == <span class="number">1</span>) &#123;</span><br><span class="line">			newNode.setNext(headNode);</span><br><span class="line">			headNode.setPrevious(newNode);</span><br><span class="line">			headNode = newNode;<span class="comment">// 更新头结点</span></span><br><span class="line">			<span class="keyword">return</span> headNode;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">			DoubleListNode&lt;T&gt; previousNode = headNode;</span><br><span class="line">			<span class="keyword">while</span> (count &lt; position - <span class="number">1</span>) &#123;</span><br><span class="line">				previousNode = previousNode.getNext();</span><br><span class="line">				count++;</span><br><span class="line">			&#125;</span><br><span class="line">			DoubleListNode&lt;T&gt; currentNode = previousNode.getNext();<span class="comment">// 找到待插位置的节点</span></span><br><span class="line">			newNode.setNext(currentNode);</span><br><span class="line">			<span class="keyword">if</span> (currentNode != <span class="keyword">null</span>) &#123;<span class="comment">// 如果待插位置的节点不是尾节点</span></span><br><span class="line">				currentNode.setPrevious(newNode);</span><br><span class="line">			&#125;</span><br><span class="line">			previousNode.setNext(newNode);</span><br><span class="line">			newNode.setPrevious(previousNode);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// delete node by the spcified position in the double linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">deleteNode</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the circular list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (position == <span class="number">1</span>) &#123;</span><br><span class="line">			DoubleListNode&lt;T&gt; secondNode = headNode.getNext();</span><br><span class="line">			secondNode.setPrevious(<span class="keyword">null</span>);</span><br><span class="line">			headNode = secondNode;<span class="comment">// as the header node</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line">			<span class="comment">//// `previousNode`与`headNode`操作的是同一个对象哟 ! ////</span></span><br><span class="line">			DoubleListNode&lt;T&gt; previousNode = headNode;</span><br><span class="line">			<span class="keyword">while</span> (count &lt; position - <span class="number">1</span>) &#123;</span><br><span class="line">				previousNode = previousNode.getNext();<span class="comment">// 待删节点的前节点</span></span><br><span class="line">				count++;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			DoubleListNode&lt;T&gt; currentNode = previousNode.getNext();<span class="comment">// 待删节点</span></span><br><span class="line">			DoubleListNode&lt;T&gt; laterNode = currentNode.getNext();<span class="comment">// 待删节点的后节点</span></span><br><span class="line"></span><br><span class="line">			previousNode.setNext(laterNode);</span><br><span class="line">			<span class="keyword">if</span> (laterNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">				laterNode.setPrevious(previousNode);</span><br><span class="line">				currentNode = <span class="keyword">null</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Iterate through all the data in the linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traverseNode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		DoubleListNode&lt;T&gt; node = headNode;</span><br><span class="line">		<span class="keyword">if</span> (node == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the circular list is empty !"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">while</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"the node: "</span> + node.getData());</span><br><span class="line">			node = node.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// destroy the double linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroyList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Error: the circular list is empty !"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">while</span> (headNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"delete the node: "</span> + headNode.getData());</span><br><span class="line">			headNode = headNode.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// CircularList&lt;Integer&gt; list = new CircularList&lt;Integer&gt;();</span></span><br><span class="line">		DoubleLinkedList&lt;Character&gt; list = <span class="keyword">new</span> DoubleLinkedList&lt;Character&gt;();</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 初始化待插节点</span></span><br><span class="line">		DoubleListNode&lt;Character&gt; a = <span class="keyword">new</span> DoubleListNode&lt;Character&gt;();</span><br><span class="line">		a.setData(<span class="string">'a'</span>);</span><br><span class="line">		DoubleListNode&lt;Character&gt; b = <span class="keyword">new</span> DoubleListNode&lt;Character&gt;();</span><br><span class="line">		b.setData(<span class="string">'b'</span>);</span><br><span class="line">		DoubleListNode&lt;Character&gt; c = <span class="keyword">new</span> DoubleListNode&lt;Character&gt;();</span><br><span class="line">		c.setData(<span class="string">'c'</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 向双向链表中添加新节点</span></span><br><span class="line">		list.createCircularList();</span><br><span class="line">		list.insertNode(a, <span class="number">1</span>);</span><br><span class="line">		list.insertNode(b, <span class="number">2</span>);</span><br><span class="line">		list.insertNode(c, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">		System.out.println(<span class="string">"-------- traverse --------"</span>);</span><br><span class="line">		list.traverseNode();</span><br><span class="line">		System.out.println(<span class="string">"--------------------------"</span>);</span><br><span class="line">		System.out.println(<span class="string">"The header node: "</span> + list.getHeaderNode());</span><br><span class="line">		System.out.println(<span class="string">"The length of the circular list: "</span> + list.getLength());</span><br><span class="line">		System.out.println(<span class="string">"Delete the node which the position is one: "</span> + list.deleteNode(<span class="number">1</span>));</span><br><span class="line">		System.out.println(<span class="string">"-------- traverse --------"</span>);</span><br><span class="line">		list.traverseNode();</span><br><span class="line">		System.out.println(<span class="string">"--------------------------"</span>);</span><br><span class="line">		System.out.println(<span class="string">"The header node: "</span> + list.getHeaderNode());</span><br><span class="line">		System.out.println(<span class="string">"The length of the circular list: "</span> + list.getLength());</span><br><span class="line"></span><br><span class="line">		System.out.println();</span><br><span class="line">		list.destroyList();</span><br><span class="line">		System.out.println(<span class="string">"The header node: "</span> + list.getHeaderNode());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">-------- traverse --------</span><br><span class="line">the node: a</span><br><span class="line">the node: b</span><br><span class="line">the node: c</span><br><span class="line">the node: <span class="keyword">null</span></span><br><span class="line">--------------------------</span><br><span class="line">The header node: a</span><br><span class="line">The length of the circular list: <span class="number">4</span></span><br><span class="line">Delete the node which the position is one: <span class="keyword">true</span></span><br><span class="line">-------- traverse --------</span><br><span class="line">the node: b</span><br><span class="line">the node: c</span><br><span class="line">the node: <span class="keyword">null</span></span><br><span class="line">--------------------------</span><br><span class="line">The header node: b</span><br><span class="line">The length of the circular list: <span class="number">3</span></span><br><span class="line"></span><br><span class="line">delete the node: b</span><br><span class="line">delete the node: c</span><br><span class="line">delete the node: <span class="keyword">null</span></span><br><span class="line">The header node: <span class="keyword">null</span></span><br><span class="line">Error: the <span class="keyword">double</span> linked list is empty !</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">#### 循环链表</span><br><span class="line"><span class="number">1</span>. *定义一个链表*</span><br><span class="line">```java</span><br><span class="line"><span class="keyword">package</span> pers.huangyuhui.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: CircularListNode</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 循环链表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 17, 2019 9:52:23 AM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> T data;</span><br><span class="line">	<span class="keyword">private</span> ListNode&lt;T&gt; next;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> T <span class="title">getData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> data;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setData</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.data = data;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ListNode&lt;T&gt; <span class="title">getNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> next;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNext</span><span class="params">(ListNode&lt;T&gt; next)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.next = next;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>操作循环链表的示例程序</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.linkedlist;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span>: CircularLinkedList</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 操作循环链表</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: HuangYuhui</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: Apr 16, 2019 7:25:36 PM</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CircularLinkedList</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// get the length of the circular linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getLength</span><span class="params">(ListNode&lt;T&gt; headNode)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> length = <span class="number">0</span>;</span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">			length++;</span><br><span class="line">			<span class="keyword">if</span> (currentNode == headNode) &#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> length;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// traverse the node of the circular linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">traverseNode</span><span class="params">(ListNode&lt;T&gt; headNode)</span> </span>&#123;</span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode != <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.print(currentNode.getData() + <span class="string">" -&gt; "</span>);</span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">			<span class="keyword">if</span> (currentNode == headNode) &#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.print(<span class="string">"headNode("</span> + currentNode.getData() + <span class="string">")\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add new node at the tail of linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertAtListTail</span><span class="params">(ListNode&lt;T&gt; headNode, ListNode&lt;T&gt; newNode)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode.getNext() != headNode) &#123;</span><br><span class="line">			<span class="comment">//// 注意: 由于`currentNode`无变化,导致`currentNode.getNext() != headNode`继而进入进入死循环 !////</span></span><br><span class="line">			<span class="comment">// currentNode.setNext(currentNode.getNext());</span></span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">		newNode.setNext(newNode);</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			headNode = newNode;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			newNode.setNext(headNode);</span><br><span class="line">			currentNode.setNext(newNode);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add new node at the header of linked list</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ListNode&lt;T&gt; <span class="title">insertAtListHeader</span><span class="params">(ListNode&lt;T&gt; headNode, ListNode&lt;T&gt; newNode)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">while</span> (currentNode.getNext() != headNode) &#123;</span><br><span class="line">			currentNode = currentNode.getNext();<span class="comment">// 尾节点</span></span><br><span class="line">		&#125;</span><br><span class="line">		newNode.setNext(newNode);<span class="comment">// 指针指向自身</span></span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			headNode = newNode;</span><br><span class="line">		&#125;</span><br><span class="line">		newNode.setNext(headNode);</span><br><span class="line">		currentNode.setNext(newNode);</span><br><span class="line">		<span class="comment">// 注意: 此时链表头结点已更新! 所以应该返回更新后的头节点继而避免遍历时出现死循环!!!</span></span><br><span class="line">		headNode = newNode;</span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// add the new node by the specified index</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ListNode&lt;T&gt; <span class="title">insertNodeByIndex</span><span class="params">(ListNode&lt;T&gt; headNode, ListNode&lt;T&gt; newNode, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Error: the circular list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (position == <span class="number">1</span>) &#123;</span><br><span class="line">			insertAtListHeader(headNode, newNode);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (position == getLength(headNode)) &#123;</span><br><span class="line">			insertAtListTail(headNode, newNode);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">			ListNode&lt;T&gt; temp = headNode;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; position - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				temp = currentNode;<span class="comment">// 待插节点的前节点</span></span><br><span class="line">				currentNode = currentNode.getNext();<span class="comment">// 待插节点</span></span><br><span class="line">			&#125;</span><br><span class="line">			temp.setNext(newNode);</span><br><span class="line">			newNode.setNext(currentNode);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// delete the last node</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteLastNode</span><span class="params">(ListNode&lt;T&gt; headNode)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		ListNode&lt;T&gt; temp = headNode;</span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the circular list is empty !"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">while</span> (currentNode.getNext() != headNode) &#123;</span><br><span class="line">			temp = currentNode; <span class="comment">// 尾节点的前一个节点</span></span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">		temp.setNext(headNode);</span><br><span class="line">		currentNode = <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// delete the header node</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ListNode&lt;T&gt; <span class="title">deleteHeaderNode</span><span class="params">(ListNode&lt;T&gt; headNode)</span> </span>&#123;</span><br><span class="line">		ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.err.println(<span class="string">"Error: the circular list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">while</span> (currentNode.getNext() != headNode) &#123;</span><br><span class="line">			<span class="comment">// currentNode.setNext(currentNode.getNext());//死循环</span></span><br><span class="line">			currentNode = currentNode.getNext();</span><br><span class="line">		&#125;</span><br><span class="line">		currentNode.setNext(headNode.getNext());</span><br><span class="line">		<span class="comment">// 注意: 此时链表头结点已更新! 所以应该返回更新后的头节点继而避免遍历时出现死循环!!!</span></span><br><span class="line">		headNode = headNode.getNext();</span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// delete the node by the specified index</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ListNode&lt;T&gt; <span class="title">deleteNodeByIndex</span><span class="params">(ListNode&lt;T&gt; headNode, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (headNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">			System.out.println(<span class="string">"Error: the circular linked list is empty !"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (position == <span class="number">1</span>) &#123;</span><br><span class="line">			deleteHeaderNode(headNode);</span><br><span class="line">		&#125; <span class="keyword">else</span> <span class="keyword">if</span> (position == getLength(headNode)) &#123;</span><br><span class="line">			deleteLastNode(headNode);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			ListNode&lt;T&gt; currentNode = headNode;</span><br><span class="line">			ListNode&lt;T&gt; temp = headNode;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; position - <span class="number">1</span>; i++) &#123;</span><br><span class="line">				temp = currentNode;<span class="comment">// 待删节点的前节点</span></span><br><span class="line">				currentNode = currentNode.getNext();<span class="comment">// 待删节点</span></span><br><span class="line">			&#125;</span><br><span class="line">			temp.setNext(currentNode.getNext());</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> headNode;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Test</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 初始化链表头结点</span></span><br><span class="line">		CircularLinkedList&lt;Integer&gt; list = <span class="keyword">new</span> CircularLinkedList&lt;&gt;();</span><br><span class="line">		ListNode&lt;Integer&gt; headNode = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		headNode.setData(<span class="number">1</span>);<span class="comment">// 初始化链表头结点</span></span><br><span class="line">		headNode.setNext(headNode);<span class="comment">// 节点指针指向自身</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// 初始化待插入的链表节点</span></span><br><span class="line">		ListNode&lt;Integer&gt; a = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		a.setData(<span class="number">2</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; b = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		b.setData(<span class="number">3</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; c = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		c.setData(<span class="number">4</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; d = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		d.setData(<span class="number">100</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; e = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		e.setData(<span class="number">101</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; f = <span class="keyword">new</span> ListNode&lt;&gt;();</span><br><span class="line">		f.setData(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 向链表的尾部添加三个节点</span></span><br><span class="line">		System.out.print(<span class="string">"the origin node: "</span>);</span><br><span class="line">		list.insertAtListTail(headNode, a);</span><br><span class="line">		list.insertAtListTail(headNode, b);</span><br><span class="line">		list.insertAtListTail(headNode, c);</span><br><span class="line">		list.traverseNode(headNode);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 向链表中添加两个头结点</span></span><br><span class="line">		System.out.print(<span class="string">"add two header node: "</span>);</span><br><span class="line">		ListNode&lt;Integer&gt; newHeadNode = list.insertAtListHeader(headNode, d);</span><br><span class="line">		<span class="comment">// 注意: 由于`头结点`已在`insertAtListHeader`中已更新所以要向`traverseNode`传入新的头结点</span></span><br><span class="line">		ListNode&lt;Integer&gt; newHeadNode2 = list.insertAtListHeader(newHeadNode, e);</span><br><span class="line">		list.traverseNode(newHeadNode2);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 在链表的指定位置上插入新的节点</span></span><br><span class="line">		System.out.print(<span class="string">"Insert the new node at position 3: "</span>);</span><br><span class="line">		list.insertNodeByIndex(headNode, f, <span class="number">3</span>);</span><br><span class="line">		list.traverseNode(newHeadNode2);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 删除链表的尾节点</span></span><br><span class="line">		System.out.print(<span class="string">"delete the tail node:  "</span>);</span><br><span class="line">		list.deleteLastNode(newHeadNode2);</span><br><span class="line">		list.traverseNode(newHeadNode2);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 注意: 由于`头结点`已在`deleteHeaderNode`中已更新所以要向`traverseNode`传入新的头结点</span></span><br><span class="line">		ListNode&lt;Integer&gt; newHeadNode3 = list.deleteHeaderNode(newHeadNode2);</span><br><span class="line">		System.out.print(<span class="string">"delete the header node:  "</span>);</span><br><span class="line">		list.traverseNode(newHeadNode3);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 删除链表中指定位置的节点</span></span><br><span class="line">		ListNode&lt;Integer&gt; newHeadNode4 = list.deleteNodeByIndex(newHeadNode3, <span class="number">4</span>);</span><br><span class="line">		System.out.print(<span class="string">"delete the fourth node: "</span>);</span><br><span class="line">		list.traverseNode(newHeadNode4);</span><br><span class="line">		System.out.println(<span class="string">"the length of the list: "</span> + list.getLength(headNode));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">the origin node: <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; headNode(<span class="number">1</span>)</span><br><span class="line">the length of the list: <span class="number">4</span></span><br><span class="line">add two header node: <span class="number">101</span> -&gt; <span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; headNode(<span class="number">101</span>)</span><br><span class="line">the length of the list: <span class="number">6</span></span><br><span class="line">Insert the <span class="keyword">new</span> node at position <span class="number">3</span>: <span class="number">101</span> -&gt; <span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">0</span> -&gt; <span class="number">3</span> -&gt; <span class="number">4</span> -&gt; headNode(<span class="number">101</span>)</span><br><span class="line">the length of the list: <span class="number">7</span></span><br><span class="line">delete the tail node:  <span class="number">101</span> -&gt; <span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">0</span> -&gt; <span class="number">3</span> -&gt; headNode(<span class="number">101</span>)</span><br><span class="line">the length of the list: <span class="number">6</span></span><br><span class="line">delete the header node:  <span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">0</span> -&gt; <span class="number">3</span> -&gt; headNode(<span class="number">100</span>)</span><br><span class="line">the length of the list: <span class="number">5</span></span><br><span class="line">delete the fourth node: <span class="number">100</span> -&gt; <span class="number">1</span> -&gt; <span class="number">2</span> -&gt; <span class="number">3</span> -&gt; headNode(<span class="number">100</span>)</span><br><span class="line">the length of the list: <span class="number">4</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="推荐书籍"><a href="#推荐书籍" class="headerlink" title="推荐书籍"></a>推荐书籍</h3><ul>
+<li><em>上述示例程序主要参考本书籍：《数据结构与算法经典问题解析》—— 纳拉辛哈·卡路曼希[著]</em></li>
+<li><em>很认真的说这是我大二至今看过的最好的一本关于数据结构与算法的书籍哟 ! 其针对不同问题提供多个具有不同复杂度的解决方案.兼顾自学教材和面试辅导的不同需求呢 !</em></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.685Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Data-Structures-and-Algorithms/">Data Structures and Algorithms</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/&title=《详解Linked list的实现方式及其应用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/&title=《详解Linked list的实现方式及其应用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《详解Linked list的实现方式及其应用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/04/19/VOA-咖啡到底好不好-研究人员也说不清/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">VOA:咖啡到底好不好?研究人员也说不清</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/04/18/VOA-Google-s-Lookout-App-Helps-Blind-People-Experience-the-World/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">VOA:Google`s Lookout App Helps Blind People Experience the World</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/&title=《详解Linked list的实现方式及其应用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/&title=《详解Linked list的实现方式及其应用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《详解Linked list的实现方式及其应用》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/04/19/详解Linked-list的实现方式及其应用/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

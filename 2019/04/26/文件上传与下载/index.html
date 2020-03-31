@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>文件上传与下载 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java web">
+    <meta name="description" content="学习笔记 : Java web之文件的上传与下载文件上传如何实现文件上传Apache组织提供了一个开源组件Commons-FileUpload( 依赖于common-io ),该组件可以方便地将multipart/form-data类型请求中的各种表单解析出来,并实现一个或多个文件的上传,同时也可以限制上传文件的大小等内容..并且性能优异,使用简单. FileUpload组件是通过Servlet来">
+<meta name="keywords" content="Java web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传与下载">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/04/26/文件上传与下载/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : Java web之文件的上传与下载文件上传如何实现文件上传Apache组织提供了一个开源组件Commons-FileUpload( 依赖于common-io ),该组件可以方便地将multipart/form-data类型请求中的各种表单解析出来,并实现一个或多个文件的上传,同时也可以限制上传文件的大小等内容..并且性能优异,使用简单. FileUpload组件是通过Servlet来">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/04/26/文件上传与下载/FileUpload.png">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.669Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文件上传与下载">
+<meta name="twitter:description" content="学习笔记 : Java web之文件的上传与下载文件上传如何实现文件上传Apache组织提供了一个开源组件Commons-FileUpload( 依赖于common-io ),该组件可以方便地将multipart/form-data类型请求中的各种表单解析出来,并实现一个或多个文件的上传,同时也可以限制上传文件的大小等内容..并且性能优异,使用简单. FileUpload组件是通过Servlet来">
+<meta name="twitter:image" content="https://yubuntu0109.github.io/2019/04/26/文件上传与下载/FileUpload.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">文件上传与下载</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">文件上传与下载</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-04-26T10:28:32.000Z" itemprop="datePublished" class="page-time">
+  2019-04-26
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-Java-web之文件的上传与下载"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : Java web之文件的上传与下载</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文件上传"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">文件上传</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#如何实现文件上传"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">如何实现文件上传</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#文件上传相关API"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">文件上传相关API</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#FileItem-Interface"><span class="post-toc-number">1.1.2.1.</span> <span class="post-toc-text">FileItem Interface</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#DiskFileItemFactory-Class"><span class="post-toc-number">1.1.2.2.</span> <span class="post-toc-text">DiskFileItemFactory Class</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#ServletFileUpload-Class"><span class="post-toc-number">1.1.2.3.</span> <span class="post-toc-text">ServletFileUpload Class</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#文件上传案例"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">文件上传案例</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文件下载"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">文件下载</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#文件下载程序流程"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">文件下载程序流程</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#文件下载案例"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">文件下载案例</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-文件上传与下载"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">文件上传与下载</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-04-26 10:28:32" datetime="2019-04-26T10:28:32.000Z"  itemprop="datePublished">2019-04-26</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-Java-web之文件的上传与下载"><a href="#学习笔记-Java-web之文件的上传与下载" class="headerlink" title="学习笔记 : Java web之文件的上传与下载"></a>学习笔记 : Java web之文件的上传与下载</h2><h3 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h3><h4 id="如何实现文件上传"><a href="#如何实现文件上传" class="headerlink" title="如何实现文件上传"></a>如何实现文件上传</h4><p><em><code>Apache</code>组织提供了一个开源组件<code>Commons-FileUpload</code>( 依赖于<code>common-io</code> ),该组件可以方便地将<code>multipart/form-data</code>类型请求中的各种表单解析出来,并实现一个或多个文件的上传,同时也可以限制上传文件的大小等内容..并且性能优异,使用简单. FileUpload组件是通过Servlet来实现文件上传功能的,其工作流程如下图所示.</em></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/04/26/文件上传与下载/FileUpload.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h4 id="文件上传相关API"><a href="#文件上传相关API" class="headerlink" title="文件上传相关API"></a>文件上传相关<code>API</code></h4><h5 id="FileItem-Interface"><a href="#FileItem-Interface" class="headerlink" title="FileItem Interface"></a>FileItem Interface</h5><p><em><code>FileItem</code>接口用于封装单个表单字段元素的数据,一个表单字段元素对应一个FileItem对象.</em></p>
+<h5 id="DiskFileItemFactory-Class"><a href="#DiskFileItemFactory-Class" class="headerlink" title="DiskFileItemFactory Class"></a>DiskFileItemFactory Class</h5><p><em><code>DiskFileItemFactory</code>类用于将请求的消息实体中的每一个文件封装成单独的<code>FileItem</code>对象.如果上传的文件比较小,将直接保存在内存中,如果上传的文件比较大,则会以临时文件的形式,保存在磁盘的临时文件中,默认情况下,文件保存在内存/磁盘临时文件夹的临界值为10240,既10KB.</em></p>
+<h5 id="ServletFileUpload-Class"><a href="#ServletFileUpload-Class" class="headerlink" title="ServletFileUpload Class"></a>ServletFileUpload Class</h5><p><em><code>ServletFileUpload</code>类是Apache组件处理文件上传的核心高级类,通过使用<code>parseRequest(HttpServletRequest)</code>方法可以将HTML中每个表单提交的数据封装成一个<code>FileItem</code>对象,然后以List列表的形式返回.</em></p>
+<h4 id="文件上传案例"><a href="#文件上传案例" class="headerlink" title="文件上传案例"></a>文件上传案例</h4><ol>
+<li><p><em>JSP页面代码</em></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%@</span> <span class="attr">page</span> <span class="attr">language</span>=<span class="string">"java"</span> <span class="attr">contentType</span>=<span class="string">"text/html; charset=UTF-8"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">pageEncoding</span>=<span class="string">"UTF-8"</span>%&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span>file<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">h3</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span>upload the specified the file<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"UploadServlet2"</span> <span class="attr">method</span>=<span class="string">"post"</span>  <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">table</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">td</span>&gt;</span>学号<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">td</span>&gt;</span>姓名<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"name"</span>/&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">td</span>&gt;</span>照片<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">"image"</span>/&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">							<span class="tag">&lt;<span class="name">%--</span> 文件上传结果 <span class="attr">--</span>%&gt;</span></span><br><span class="line">							<span class="tag">&lt;<span class="name">%</span></span></span><br><span class="line"><span class="tag">								<span class="attr">String</span> <span class="attr">result</span> = <span class="string">(String)request.getAttribute(</span>"<span class="attr">result</span>");</span></span><br><span class="line"><span class="tag">								<span class="attr">if</span>(<span class="attr">result</span>!=<span class="string">null)&#123;</span></span></span><br><span class="line">									out.println("&lt;script&gt;alert(' "+result+" ')&lt;/script&gt;");</span><br><span class="line">								&#125;</span><br><span class="line">							%&gt;</span><br><span class="line">						<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"上传"</span>/&gt;</span></span><br><span class="line">			<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Servlet类 : 获取表单及其上传文件的信息..</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.file.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.io.FileNotFoundException;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.fileupload.FileItem;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.fileupload.FileUploadException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.fileupload.disk.DiskFileItemFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.fileupload.servlet.ServletFileUpload;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.io.filefilter.SuffixFileFilter;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet</span>(<span class="string">"/UploadServlet2"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UploadServlet2</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">UploadServlet2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		request.setCharacterEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">		response.setCharacterEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">		response.setContentType(<span class="string">"text/html;charset=utf-8"</span>);</span><br><span class="line"></span><br><span class="line">		String message = <span class="string">"上传失败 !"</span>;<span class="comment">// 上传结果</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// FileItemFactory fileItemFactory = new DiskFileItemFactory();</span></span><br><span class="line">		DiskFileItemFactory fileItemFactory = <span class="keyword">new</span> DiskFileItemFactory();</span><br><span class="line">		fileItemFactory.setSizeThreshold(<span class="number">1024</span> * <span class="number">1024</span>);<span class="comment">// // 设置将上传的文件以临时文件的形式保存在磁盘的临界值</span></span><br><span class="line">		<span class="comment">// 默认情况下,采用的是系统默认的临时文件路径,可以通过该方式获取: System.getProperty("java.io.tmpdir");</span></span><br><span class="line">		fileItemFactory.setRepository(<span class="keyword">new</span> File(<span class="string">"D:\\Java web\\temporary files"</span>));<span class="comment">// 将上传的文件以临时文件的形式保存在指定的目录下</span></span><br><span class="line"></span><br><span class="line">		<span class="comment">// 判断请求消息中的内容是否是: multipart/form-data类型</span></span><br><span class="line">		<span class="keyword">if</span> (ServletFileUpload.isMultipartContent(request)) &#123;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// 文件上传的核心高级类</span></span><br><span class="line">			ServletFileUpload servletFileUpload = <span class="keyword">new</span> ServletFileUpload(fileItemFactory);</span><br><span class="line">			servletFileUpload.setSizeMax(<span class="number">1024</span> * <span class="number">20</span>); <span class="comment">// 设置请求消息实体内容(既上传数据)的最大尺寸限制: 20KB</span></span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="comment">// 将HTML中每个表单提交的数据封装成一个FileItem对象,然后以List列表的形式返回</span></span><br><span class="line">				List&lt;FileItem&gt; fileItems = servletFileUpload.parseRequest(request);</span><br><span class="line"></span><br><span class="line">				<span class="comment">// 限制上传的文件类型</span></span><br><span class="line">				String[] suffixs = <span class="keyword">new</span> String[] &#123; <span class="string">".exe"</span>, <span class="string">".bat"</span>, <span class="string">".c"</span>, <span class="string">".java"</span>, <span class="string">".sh"</span>, <span class="string">"html"</span>, <span class="string">".css"</span>, <span class="string">".js"</span> &#125;;</span><br><span class="line">				SuffixFileFilter suffixFileFilter = <span class="keyword">new</span> SuffixFileFilter(suffixs);</span><br><span class="line"></span><br><span class="line">				<span class="comment">// 遍历集合</span></span><br><span class="line">				File file = <span class="keyword">null</span>;</span><br><span class="line">				String sno = <span class="keyword">null</span>;</span><br><span class="line">				String sname = <span class="keyword">null</span>;</span><br><span class="line">				String fileName = <span class="keyword">null</span>;</span><br><span class="line">				<span class="keyword">for</span> (FileItem fileItem : fileItems) &#123;</span><br><span class="line">					String item = fileItem.getFieldName();</span><br><span class="line">					<span class="keyword">if</span> (fileItem.isFormField()) &#123;<span class="comment">// 普通文本表单字段</span></span><br><span class="line">						<span class="keyword">if</span> (item.equals(<span class="string">"id"</span>)) &#123;</span><br><span class="line">							sno = fileItem.getString();</span><br><span class="line">						&#125; <span class="keyword">else</span> <span class="keyword">if</span> (item.contentEquals(<span class="string">"name"</span>)) &#123;</span><br><span class="line">							sname = fileItem.getString();</span><br><span class="line">						&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">							System.out.println(<span class="string">"others value .."</span>);</span><br><span class="line">						&#125;</span><br><span class="line">					&#125; <span class="keyword">else</span> &#123;<span class="comment">// 文件表单字段</span></span><br><span class="line">						fileName = fileItem.getName();</span><br><span class="line">						file = <span class="keyword">new</span> File(request.getSession().getServletContext().getRealPath(<span class="string">"/upload/"</span> + fileName));</span><br><span class="line">						<span class="keyword">if</span> (suffixFileFilter.accept(file)) &#123;</span><br><span class="line">							message = <span class="string">"禁止上传此类型文件 !"</span>;</span><br><span class="line">						&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">							file.getParentFile().mkdirs();<span class="comment">// 创建目录</span></span><br><span class="line">							fileItem.write(file);<span class="comment">// 上传文件</span></span><br><span class="line">							message = <span class="string">"success to upload !"</span>;</span><br><span class="line"></span><br><span class="line">							System.out.println(<span class="string">"id: "</span> + sno + <span class="string">"\nname: "</span> + sname + <span class="string">"\nthe file name: "</span> + fileName</span><br><span class="line">									+ <span class="string">"\nthe file path: "</span> + file.getAbsolutePath()); <span class="comment">// 上传者及文件信息</span></span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">				message = <span class="string">"error : please choose the specified file !"</span>;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (SizeLimitExceededException e) &#123;</span><br><span class="line">				message = <span class="string">"error : the file size exceeds limit !"</span>;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (FileUploadException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 将提示信息保留在request对象中</span></span><br><span class="line">		request.setAttribute(<span class="string">"result"</span>, message);</span><br><span class="line">		request.getRequestDispatcher(<span class="string">"upload.jsp"</span>).forward(request, response);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		doGet(request, response);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果 : 略..</em></p>
+</li>
+</ol>
+<h3 id="文件下载"><a href="#文件下载" class="headerlink" title="文件下载"></a>文件下载</h3><h4 id="文件下载程序流程"><a href="#文件下载程序流程" class="headerlink" title="文件下载程序流程"></a>文件下载程序流程</h4><p><em>浏览器通常会直接处理响应的实体内容,这时需要在<code>HTTP</code>响应消息中设置两个响应消息头字段,指定接收程序处理数据内容的方式为下载方式,当点击”下载”超链接时,系统将请求提交到对应的<code>Servlet</code>.在该Servlet中,程序流程如下 :</em></p>
+<ol>
+<li>根据该地址创建文件字节输入流.</li>
+<li>通过该流读取下载文件的内容.</li>
+<li>将读取的内容通过输出流写到目标文件中.</li>
+</ol>
+<ul>
+<li><em><code>HTTP</code>中设置两个响应消息头,具体如下.</em><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设定接收程序处理数据的方式</span></span><br><span class="line">Content-Disposition: attachment;filename=</span><br><span class="line"><span class="comment">//设定实体内容的MIME类型</span></span><br><span class="line">Content-Type: application/x-msdownload</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="文件下载案例"><a href="#文件下载案例" class="headerlink" title="文件下载案例"></a>文件下载案例</h4><ol>
+<li><p><em>JSP页面代码</em></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">%@</span> <span class="attr">page</span> <span class="attr">language</span>=<span class="string">"java"</span> <span class="attr">contentType</span>=<span class="string">"text/html; charset=UTF-8"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">pageEncoding</span>=<span class="string">"UTF-8"</span>%&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html"</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">title</span>&gt;</span>down the file<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">h3</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span><span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"DownloadServlet?filename=文件.png"</span>&gt;</span></span><br><span class="line">				Click to download this file ..</span><br><span class="line">			<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Servlet类 : 设置所要下载的文件以及文件在浏览器中打开的方式.</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.file.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream;</span><br><span class="line"><span class="keyword">import</span> java.net.URLEncoder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.tomcat.util.codec.binary.Base64;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet</span>(<span class="string">"/DownloadServlet"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DownloadServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">DownloadServlet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		response.setContentType(<span class="string">"text/html;charset=utf-8"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 获取需要下载的文件名</span></span><br><span class="line">		String fileName = request.getParameter(<span class="string">"filename"</span>);</span><br><span class="line">		<span class="comment">// 设定接收程序处理数据的方式( MIME type : application/octet-stream )</span></span><br><span class="line">		response.addHeader(<span class="string">"Content-Type"</span>, <span class="string">"application/octet-stream"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * 根据不同浏览器进行不同的编码处理,以防乱码</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		<span class="comment">// User-Agent: 首部包含了一个特征字符串,用来让网络协议的对端来识别发起请求的用户代理软件的应用类型、操作系统、软件开发商以及版本号.</span></span><br><span class="line">		String agent = request.getHeader(<span class="string">"User-Agent"</span>);</span><br><span class="line">		<span class="keyword">if</span> (agent.toLowerCase().indexOf(<span class="string">"firefox"</span>) != -<span class="number">1</span>) &#123;</span><br><span class="line">			response.addHeader(<span class="string">"Content-Disposition"</span>, <span class="string">"attachment;filename==?UTF-8?B?"</span></span><br><span class="line">					+ <span class="keyword">new</span> String(Base64.encodeBase64(fileName.getBytes(<span class="string">"UTF-8"</span>))) + <span class="string">"?="</span>);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 设定实体内容的MIME类型并使用encode(String s, Charset charset)解决乱码问题: Google Chrome,Microsoft Eage ..</span></span><br><span class="line">			response.addHeader(<span class="string">"Content-Disposition"</span>, <span class="string">"attachment;filename="</span> + URLEncoder.encode(fileName, <span class="string">"UTF-8"</span>));</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 读取文件</span></span><br><span class="line">		InputStream inputStream = getServletContext().getResourceAsStream(<span class="string">"/resource/"</span> + fileName);</span><br><span class="line">		<span class="comment">// 获取response对象的输出流</span></span><br><span class="line">		OutputStream outputStream = response.getOutputStream();</span><br><span class="line">		<span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">		<span class="keyword">int</span> len;</span><br><span class="line">		<span class="keyword">while</span> ((len = inputStream.read(buffer)) != -<span class="number">1</span>) &#123;</span><br><span class="line">			outputStream.write(buffer, <span class="number">0</span>, len);</span><br><span class="line">		&#125;</span><br><span class="line">		outputStream.close();</span><br><span class="line">		inputStream.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">		doGet(request, response);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果 : 略..</em></p>
+</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.669Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java-web/">Java web</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/&title=《文件上传与下载》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/&title=《文件上传与下载》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《文件上传与下载》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/04/27/VOA-A-Lifetime-of-Exercise-Slows-Aging-Process/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">VOA:A Lifetime of Exercise Slows Aging Process</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/04/26/JSP-标准标签库/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">JSP 标准标签库</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/&title=《文件上传与下载》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/&title=《文件上传与下载》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《文件上传与下载》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/04/26/文件上传与下载/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

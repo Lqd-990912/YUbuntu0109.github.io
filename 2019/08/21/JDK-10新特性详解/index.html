@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>详解JDK 10中的新特性 | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="JDK">
+    <meta name="description" content="学习笔记 : 详解JDK 10中的新特性2018年3月21日,Oracle官方宣布 Java10 正式发布. 需要注意的是 Java9 和 Java19 都不是 LTS( Long-Term-Support )版本,和过去的 Java 大版本升级不同,这两个只有两年半左右的开发和维护期. 而 Java11,也就是18.9LTS,才是继 Java8 之后的第一个 LTS 版本. JDK10 中一共定">
+<meta name="keywords" content="JDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="详解JDK 10中的新特性">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : 详解JDK 10中的新特性2018年3月21日,Oracle官方宣布 Java10 正式发布. 需要注意的是 Java9 和 Java19 都不是 LTS( Long-Term-Support )版本,和过去的 Java 大版本升级不同,这两个只有两年半左右的开发和维护期. 而 Java11,也就是18.9LTS,才是继 Java8 之后的第一个 LTS 版本. JDK10 中一共定">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="详解JDK 10中的新特性">
+<meta name="twitter:description" content="学习笔记 : 详解JDK 10中的新特性2018年3月21日,Oracle官方宣布 Java10 正式发布. 需要注意的是 Java9 和 Java19 都不是 LTS( Long-Term-Support )版本,和过去的 Java 大版本升级不同,这两个只有两年半左右的开发和维护期. 而 Java11,也就是18.9LTS,才是继 Java8 之后的第一个 LTS 版本. JDK10 中一共定">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">详解JDK 10中的新特性</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">详解JDK 10中的新特性</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-08-21T16:49:44.000Z" itemprop="datePublished" class="page-time">
+  2019-08-21
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-详解JDK-10中的新特性"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : 详解JDK 10中的新特性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#局部变量类型推断"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">局部变量类型推断</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#简介"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#示例"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">示例</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#注意"><span class="post-toc-number">1.1.4.</span> <span class="post-toc-text">注意</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-JDK-10新特性详解"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">详解JDK 10中的新特性</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-08-21 16:49:44" datetime="2019-08-21T16:49:44.000Z"  itemprop="datePublished">2019-08-21</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-详解JDK-10中的新特性"><a href="#学习笔记-详解JDK-10中的新特性" class="headerlink" title="学习笔记 : 详解JDK 10中的新特性"></a>学习笔记 : 详解JDK 10中的新特性</h2><p><em>2018年3月21日,Oracle官方宣布 Java10 正式发布. 需要注意的是 Java9 和 Java19 都不是 LTS( Long-Term-Support )版本,和过去的 Java 大版本升级不同,这两个只有两年半左右的开发和维护期. 而 Java11,也就是18.9LTS,才是继 Java8 之后的第一个 LTS 版本. JDK10 中一共定义了109个新特性,其中包含12个 JEP,还有一些新 API 和 JVM 规范以及 Java 语言规范上的改动,JDK10 的12个 JEP( JDK Enhancement Proposal 特性加强提议 )如下所示,更多信息请参阅官方文档 : <a href="http://openjdk.java.net/projects/jdk/10/" target="_blank" rel="noopener">http://openjdk.java.net/projects/jdk/10/</a></em></p>
+<ol>
+<li>Local-Variable Type Inference (<code>主要重点:局部变量类型推断</code>)</li>
+<li>Consolidate the JDK Forest into a Single Repository (JDK库的合并)</li>
+<li>Garbage-Collector Interface (统一的垃圾回收接口)</li>
+<li>Parallel Full GC for G1 (为G1提供并行的Full GC)</li>
+<li>Application Class-Data Sharing (应用程序类数据( AppCDS )共享)</li>
+<li>Thread-Local Handshakes (threadLocal握手交互)</li>
+<li>Remove the Native-Header Generation Tool (javah) (移除JDK中附带的javah工具)</li>
+<li>Additional Unicode Language-Tag Extensions (使用附加的Unicode语言标记扩展)</li>
+<li>Heap Allocation on Alternative Memory Devices (在可选内存设备上进行堆分配)</li>
+<li>Experimental Java-Based JIT Compiler (使用基于Java的JIT编译器)</li>
+<li>Root Certificates (根证书)</li>
+<li>Time-Based Release Versioning (基于时间的发布版本)</li>
+</ol>
+<h3 id="局部变量类型推断"><a href="#局部变量类型推断" class="headerlink" title="局部变量类型推断"></a>局部变量类型推断</h3><h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p><em>很多人抱怨 Java 是一种强类型,需要引入大量的样板代码. 甚至在这些情况下,给定好变量名,通常很清楚发生了什么,明显类型声明往往被认为是不必要的. 许多流行的编程语言都已经支持某种形式的局部变量类型推断 : 如C++ (auto), C# (var), Scala (var/val), Go (declaration with :=)等</em></p>
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p><em>Java 局部变量类型推断( LVTI ),JDK10 中可以使用 var 作为局部变量类型推断标识符,<code>此符号仅适用于局部变量,增强for循环的索引,以及传统for循环的本地变量. 它不能使用于方法形式参数,构造函数形式参数,方法返回类型,字段,catch块形式参数或任何其他类型的变量声明</code>. 标识符 var 不是关键字,相反,它是一个保留的类型名称. 这意味着 var 用作变量,方法名或则包名称的代码不会受到影响. 但 var 不能作为类或则接口的名字( 但这样命名是比较罕见的,因为他违反了通常的命名约定,类和接口首字母应该大写 ). <code>其工作原理为 : 在处理 var 时,编译器先是查看表达式右边部分,并根据右边变量值的类型进行推断,作为左边变量的类型,然后将该类型写入字符码当中</code></em></p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p><em>类型推断代码示例 :</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">"ABC"</span>; <span class="comment">//根据推断为字符串类型</span></span><br><span class="line"><span class="keyword">var</span> l = <span class="number">10L</span>; <span class="comment">//根据10L推断为long类型</span></span><br><span class="line"><span class="keyword">var</span> flag = <span class="keyword">true</span>; <span class="comment">//根据true推断为boolean类型</span></span><br><span class="line"><span class="keyword">var</span> flag1 = <span class="number">1</span>; <span class="comment">//这里会推断boolean类型,0表示false非0表示true</span></span><br><span class="line"><span class="keyword">var</span> list = <span class="keyword">new</span> ArrayList&lt;String&gt;(); <span class="comment">//推断为ArrayList&lt;String&gt;</span></span><br><span class="line"><span class="keyword">var</span> stream = list.stream(); <span class="comment">//推断为Stream&lt;String&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><em>上述示例代码的反编译class文件 :</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"ABC"</span>;</span><br><span class="line"><span class="keyword">long</span> l = <span class="number">10L</span>;</span><br><span class="line"><span class="keyword">boolean</span> flag = <span class="keyword">true</span>;</span><br><span class="line"><span class="keyword">int</span> flag1 = <span class="keyword">true</span>;</span><br><span class="line">ArrayList&lt;String&gt; list = <span class="keyword">new</span> ArrayList();</span><br><span class="line">Stream&lt;String&gt; stream = list.stream();</span><br></pre></td></tr></table></figure></p>
+<p><em>遍历代码中使用类型推断 :</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//集合遍历</span></span><br><span class="line"><span class="keyword">var</span> list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> s : list) &#123; &#125;</span><br><span class="line"><span class="comment">//普通遍历</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="number">10</span>; i++) &#123; &#125;</span><br></pre></td></tr></table></figure></p>
+<p><em>var 类型可以被final修饰符修饰</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">int</span> limit = <span class="number">10</span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p><em>在局部变量使用中,这些情况不适用类型推断哟 : <code>没有初始化的局部变量声明</code>, <code>方法的返回类型</code>, <code>方法的参数类型</code>, <code>构造器的参数类型</code>, <code>属性</code>, <code>catch块</code>. 部分示例如下所示</em></p>
+<ol>
+<li><p><em>初始值不能为null,既如果局部变量不赋值,则无法实现类型推断</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//error</span></span><br><span class="line"><span class="keyword">var</span> string1;</span><br><span class="line"><span class="keyword">var</span> string2 = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>为数组静态初始化中,语法格式需要注意</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] array = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;; <span class="comment">//正确写法</span></span><br><span class="line"><span class="keyword">var</span> array2 = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;; <span class="comment">//正确写法</span></span><br><span class="line"><span class="keyword">var</span> array3 = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;; <span class="comment">//错误写法</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Lambda表达式及方法引用中,左边的函数式接口不能声明为 var</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//正确写法</span></span><br><span class="line">Comparator&lt;Integer&gt; comparator = (o1, o2) -&gt; Integer.compare(o1, o2);</span><br><span class="line"><span class="comment">//错误写法</span></span><br><span class="line"><span class="keyword">var</span> comparator = (o1, o2) -&gt; Integer.compare(o1, o2);</span><br><span class="line"></span><br><span class="line"><span class="comment">//正确写法</span></span><br><span class="line">Consumer&lt;String&gt; consumer = System.out::println;</span><br><span class="line"><span class="comment">//错误写法</span></span><br><span class="line"><span class="keyword">var</span> consumer = System.out::println;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><em>更多 JDK10 的新特性描述请参阅 : <a href="http://openjdk.java.net/projects/jdk/10/" target="_blank" rel="noopener">官方文档</a></em></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.529Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JDK/">JDK</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/&title=《详解JDK 10中的新特性》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/&title=《详解JDK 10中的新特性》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《详解JDK 10中的新特性》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/08/22/JDK-11新特性详解/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">详解JDK 11中的新特性</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/08/21/JDK-9新特性详解/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">详解JDK 9中的新特性</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/&title=《详解JDK 10中的新特性》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/&title=《详解JDK 10中的新特性》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《详解JDK 10中的新特性》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/08/21/JDK-10新特性详解/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

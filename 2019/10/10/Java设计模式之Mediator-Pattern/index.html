@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Java设计模式之Mediator Pattern | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java,design and pattern">
+    <meta name="description" content="学习笔记 : Java设计模式之Mediator Pattern定义中介者设计模式 : 定义一个对象来封装一系列对象的交互. 中介者模式使各个用户对象之间不需要显示地相互引用,从而使其耦合松散,而且用户可以独立地改变它们之间的交互. (  Mediator Pattern : Define an object that encapsulates how a set of objects inter">
+<meta name="keywords" content="Java,design and pattern">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java设计模式之Mediator Pattern">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : Java设计模式之Mediator Pattern定义中介者设计模式 : 定义一个对象来封装一系列对象的交互. 中介者模式使各个用户对象之间不需要显示地相互引用,从而使其耦合松散,而且用户可以独立地改变它们之间的交互. (  Mediator Pattern : Define an object that encapsulates how a set of objects inter">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/Mediator-Pattern-ClassDiagram-1.png">
+<meta property="og:image" content="https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/Mediator-Pattern-ClassDiagram-2.png">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.541Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java设计模式之Mediator Pattern">
+<meta name="twitter:description" content="学习笔记 : Java设计模式之Mediator Pattern定义中介者设计模式 : 定义一个对象来封装一系列对象的交互. 中介者模式使各个用户对象之间不需要显示地相互引用,从而使其耦合松散,而且用户可以独立地改变它们之间的交互. (  Mediator Pattern : Define an object that encapsulates how a set of objects inter">
+<meta name="twitter:image" content="https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/Mediator-Pattern-ClassDiagram-1.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Java设计模式之Mediator Pattern</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Java设计模式之Mediator Pattern</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-10-10T12:24:52.000Z" itemprop="datePublished" class="page-time">
+  2019-10-10
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-Java设计模式之Mediator-Pattern"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : Java设计模式之Mediator Pattern</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#定义"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">定义</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#角色分析"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">角色分析</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#程序示例"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">程序示例</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#类图"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">类图</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#程序示例-扩展"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">程序示例-扩展</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#类图-1"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">类图</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Java设计模式之Mediator-Pattern"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Java设计模式之Mediator Pattern</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-10-10 12:24:52" datetime="2019-10-10T12:24:52.000Z"  itemprop="datePublished">2019-10-10</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-Java设计模式之Mediator-Pattern"><a href="#学习笔记-Java设计模式之Mediator-Pattern" class="headerlink" title="学习笔记 : Java设计模式之Mediator Pattern"></a>学习笔记 : Java设计模式之Mediator Pattern</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p><em>中介者设计模式 : 定义一个对象来封装一系列对象的交互. 中介者模式使各个用户对象之间不需要显示地相互引用,从而使其耦合松散,而且用户可以独立地改变它们之间的交互. (  Mediator Pattern : Define an object that encapsulates how a set of objects interact. Mediator promotes loose coupling by keeping objects from referring to each other explicitly,and it lets you vary their interaction independently. )</em></p>
+<blockquote>
+<p>中介者模式又称为调停者模式,它是一种对象行为模式. 在中介者设计模式中,通过引入中介者来简化对象之间的复杂交互,中介者模式是迪米特法则的一个典型应用</p>
+</blockquote>
+<h3 id="角色分析"><a href="#角色分析" class="headerlink" title="角色分析"></a>角色分析</h3><ol>
+<li><em><code>Mediator( 抽象中介者 )</code> : 它定义一个接口,该接口用于与各同事对象之间进行通信.</em></li>
+<li><em><code>ConcreteMediator( 具体中介者 )</code> : 它是抽象中介者的子类,通过协调各个同事对象来实现协作行为,它维持了对各个同事对象的引用.</em></li>
+<li><em><code>Colleague( 抽象同事类 )</code> : 它定义各个同事类公有的方法,并声明了一些抽象方法供子类实现,同时它维持了一个对抽象中介者类的引用,其子类可以通过该引用与中介者通信.</em></li>
+<li><em><code>ConcreteColleague( 具体同时类 )</code> : 它是抽象同事类的子类,每一个同事对象在需要和其他同事对象通信时先与中介者通信,通过中介者间接完成与其他同事类的通信; 在具体同事类中实现了在抽象同事类中声明的抽象方法.</em></li>
+</ol>
+<h3 id="程序示例"><a href="#程序示例" class="headerlink" title="程序示例"></a>程序示例</h3><p><em>下面是一个使用中介者模式的简单示例程序 : 设计一个 CRM 桌面系统,其中包含一个客户信息管理模块,其界面组件之间存在复杂的交互关系,如果删除一个客户,则从客户列表中( List )中删掉对应的项,客户选择组合框( ComboBox )中的客户名称也将减少一个; 如果增加一个客户信息,则客户列表中将增加一个客户,并且组合框中也将增加一项. 为了更好地处理界面组件之间的交互,现使用中介者模式设计该系系统~</em></p>
+<ol>
+<li><p><em>Mediator.java : 抽象中介者类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 抽象中介者类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-12:49 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Mediator</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">componentChanged</span><span class="params">(Component component)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>ConcreteMediator.java : 具体中介者类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 具体中介者类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-12:50 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteMediator</span> <span class="keyword">extends</span> <span class="title">Mediator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//维持对各个同事对象的引用</span></span><br><span class="line">    <span class="keyword">public</span> List list;</span><br><span class="line">    <span class="keyword">public</span> Button addButton;</span><br><span class="line">    <span class="keyword">public</span> TextBox userNameTextBox;</span><br><span class="line">    <span class="keyword">public</span> ComboBox comboBox;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//封装同事对象之间的交互</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">componentChanged</span><span class="params">(Component component)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//单击按钮</span></span><br><span class="line">        <span class="keyword">if</span> (component == addButton) &#123;</span><br><span class="line">            System.out.println(<span class="string">"--- 点击增加信息按钮 ---"</span>);</span><br><span class="line">            list.update();</span><br><span class="line">            comboBox.update();</span><br><span class="line">            userNameTextBox.update();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//从列表框选择客户</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (component == list) &#123;</span><br><span class="line">            System.out.println(<span class="string">"\n--- 从列表框选择客户 ---"</span>);</span><br><span class="line">            list.select();</span><br><span class="line">            userNameTextBox.setText();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//从组合框选择客户</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (component == comboBox) &#123;</span><br><span class="line">            System.out.println(<span class="string">"\n--- 从组合框选择客户 ---"</span>);</span><br><span class="line">            comboBox.select();</span><br><span class="line">            userNameTextBox.setText();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Component.java : 抽象组件类, 充当抽象同事类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 抽象组件类, 充当抽象同事类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-12:51 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> Mediator mediator;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMediator</span><span class="params">(Mediator mediator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mediator = mediator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//转发调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">changed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mediator.componentChanged(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Button.java : 按钮类, 充当具体同事类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 按钮类, 充当具体同事类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-12:51 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Button</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//System.out.println("点击添加信息按钮");</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>List.java : 列表框类, 充当具体同事类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 列表框类, 充当具体同事类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-12:52 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">List</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"列表框增加一项: 黄宇辉"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">select</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"列表框选中项: 黄浩然"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>ComboBox.java : 组合框类, 充当具体同事类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 组合框类, 充当具体同事类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-12:55 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ComboBox</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"组合框增加一项: 黄宇辉"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">select</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"组合框选中项: 黄浩然"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>TextBox.java : 文本框, 充当具体同事类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 文本框, 充当具体同事类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-12:56 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TextBox</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"客户信息增加成功后文本框被清空"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setText</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"文本框显示: 黄浩然"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Client.java : 客户端测试类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_1;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 客户端测试类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-12:58 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//定义中介者对象</span></span><br><span class="line">        ConcreteMediator mediator = <span class="keyword">new</span> ConcreteMediator();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//定义同事对象</span></span><br><span class="line">        List list = <span class="keyword">new</span> List();</span><br><span class="line">        Button addButton = <span class="keyword">new</span> Button();</span><br><span class="line">        ComboBox comboBox = <span class="keyword">new</span> ComboBox();</span><br><span class="line">        TextBox userNameTextBox = <span class="keyword">new</span> TextBox();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//关联中介者</span></span><br><span class="line">        list.setMediator(mediator);</span><br><span class="line">        comboBox.setMediator(mediator);</span><br><span class="line">        addButton.setMediator(mediator);</span><br><span class="line">        userNameTextBox.setMediator(mediator);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化具体同事类</span></span><br><span class="line">        mediator.list = list;</span><br><span class="line">        mediator.comboBox = comboBox;</span><br><span class="line">        mediator.addButton = addButton;</span><br><span class="line">        mediator.userNameTextBox = userNameTextBox;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//通过中介者进行通信</span></span><br><span class="line">        addButton.changed(); <span class="comment">//点击添加客户信息按钮</span></span><br><span class="line">        list.changed(); <span class="comment">//从列表框中选择客户</span></span><br><span class="line">        comboBox.changed(); <span class="comment">//从组合框中选择客户</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下所示 :</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">--- 点击增加信息按钮 ---</span><br><span class="line">列表框增加一项: 黄宇辉</span><br><span class="line">组合框增加一项: 黄宇辉</span><br><span class="line">客户信息增加成功后文本框被清空</span><br><span class="line"></span><br><span class="line">--- 从列表框选择客户 ---</span><br><span class="line">列表框选中项: 黄浩然</span><br><span class="line">文本框显示: 黄浩然</span><br><span class="line"></span><br><span class="line">--- 从组合框选择客户 ---</span><br><span class="line">组合框选中项: 黄浩然</span><br><span class="line">文本框显示: 黄浩然</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/10/10/Java设计模式之Mediator-Pattern/Mediator-Pattern-ClassDiagram-1.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<h3 id="程序示例-扩展"><a href="#程序示例-扩展" class="headerlink" title="程序示例-扩展"></a>程序示例-扩展</h3><p><em>对上述示例程序进行改进,使客户信息管理窗口下端能够及时显示当前系统中客户信息的总数. 由于上述案例使用了中介者设计模式,所以在原有系统中增加新的组件( 既新的同事类 )将变得很容易,解决方案 : 首先增加一个 Label 类,其次增加一个 ConcreteMediator 的子类 SubConcreteMediator 来实现对 Label 对象的引用,然后在新增的中介者类 SubConcreteMediator 中通过覆盖 componentChanged() 方法实现所有组件( 包括新增Lable组件 )之间的交互. 既原有组件类无需做任何修改,客户端代码仅需做少量修改,其更加符合开闭原则~</em></p>
+<ol>
+<li><p><em>Label.java : 文本标签类, 具体同事类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_2;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 文本标签类, 具体同事类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-1:30 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Label</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"[ 文本标签内容改变,客户信息总数: +1 ]"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>SubConcreteMediator.java : 在新增的该中介者类, 通过覆写componentChanged()方法来实现所有组件(包括新增Label组件)之间的交互</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_2;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 在新增的该中介者类, 通过覆写componentChanged()方法来实现所有组件(包括新增Label组件)之间的交互</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-1:30 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubConcreteMediator</span> <span class="keyword">extends</span> <span class="title">ConcreteMediator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//增加对Label对象的引用</span></span><br><span class="line">    <span class="keyword">public</span> Label label;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">componentChanged</span><span class="params">(Component component)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//super.componentChanged(component);</span></span><br><span class="line">        <span class="comment">//单击按钮</span></span><br><span class="line">        <span class="keyword">if</span> (component == addButton) &#123;</span><br><span class="line">            System.out.println(<span class="string">"--- 点击增加信息按钮 ---"</span>);</span><br><span class="line">            list.update();</span><br><span class="line">            comboBox.update();</span><br><span class="line">            userNameTextBox.update();</span><br><span class="line">            label.update(); <span class="comment">//更新文本标签</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//从列表框选择客户</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (component == list) &#123;</span><br><span class="line">            System.out.println(<span class="string">"\n--- 从列表框选择客户 ---"</span>);</span><br><span class="line">            list.select();</span><br><span class="line">            userNameTextBox.setText();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//从组合框选择客户</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (component == comboBox) &#123;</span><br><span class="line">            System.out.println(<span class="string">"\n--- 从组合框选择客户 ---"</span>);</span><br><span class="line">            comboBox.select();</span><br><span class="line">            userNameTextBox.setText();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Client.java : 客户端测试类</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> pers.huangyuhui.mediator_pattern.mediator_pattern_2;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@project</span>: design-patterns</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span>: 客户端测试类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: 黄宇辉</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span>: 10/10/2019-12:58 PM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span>: 1.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@website</span>: https://yubuntu0109.github.io/</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//定义中介者对象</span></span><br><span class="line">        SubConcreteMediator mediator = <span class="keyword">new</span> SubConcreteMediator();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//定义同事对象</span></span><br><span class="line">        List list = <span class="keyword">new</span> List();</span><br><span class="line">        Label label = <span class="keyword">new</span> Label();</span><br><span class="line">        Button addButton = <span class="keyword">new</span> Button();</span><br><span class="line">        ComboBox comboBox = <span class="keyword">new</span> ComboBox();</span><br><span class="line">        TextBox userNameTextBox = <span class="keyword">new</span> TextBox();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//关联中介者</span></span><br><span class="line">        list.setMediator(mediator);</span><br><span class="line">        label.setMediator(mediator);</span><br><span class="line">        comboBox.setMediator(mediator);</span><br><span class="line">        addButton.setMediator(mediator);</span><br><span class="line">        userNameTextBox.setMediator(mediator);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化具体同事类</span></span><br><span class="line">        mediator.list = list;</span><br><span class="line">        mediator.label = label;</span><br><span class="line">        mediator.comboBox = comboBox;</span><br><span class="line">        mediator.addButton = addButton;</span><br><span class="line">        mediator.userNameTextBox = userNameTextBox;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//通过中介者进行通信</span></span><br><span class="line">        addButton.changed(); <span class="comment">//点击添加客户按钮</span></span><br><span class="line">        list.changed(); <span class="comment">//从列表框中选择客户</span></span><br><span class="line">        comboBox.changed(); <span class="comment">//从组合框中选择客户</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>程序运行结果如下所示 :</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">--- 点击增加信息按钮 ---</span><br><span class="line">列表框增加一项: 黄宇辉</span><br><span class="line">组合框增加一项: 黄宇辉</span><br><span class="line">客户信息增加成功后文本被清空</span><br><span class="line">[ 文本标签内容改变,客户信息总数: +1 ]</span><br><span class="line"></span><br><span class="line">--- 从列表框选择客户 ---</span><br><span class="line">列表框选中项: 赵艳春</span><br><span class="line">文本框显示: 赵艳春</span><br><span class="line"></span><br><span class="line">--- 从组合框选择客户 ---</span><br><span class="line">组合框选中项: 赵艳春</span><br><span class="line">文本框显示: 赵艳春</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="类图-1"><a href="#类图-1" class="headerlink" title="类图"></a>类图</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/2019/10/10/Java设计模式之Mediator-Pattern/Mediator-Pattern-ClassDiagram-2.png" alt title>
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.541Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/design-and-pattern/">design and pattern</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/&title=《Java设计模式之Mediator Pattern》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/&title=《Java设计模式之Mediator Pattern》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java设计模式之Mediator Pattern》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/10/14/JDK-12新特性详解/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">详解JDK 12中的新特性</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/09/28/Java设计模式之Observer-Pattern/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Java设计模式之Observer Pattern</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/&title=《Java设计模式之Mediator Pattern》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/&title=《Java设计模式之Mediator Pattern》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Java设计模式之Mediator Pattern》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/10/10/Java设计模式之Mediator-Pattern/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

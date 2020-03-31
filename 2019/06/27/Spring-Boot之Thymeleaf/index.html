@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Spring Boot之Thymeleaf | 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~ | It&#39;s founded on March 9, 2019 and the open source address for the blog notes https://github.com/YUbuntu0109/YUbuntu0109.github.io</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Spring Boot">
+    <meta name="description" content="学习笔记 : Thymeleaf的常用语法简介 : Thymeleaf是一种用于Web和独立环境的现代服务器端的Java模板引擎. Thymeleaf的主要目标是将优雅的自然模板带到开发工作流程中,并将HTML在浏览器中正确显示,并且可以作为静态原型,让开发团队能更容易地协作. Thymeleaf能够处理HTML,XML,JavaScript,CSS甚至纯文本 . 基础语法变量表达式 ${}使用方">
+<meta name="keywords" content="Spring Boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot之Thymeleaf">
+<meta property="og:url" content="https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/index.html">
+<meta property="og:site_name" content="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~">
+<meta property="og:description" content="学习笔记 : Thymeleaf的常用语法简介 : Thymeleaf是一种用于Web和独立环境的现代服务器端的Java模板引擎. Thymeleaf的主要目标是将优雅的自然模板带到开发工作流程中,并将HTML在浏览器中正确显示,并且可以作为静态原型,让开发团队能更容易地协作. Thymeleaf能够处理HTML,XML,JavaScript,CSS甚至纯文本 . 基础语法变量表达式 ${}使用方">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-31T12:36:02.557Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Boot之Thymeleaf">
+<meta name="twitter:description" content="学习笔记 : Thymeleaf的常用语法简介 : Thymeleaf是一种用于Web和独立环境的现代服务器端的Java模板引擎. Thymeleaf的主要目标是将优雅的自然模板带到开发工作流程中,并将HTML在浏览器中正确显示,并且可以作为静态原型,让开发团队能更容易地协作. Thymeleaf能够处理HTML,XML,JavaScript,CSS甚至纯文本 . 基础语法变量表达式 ${}使用方">
+    
+        <link rel="alternate" type="application/atom+xml" title="欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/my-portrait.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">黄宇辉</h5>
+          <a href="mailto:3083968068@qq.com" title="3083968068@qq.com" class="mail">3083968068@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                Homepage
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/YUbuntu0109" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://space.bilibili.com/364361791" target="_blank" >
+                <i class="icon icon-lg icon-link"></i>
+                Bilibili
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Spring Boot之Thymeleaf</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="Search">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+        <!-- add the background music on Mar 11,2019
+        <div>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=280 height=52 src="//music.163.com/outchain/player?type=2&id=438801642&auto=1&height=32"></iframe>
+        </div>
+        -->
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Spring Boot之Thymeleaf</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-06-27T11:34:09.000Z" itemprop="datePublished" class="page-time">
+  2019-06-27
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#学习笔记-Thymeleaf的常用语法"><span class="post-toc-number">1.</span> <span class="post-toc-text">学习笔记 : Thymeleaf的常用语法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基础语法"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">基础语法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#变量表达式"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">变量表达式 ${}</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#选择变量表达式"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">选择变量表达式 *{}</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#链接表达式"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">链接表达式 @{}</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#片段表达式"><span class="post-toc-number">1.1.4.</span> <span class="post-toc-text">片段表达式 ~{}</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#消息表达式-amp-35"><span class="post-toc-number">1.1.5.</span> <span class="post-toc-text">消息表达式 &amp;#35;{}</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#其它表达式"><span class="post-toc-number">1.1.6.</span> <span class="post-toc-text">其它表达式</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#常用语法"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">常用语法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#迭代循环"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">迭代循环</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#条件判断"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">条件判断</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#if语句"><span class="post-toc-number">1.2.2.1.</span> <span class="post-toc-text">if语句</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#switch语句"><span class="post-toc-number">1.2.2.2.</span> <span class="post-toc-text">switch语句</span></a></li></ol></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#日期格式化"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">日期格式化</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#内联写法"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">内联写法</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#内置对象"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">内置对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#七大基础对象"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">七大基础对象</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#常用的工具类"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">常用的工具类</span></a></li></ol></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Spring-Boot之Thymeleaf"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Spring Boot之Thymeleaf</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-06-27 11:34:09" datetime="2019-06-27T11:34:09.000Z"  itemprop="datePublished">2019-06-27</time>
+
+            
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="学习笔记-Thymeleaf的常用语法"><a href="#学习笔记-Thymeleaf的常用语法" class="headerlink" title="学习笔记 : Thymeleaf的常用语法"></a>学习笔记 : Thymeleaf的常用语法</h2><p><em>简介 : Thymeleaf是一种用于Web和独立环境的现代服务器端的Java模板引擎. Thymeleaf的主要目标是将优雅的自然模板带到开发工作流程中,并将HTML在浏览器中正确显示,并且可以作为静态原型,让开发团队能更容易地协作. Thymeleaf能够处理HTML,XML,JavaScript,CSS甚至纯文本 .</em></p>
+<h3 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h3><h4 id="变量表达式"><a href="#变量表达式" class="headerlink" title="变量表达式 ${}"></a>变量表达式 <code>${}</code></h4><p><em>使用方法 : 直接使用<code>th:xx = &quot;${}&quot;</code>获取对象属性</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"userForm"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"id"</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.id&#125;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"username"</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.username&#125;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"password"</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.password&#125;"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:text</span>=<span class="string">"hello"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:text</span>=<span class="string">"$&#123;user.username&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="选择变量表达式"><a href="#选择变量表达式" class="headerlink" title="选择变量表达式 *{}"></a>选择变量表达式 <code>*{}</code></h4><p><em>使用方法 : 首先通过<code>th:object</code>获取对象,然后使用`th:xx = “</em>{}”`获取对象属性*<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"userForm"</span> <span class="attr">th:object</span>=<span class="string">"$&#123;user&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"id"</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">th:value</span>=<span class="string">"*&#123;id&#125;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"username"</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">th:value</span>=<span class="string">"*&#123;username&#125;"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"password"</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">th:value</span>=<span class="string">"*&#123;password&#125;"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="链接表达式"><a href="#链接表达式" class="headerlink" title="链接表达式 @{}"></a>链接表达式 <code>@{}</code></h4><p><em>使用方法 : 通过链接表达式<code>@{}</code>直接拿到应用路径,然后拼接静态资源路径</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 访问项目路径下的user并传递id,name等参数 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">th:href</span>=<span class="string">"@&#123;~/user(id=1,name=demo)&#125;"</span>&gt;</span>demo<span class="tag">&lt;/<span class="name">a</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">th:src</span>=<span class="string">"@&#123;/webjars/jquery/jquery.js&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">th:href</span>=<span class="string">"@&#123;/webjars/bootstrap/css/bootstrap.css&#125;"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="片段表达式"><a href="#片段表达式" class="headerlink" title="片段表达式 ~{}"></a>片段表达式 <code>~{}</code></h4><ol>
+<li><em><code>~{viewName}</code> : 表示引入完整页面</em></li>
+<li><em><code>~{viewName ::selector}</code> : 表示在指定页面寻找片段,其中<code>selector</code>可为片段名、jquery选择器等</em></li>
+<li><em><code>~{::selector}</code> : 表示在当前页寻找</em></li>
+</ol>
+<p><em>使用方法 : 首先通过<code>th:fragment</code>定制片段,然后通过<code>th:replace</code>填写片段路径和片段名</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- /views/common/head.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span> <span class="attr">th:fragment</span>=<span class="string">"static"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">th:src</span>=<span class="string">"@&#123;/webjars/jquery/3.3.1/jquery.js&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- /views/your.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:replace</span>=<span class="string">"~&#123;common/head::static&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><em>注意 : 由于默认拼接的路径为<code>spring.thymeleaf.prefix = classpath:/templates/</code>,所以在使用替换路径<code>th:replace</code>开头请勿添加斜杠,避免部署运行的时候出现路径报错 !</em></li>
+</ul>
+<h4 id="消息表达式-amp-35"><a href="#消息表达式-amp-35" class="headerlink" title="消息表达式 &amp;#35;{}"></a>消息表达式 <code>&amp;#35;{}</code></h4><p><em>即通常的国际化属性 : <code>&amp;#35;{msg}</code>,用于获取国际化语言翻译值</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">title</span> <span class="attr">th:text</span>=<span class="string">"#&#123;user.title&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="其它表达式"><a href="#其它表达式" class="headerlink" title="其它表达式"></a>其它表达式</h4><p><em>在基础语法中,默认支持字符串连接、数学运算、布尔逻辑和三目运算等..</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">"name"</span> <span class="attr">th:value</span>=<span class="string">"$&#123;'I am '+(user.name!=null?user.name:'NoBody')&#125;"</span>/&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="常用语法"><a href="#常用语法" class="headerlink" title="常用语法"></a>常用语法</h3><h4 id="迭代循环"><a href="#迭代循环" class="headerlink" title="迭代循环"></a>迭代循环</h4><p><em>想要遍历List集合很简单,配合<code>th:each</code>即可快速完成迭代</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:each</span>=<span class="string">"user:$&#123;userList&#125;"</span>&gt;</span></span><br><span class="line">    账号: <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.username&#125;"</span>/&gt;</span></span><br><span class="line">    密码: <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.password&#125;"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><em>在集合的迭代过程还可以获取状态变量,只需在变量后面指定状态变量名即可,状态变量可用于获取集合的下标/序号、总数、是否为单数/偶数行、是否为第一个/最后一个</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:each</span>=<span class="string">"user,stat:$&#123;userList&#125;"</span> <span class="attr">th:class</span>=<span class="string">"$&#123;stat.even&#125;?'even':'odd'"</span>&gt;</span></span><br><span class="line">    下标: <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;stat.index&#125;"</span>/&gt;</span></span><br><span class="line">    序号: <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;stat.count&#125;"</span>/&gt;</span></span><br><span class="line">    账号: <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.username&#125;"</span>/&gt;</span></span><br><span class="line">    密码: <span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.password&#125;"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><em>如果缺省状态变量名,则迭代器会默认帮我们生成以变量名开头的状态变量 xxStat</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:each</span>=<span class="string">"user:$&#123;userList&#125;"</span> <span class="attr">th:class</span>=<span class="string">"$&#123;userStat.even&#125;?'even':'odd'"</span>&gt;</span></span><br><span class="line">    下标：<span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;userStat.index&#125;"</span>/&gt;</span></span><br><span class="line">    序号：<span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;userStat.count&#125;"</span>/&gt;</span></span><br><span class="line">    账号：<span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.username&#125;"</span>/&gt;</span></span><br><span class="line">    密码：<span class="tag">&lt;<span class="name">input</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.password&#125;"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h4><h5 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h5><p><em>其语法为 : <code>th:if</code>,通常用于动态页面的初始化</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:if</span>=<span class="string">"$&#123;userList&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>exist...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><em>如果想取反则可以使用<code>unless</code></em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:unless</span>=<span class="string">"$&#123;userList&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>not exist...<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="switch语句"><a href="#switch语句" class="headerlink" title="switch语句"></a>switch语句</h5><p><em>其语法中需要<code>th:switch</code>与<code>th:case</code>结合使用,通常用于动态页面的初始化</em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">th:switch</span>=<span class="string">"$&#123;num&#125;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">th:case</span>=<span class="string">"1"</span>&gt;</span>num=1<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">th:case</span>=<span class="string">"2"</span>&gt;</span>num=2<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">th:case</span>=<span class="string">"3"</span>&gt;</span>num=3<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span></span></span><br></pre></td></tr></table></figure></p>
+<h4 id="日期格式化"><a href="#日期格式化" class="headerlink" title="日期格式化"></a>日期格式化</h4><p><em>使用默认的日期格式(toString方法)并不是我们预期的格式 : <code>Mon Dec 03 23:16:50 CST 2018</code></em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">th:value</span>=<span class="string">"$&#123;user.createTime&#125;"</span>/&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><em>此时可以通过时间工具类<code>&amp;#35;dates</code>来将日期进行格式化为 : <code>2018-12-03 23:16:50</code></em><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">th:value</span>=<span class="string">"$&#123;#dates.format(user.createTime,'yyyy-MM-dd HH:mm:ss')&#125;"</span>/&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="内联写法"><a href="#内联写法" class="headerlink" title="内联写法"></a>内联写法</h4><ol>
+<li><em>内联写法 : 解决 JS无法获取服务端返回的变量的尴尬 ~</em></li>
+<li><em>使用方法 : 标准格式为: <code>[[${xx}]]</code>,其可以读取服务端变量,也可以调用内置对象的方法.例如获取用户变量和应用路径:</em><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">th:inline</span>=<span class="string">"javascript"</span>&gt;</span></span><br><span class="line"><span class="actionscript">    <span class="keyword">var</span> user = [[$&#123;user&#125;]];`</span></span><br><span class="line">    var APP_PATH = [[$&#123;#request.getContextPath()&#125;]];</span><br><span class="line">    var LANG_COUNTRY = [[$&#123;#locale.getLanguage()+'_'+#locale.getCountry()&#125;]];</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="内置对象"><a href="#内置对象" class="headerlink" title="内置对象"></a>内置对象</h3><h4 id="七大基础对象"><a href="#七大基础对象" class="headerlink" title="七大基础对象"></a>七大基础对象</h4><ol>
+<li><em><code>${&amp;#35;ctx}</code> : 上下文对象,可用于获取其它内置对象</em></li>
+<li><em><code>${&amp;#35;vars}</code> : 上下文变量</em></li>
+<li><em><code>${&amp;#35;locale}</code> : 上下文区域设置</em></li>
+<li><em><code>${&amp;#35;request}</code> : HttpServletRequest对象</em></li>
+<li><em><code>${&amp;#35;response}</code> : HttpServletResponse对象</em></li>
+<li><em><code>${&amp;#35;session}</code> : HttpSession对象</em></li>
+<li><em><code>${&amp;#35;servletContext}</code> : ServletContext对象</em></li>
+</ol>
+<h4 id="常用的工具类"><a href="#常用的工具类" class="headerlink" title="常用的工具类"></a>常用的工具类</h4><ol>
+<li><em><code>&amp;#35;strings</code> :字符串工具类</em></li>
+<li><em><code>&amp;#35;lists</code> : List工具类</em></li>
+<li><em><code>&amp;#35;arrays</code> : 数组工具类</em></li>
+<li><em><code>&amp;#35;sets</code> : Set工具类</em></li>
+<li><em><code>&amp;#35;maps</code> : 常用Map方法</em></li>
+<li><em><code>&amp;#35;objects</code> : 一般对象类,通常用来判断非空</em></li>
+<li><em><code>&amp;#35;bools</code> : 常用的布尔方法</em></li>
+<li><em><code>&amp;#35;execInfo</code> : 获取页面模板的处理信息</em></li>
+<li><em><code>&amp;#35;messages</code> : 在变量表达式中获取外部消息的方法,与使用<code>&amp;#35;{...}</code>语法获取的方法相同</em></li>
+<li><em><code>&amp;#35;uris</code> : 转义部分URL / URI的方法</em></li>
+<li><em><code>&amp;#35;conversions</code> : 用于执行已配置的转换服务的方法</em></li>
+<li><em><code>&amp;#35;dates</code> : 时间操作和时间格式化等</em></li>
+<li><em><code>&amp;#35;calendars</code> : 用于更复杂时间的格式化</em></li>
+<li><em><code>&amp;#35;numbers</code> : 格式化数字对象的方法</em></li>
+<li><em><code>&amp;#35;aggregates</code> : 在数组或集合上创建聚合的方法</em></li>
+<li><em><code>&amp;#35;ids</code> : 处理可能重复的id属性的方法</em></li>
+</ol>
+<ul>
+<li><em>🙂thanks a lot : <a href="https://www.jianshu.com/p/908b48b10702" target="_blank" rel="noopener">https://www.jianshu.com/p/908b48b10702</a></em></li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    Last updated: <time datetime="2020-03-31T12:36:02.557Z" itemprop="dateUpdated">2020-03-31 12:36:02</time>
+</span><br>
+
+
+        
+    </div>
+    
+    <footer>
+        <a href="https://yubuntu0109.github.io">
+            <img src="/img/my-portrait.jpg" alt="黄宇辉">
+            黄宇辉
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring-Boot/">Spring Boot</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/&title=《Spring Boot之Thymeleaf》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/&title=《Spring Boot之Thymeleaf》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Spring Boot之Thymeleaf》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/06/30/Spring-Boot项目-好友备忘录/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Spring Boot项目:好友备忘录</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/06/26/Spring-Boot之整合视图层技术/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Spring Boot之整合视图层技术</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        thanks ~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/Wechat_appreciates.png" alt="打赏二维码">
+        </div>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>This blog is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</span>
+        </p>
+    </div>
+    <div class="bottom">
+        <!-- 统计网站用户访问量. 技术支持：不蒜子(http://busuanzi.ibruce.info/) ————> Mar 13,2019 -->
+        <p>
+            <font style='font-size: 12px;color:springgreen'>
+                    <div align="center">
+                        <!-- 安装脚本 -->
+                        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+                        <!-- 安装标签 -->
+                        <span id="busuanzi_container_site_pv">
+                            ◎用户总访问量 : <span id="busuanzi_value_site_pv"></span> 次 ~ &nbsp&nbsp
+                        </span>
+                        <span id="busuanzi_container_site_uv">
+                            ◎总访客数(（づ￣3￣）づ╭❤～) : <span id="busuanzi_value_site_uv"></span>人 ~
+                        </span>
+                    </div>
+                </font>
+            </p>
+            <!---------->
+            <p>
+                <font style='font-size: 10px'>
+                    <span>黄宇辉 &copy; 2019 - 2020</span>
+                    <span>
+                        
+                        Blog source <a href="https://github.com/YUbuntu0109/YUbuntu0109.github.io" target="_blank">Github</a> 
+                        Power by <a href="http://hexo.io/" target="_blank">Hexo</a>
+                        Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+                    </span>
+                </font>
+            </p>
+        </div>
+    </footer>
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/&title=《Spring Boot之Thymeleaf》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&pic=https://yubuntu0109.github.io/img/my-portrait.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/&title=《Spring Boot之Thymeleaf》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&source=My Personal Website For Blog" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Spring Boot之Thymeleaf》 — 欢迎参观小灰灰的网站哟 ヾ(◍°∇°◍)ﾉﾞ ~&url=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/&via=https://yubuntu0109.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://yubuntu0109.github.io/2019/06/27/Spring-Boot之Thymeleaf/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Where are you going ?';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'As long as you love me ~';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
